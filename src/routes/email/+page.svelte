@@ -134,7 +134,7 @@
 			{#if wantEmailBackup}
 				<button
 					on:click={send}
-					disabled={activationProgress > 0}
+					disabled={$ncryptsec === '' || activationProgress > 0}
 					class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem] ${$password && $password !== '' && $email && $email !== '' && activationProgress == 0 ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
 				>
 					{activationProgress > 0 ? 'Sending...' : 'Send now'}

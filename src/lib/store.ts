@@ -74,6 +74,19 @@ export const password = createSessionWritable('password', '');
 export const bunkerURI = createSessionWritable('bunker', '');
 export const backupDownloaded = createSessionWritable('backupDownloaded', false);
 
+// Derived stores
 export const pk = derived<Readable<Uint8Array>, string>(sk, getPublicKey);
 export const npub = derived(pk, npubEncode);
-export const ncryptsec = derived([sk, password], ([sk, password]) => nip49.encrypt(sk, password));
+
+let ncryptsecTimeoutId: NodeJS.Timeout;
+export const ncryptsec = derived<[Readable<Uint8Array>, Readable<string>], string>(
+	[sk, password],
+	([sk, password], set) => {
+		if (ncryptsecTimeoutId) {
+			clearTimeout(ncryptsecTimeoutId);
+		}
+		ncryptsecTimeoutId = setTimeout(() => {
+			set(nip49.encrypt(sk, password));
+		}, 1000);
+	}
+);
