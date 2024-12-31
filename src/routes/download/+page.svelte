@@ -70,16 +70,16 @@
 
 			<div class="leading-5 text-neutral-700 sm:w-[90%]">
 				<p class="">
-					Well done, <strong>{$name}</strong>, your Nostr profile is ready, yes it was so easy!
+					Well done <strong>{$name}</strong>, your Nostr profile is ready! Yes, it was that easy.
 				</p>
 				<p class="mt-6">
-					On Nostr your keypair is identified by a unique string that start with <em class="italic"
+					On Nostr your keypair is identified by a unique string that starts with <em class="italic"
 						>npub</em
-					>, this is your public profile code you can share with anyone.
+					>. this is your public profile code you can share with anyone.
 				</p>
 				<p class="mt-6">
-					Then there is the private key. It starts with <em class="italic">nsec</em>, it is used to
-					control your profile and to publish notes. This must be kept in absolute secret.
+					Then there is the private key. It starts with <em class="italic">nsec</em>, and is used to
+					control your profile and to publish notes. This must be kept absolutely secret.
 				</p>
 				<p class="mt-6">
 					Now please download your <em class="italic">nsec</em> (it's a text file) and save it in a safe

@@ -81,8 +81,8 @@
 		<!-- Intro text -->
 		<div class="text-neutral-700 sm:w-[90%]">
 			<p class="text-xl sm:w-[80%]">
-				We have finished, <strong>{$name}</strong>! Now you can start exploring Nostr, just click
-				the following button to go back to <strong>{$callingAppName}</strong>:
+				We're done, <strong>{$name}</strong>! Now you can start exploring Nostr — just click
+				below to go back to <strong>{$callingAppName}</strong>:
 			</p>
 			<div class="mt-8">
 				<a

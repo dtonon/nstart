@@ -32,12 +32,12 @@
 	<title>Create your Nostr account</title>
 	<meta
 		name="description"
-		content="Create your Nostr account, backup it and get a Nostr Connect bunker URL in few easy steps!"
+		content="Create your Nostr account, back it up, and get a Nostr Connect bunker URL in few easy steps!"
 	/>
 	<meta property="og:title" content="Create your Nostr account" />
 	<meta
 		property="og:description"
-		content="Create your Nostr account, backup it and get a Nostr Connect bunker URL in few easy steps!"
+		content="Create your Nostr account, back it up, and get a Nostr Connect bunker URL in few easy steps!"
 	/>
 	<meta property="og:image" content="{baseUrl}/images/relay.png" />
 </svelte:head>

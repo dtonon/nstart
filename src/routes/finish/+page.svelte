@@ -38,8 +38,8 @@
 		<!-- Intro text -->
 		<div class="text-neutral-700 sm:w-[90%]">
 			<p class="text-xl sm:w-[80%]">
-				We have finished, <strong>{$name}</strong>! Now you can start exploring Nostr, using a web
-				applications or downloading an app. These are some suggestions for getting started
+				We're done, <strong>{$name}</strong>! Now you can start exploring Nostr, using a web
+				application or by downloading an app. These are some suggestions for getting started
 				immediately:
 			</p>
 			<div

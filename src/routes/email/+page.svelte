@@ -90,7 +90,7 @@
 					{/if}
 				</p>
 				<p class="mt-6">
-					You will receive an email from {smtpFromEmail}. If you see nothing, check the spam folder.
+					You will receive an email from {smtpFromEmail}. If you see nothing, check your spam folder.
 				</p>
 			</div>
 		</div>

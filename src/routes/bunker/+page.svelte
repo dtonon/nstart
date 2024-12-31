@@ -119,7 +119,7 @@
 			</div>
 			{#if activateBunker}
 				<div class="mt-6">
-					The key will be splitted and shared with these 3 independent signers.<br />
+					The key will be split and shared with these 3 independent signers.<br />
 				</div>
 			{/if}
 			{#if bunkerActivating || $bunkerURI !== ''}
@@ -134,8 +134,8 @@
 				<img src="/icons/done.svg" alt="Done" class="w-24" />
 			</div>
 			<div class="mt-10 text-neutral-600">
-				All done! your bunker code is ready. Save it, your could paste it into Nostr clients to log
-				in without having to use your secret key:
+				All done! your bunker code is ready. Save it for later so that you can log
+				into Nostr clients without having to use your secret key:
 			</div>
 			<div class="mt-6 text-xl">
 				<div class="break-words">
