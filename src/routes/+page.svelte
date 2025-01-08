@@ -101,10 +101,9 @@
 								generates and manages for you. You create it yourself, no permissions are required.
 							</p>
 							<p class="mt-6">
-								Nostr is a different experience from the beginning: because there is no central
-								authority taking care of who is who, each user is identified by a cryptographic
-								keypair; don’t worry about the tech slang, it is just a strong password that you
-								will have to keep safe.
+								Because there is no central authority taking care of who is who,
+								each user is identified by a cryptographic keypair:
+								a strong secret that you will have to keep safe.
 							</p>
 							<p class="mt-6">
 								{#if $callingAppName}
