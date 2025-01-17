@@ -27,8 +27,7 @@ export async function sendEmail(
 		});
 
 		const result = await response.json();
-		if (response.ok) {
-		} else {
+		if (!response.ok) {
 			throw result.error;
 		}
 	} catch (err) {
@@ -39,7 +38,7 @@ export async function sendEmail(
 
 export async function publishRelayList(sk: Uint8Array, pk: string) {
 	const outboxRelays: string[] = selectWriteRelays();
-	const inboxRelays: string[] = (get(inboxes))[pk] || selectReadRelays();
+	const inboxRelays: string[] = get(inboxes)[pk] || selectReadRelays();
 
 	const tags: string[][] = [];
 	for (let i = 0; i < outboxRelays.length; i++) {
