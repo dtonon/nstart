@@ -122,29 +122,28 @@
 		<div class="w-full sm:mr-10 sm:max-w-[350px]">
 			<div class="mb-8 border-l-[0.9rem] border-strongpink pl-4 sm:-ml-8">
 				<h1 class="font-bold">
-					<div class="text-[3rem] leading-[1em] text-neutral-500 sm:text-[3rem]">PRESENT</div>
+					<div class="text-[3rem] leading-[1em] text-neutral-500 sm:text-[3rem]">HELLO</div>
 					<div class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[3.5rem]" id="tw">
-						YOURSELF
+						WORLD
 					</div>
 				</h1>
 			</div>
 
 			<div class="leading-5 text-neutral-700 sm:w-[90%]">
-				<p class="">On Nostr you decide to be whoever you want.</p>
+				<p class="">On Nostr, you can be whoever you want.</p>
 				<p class="mt-6">
 					A Nostr profile usually includes a name, a picture and some additional information, but
 					it's all optional.
 				</p>
 
 				<p class="mt-6">
-					The name is not a unique username, we can have as many Jacks we want! Feel free to use
+					The name is not a unique username, we can have as many Jacks as we want! Feel free to use
 					your real name or a nickname; you can always change it later.<br />
 					But remember: online privacy matters, don’t share sensitive data.
 				</p>
 
 				<p class="mt-6">
-					And yes, to join Nostr you don’t need to give your email address, phone number or anything
-					like that, it is KYC free.
+				        No email, no phone number, no IDs, no drama.
 				</p>
 			</div>
 		</div>
