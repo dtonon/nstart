@@ -86,7 +86,7 @@ To do that you have to import a JS from start.njump.me and initialize a NstartMo
         an: 'Great Nostr App', // App name
 
         // Optional parameters
-        aa: '689600' // Hex accent color
+        aa: '689600', // Hex accent color
         afb: true, // Force bunker (default False)
         asb: true, // Skip bunker (default False)
         aan: true, // Don't return Nsec (default False)
@@ -126,7 +126,7 @@ http://start.njump.me/?an=Coracle&aa=fc560e
 
 ## Custom relays
 
-While Nstart creates a 10002 event with random picked relays from a selected pool by default , apps can overwrite these read and write relays using the `arr` (read relays) and `awr` (write relays) params. More relays can be passed, separated by commas. For example:
+While Nstart creates a 10002 event with random picked relays from a selected pool by default, apps can overwrite these read and write relays using the `arr` (read relays) and `awr` (write relays) params. More relays can be passed, separated by commas. For example:
 
 ```
 http://start.njump.me/?an=Coracle&at=web&ac=https://coracle.social&arr=wss://relay.damus.io&awr=wss://nos.lol,wss://wss://offchain.pub
