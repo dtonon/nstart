@@ -16,7 +16,7 @@
 		if (!browser) return;
 
 		const themeToApply =
-			preferredTheme === 'system'
+			preferredTheme === '' // Empty string means follow system theme
 				? systemTheme || (mediaQuery?.matches ? 'dark' : 'light')
 				: preferredTheme;
 
@@ -32,11 +32,19 @@
 			systemTheme = event.data.systemTheme;
 			const configuredTheme = event.data.configuredTheme;
 
-			if (configuredTheme === 'system') {
+			if (configuredTheme === '') {
 				$theme = systemTheme;
 			} else {
 				$theme = configuredTheme;
 			}
+		}
+	}
+
+	function handleSystemThemeChange(e: MediaQueryListEvent) {
+		systemTheme = e.matches ? 'dark' : 'light';
+		if ($theme === '') {
+			// Only update if we're following system theme
+			updateTheme('');
 		}
 	}
 
@@ -45,15 +53,20 @@
 			mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 			systemTheme = mediaQuery.matches ? 'dark' : 'light';
 
-			// Initialize theme based on URL parameter or system preference
+			// Add listener for system theme changes
+			mediaQuery.addEventListener('change', handleSystemThemeChange);
+
+			// Initialize theme based on URL parameter or stored preference
 			const params = new URLSearchParams(window.location.search);
 			const forcedTheme = params.get('am');
 
 			if (forcedTheme === 'light' || forcedTheme === 'dark') {
 				$theme = forcedTheme;
-			} else {
+			} else if ($theme === '') {
+				// If no stored preference (empty string), follow system
 				$theme = systemTheme;
 			}
+			// If there's a stored preference, it will be loaded automatically by the store
 
 			// Listen for theme updates from parent window
 			window.addEventListener('message', handleThemeUpdate);
@@ -62,6 +75,7 @@
 
 	onDestroy(() => {
 		if (browser) {
+			mediaQuery?.removeEventListener('change', handleSystemThemeChange);
 			window.removeEventListener('message', handleThemeUpdate);
 		}
 	});
