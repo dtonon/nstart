@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { shardGetBunker } from '@fiatjaf/promenade-trusted-dealer';
 	import { pool } from '@nostr/gadgets/global';
+	import { _ } from 'svelte-i18n';
 
 	import { goto } from '$app/navigation';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
@@ -102,29 +103,24 @@
 		<div class="w-full sm:mr-10 sm:max-w-[350px]">
 			<div class="mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
 				<h1 class="font-bold">
-					<div class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[3rem]">MULTI SIGNER</div>
+					<div class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[3rem]">{$_('bunker_page.title.part1')}</div>
 					<div class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[3.5rem]" id="tw">
-						BUNKER
+						{$_('bunker_page.title.part2')}
 					</div>
 				</h1>
 			</div>
 
 			<div class="leading-5 text-neutral-700 dark:text-neutral-300 sm:w-[90%]">
 				<p class="">
-					Now you have the possibility to split your <em class="italic">nsec</em> in 3 using a
-					technique called
-					<a href="https://www.youtube.com/watch?v=ReN0kMzDFro" target="_blank">FROST</a> and distribute
-					each shard to an independent trusted remote signer.
+					{@html $_('bunker_page.intro.split_nsec')}
+					<a href="https://www.youtube.com/watch?v=ReN0kMzDFro" target="_blank">{$_('bunker_page.intro.frost_link')}</a>
+					{@html $_('bunker_page.intro.frost_explanation')}
 				</p>
 				<p class="mt-6">
-					This will give you a <em class="italic">bunker</em> code that you can use to login in many
-					web, mobile and desktop apps without exposing your
-					<em class="italic">nsec</em>.
+					{@html $_('bunker_page.intro.bunker_code')}
 				</p>
 				<p class="mt-6">
-					If you ever lose your <em class="italic">bunker</em> code, if the signers vanish from
-					Earth and it stops working or if it gets stolen by a malware virus you can use your
-					<em class="italic">nsec</em> to create a new and invalidate the old one.
+					{@html $_('bunker_page.intro.recovery')}
 				</p>
 			</div>
 		</div>
@@ -139,21 +135,19 @@
 							bind:checked={activateBunker}
 							disabled={bunkerActivating || !isWasmSupported()}
 						>
-							I want to save my nsec, split in a pool of remote signers to be used for "bunker"
-							connections
+							{$_('bunker_page.interactive.checkbox')}
 						</CheckboxWithLabel>
 					</div>
 				{/if}
 			</div>
 			{#if !isWasmSupported()}
 				<div class="mt-6 bg-amber-100 dark:bg-amber-900 p-2">
-					Sorry your browser doesn't support WASM, so you cannot use this feature
+					{$_('bunker_page.interactive.wasm_error')}
 				</div>
 			{/if}
 			{#if activateBunker}
 				<div class="mt-6 text-neutral-700 dark:text-neutral-300">
-					The key will be split and shared with these 3 independent signers. The procedure could
-					require some time, please hold on.<br />
+					{$_('bunker_page.interactive.processing')}<br />
 				</div>
 			{/if}
 			{#if bunkerActivating || $bunkerURI !== ''}
@@ -168,19 +162,18 @@
 				<DoneIcon />
 			</div>
 			<div class="mt-10 text-neutral-600 dark:text-neutral-300">
-				All done! your bunker code is ready. Save it for later so that you can log into Nostr
-				clients without having to use your secret key:
+				{$_('bunker_page.interactive.success.title')}
 			</div>
 			<div class="mt-6 text-xl">
 				<div class="break-words">
-					<ClipToCopy textToCopy={$bunkerURI} confirmMessage="Copied!" />
+					<ClipToCopy textToCopy={$bunkerURI} confirmMessage={$_('bunker_page.interactive.success.copy_message')} />
 				</div>
 			</div>
 			<button
 				on:click={downloadBunker}
 				class="mt-4 inline-flex w-full items-center justify-center rounded bg-accent px-8 py-3 text-[1.3rem] text-white"
 			>
-				Save my bunker <img
+				{$_('bunker_page.interactive.success.download_button')} <img
 					src="/icons/arrow-right.svg"
 					alt="continue"
 					class="ml-4 mr-2 h-5 w-5 rotate-90"
@@ -193,7 +186,7 @@
 				<ContinueButton
 					onClick={activate}
 					disabled={bunkerActivating}
-					text={bunkerActivating ? 'Activating...' : 'Activate the bunker'}
+					text={bunkerActivating ? $_('bunker_page.buttons.activating') : $_('bunker_page.buttons.activate')}
 				/>
 			</div>
 		{/if}
@@ -203,7 +196,7 @@
 				<ContinueButton
 					onClick={navigateContinue}
 					disabled={false}
-					text={$bunkerURI !== '' ? 'Continue' : 'No, thanks, continue'}
+					text={$bunkerURI !== '' ? $_('bunker_page.buttons.continue') : $_('bunker_page.buttons.skip')}
 				/>
 			</div>
 		{/if}

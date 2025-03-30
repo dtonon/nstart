@@ -45,6 +45,7 @@
 		"leveldown": "6.1.1",
 		"nodemailer": "6.9.16",
 		"nostr-tools": "2.9.4",
-		"qr-code-styling": "^1.8.4"
+		"qr-code-styling": "^1.8.4",
+		"svelte-i18n": "^4.0.1"
 	}
 }

@@ -11,11 +11,17 @@
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 	import ContinueButton from '$lib/ContinueButton.svelte';
 	import DoneIcon from '$lib/DoneIcon.svelte';
+	import { browser } from '$app/environment';
+	import { bunkerURI, callingAppName, callingAppType, callingAppCode } from '$lib/store';
+	import BasicLayout from '$lib/BasicLayout.svelte';
+	import QrCode from '$lib/QrCode.svelte';
+	import { _ } from 'svelte-i18n';
 
 	let backupInitialized = false;
 	let backupDone = false;
 	let backupPrivKey = '';
 	let encrypt = false;
+	let actionURL: string;
 
 	onMount(() => {
 		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
@@ -26,6 +32,33 @@
 
 		if ($password) {
 			encrypt = true;
+		}
+
+		// Set up the action URL based on the calling app type
+		switch ($callingAppType) {
+			case 'modal':
+				if (browser && window.self !== window.top) {
+					window.parent.postMessage(
+						{
+							type: 'WIZARD_COMPLETE',
+							result: {
+								nostrLogin: $bunkerURI
+							}
+						},
+						'*'
+					);
+				}
+				break;
+			case 'web':
+			case 'popup':
+				actionURL = `${$callingAppCode}#nostr-login=${$bunkerURI}`;
+				break;
+			case 'android':
+				actionURL = `intent:${$bunkerURI}#Intent;scheme=nostr-login;package=${$callingAppCode};end;`;
+				break;
+			case 'ios':
+				actionURL = `${$callingAppCode}://${$bunkerURI}`;
+				break;
 		}
 	});
 
@@ -58,6 +91,16 @@
 		const lastPart = str.slice(-8);
 		return `${firstPart} ... ${lastPart}`;
 	}
+
+	function redirectAndClose() {
+		window.opener.location.href = actionURL;
+		window.close();
+	}
+
+	function redirectBack() {
+		window.location.href = actionURL;
+		sessionStorage.clear();
+	}
 </script>
 
 <TwoColumnLayout>
@@ -65,29 +108,28 @@
 		<div class="w-full sm:mr-10 sm:max-w-[350px]">
 			<div class="mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
 				<h1 class="font-bold">
-					<div class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[3rem]">YOUR KEYS</div>
+					<div class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[3rem]">{$_('download_page.title.part1')}</div>
 					<div class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[3.5rem]" id="tw">
-						ARE READY
+						{$_('download_page.title.part2')}
 					</div>
 				</h1>
 			</div>
 
 			<div class="leading-5 text-neutral-700 dark:text-neutral-300 sm:w-[90%]">
 				<p class="">
-					Well done <strong>{$name}</strong>, your Nostr profile is ready! Yes, it was that easy.
+					{@html $_('keys_page.intro.paragraph1', { values: { name: $name } })}
 				</p>
 				<p class="mt-6">
-					On Nostr your keypair is identified by a unique string that starts with <em class="italic"
-						>npub</em
-					>. this is your public profile code you can share with anyone.
+					{$_('keys_page.intro.paragraph2')} <a href="https://nostrapps.com" target="_blank" class="underline"
+						>{$_('keys_page.intro.paragraph3')}</a
+					>!
 				</p>
 				<p class="mt-6">
-					Then there is the private key. It starts with <em class="italic">nsec</em>, and is used to
-					control your profile and to publish notes. This must be kept absolutely secret.
-				</p>
-				<p class="mt-6">
-					Now please download your <em class="italic">nsec</em> (it's a text file) and save it in a safe
-					place, for example your password manager.
+					{$_('keys_page.intro.paragraph4')}
+					<br />
+					<a href="https://njump.me/{$npub}" target="_blank" class="break-all underline"
+						>njump.me/{$npub}</a
+					>
 				</p>
 			</div>
 		</div>
@@ -96,7 +138,7 @@
 	<div slot="interactive">
 		{#if !backupInitialized}
 			<div class="text-xl">
-				<div class="text-neutral-400 dark:text-neutral-400">Your npub is</div>
+				<div class="text-neutral-400 dark:text-neutral-400">{$_('download_page.interactive.npub_label')}</div>
 				<div class="break-words">
 					<ClipToCopy textToCopy={$npub} confirmMessage="Copied!" />
 				</div>
@@ -110,7 +152,7 @@
 						on:click={downloadBackup}
 						class="inline-flex w-full items-center justify-center rounded bg-accent px-8 py-3 text-[1.3rem] text-white"
 					>
-						Save my nsec <img
+						{$_('download_page.interactive.save_nsec')} <img
 							src="/icons/arrow-right.svg"
 							alt="continue"
 							class="ml-4 mr-2 h-5 w-5 rotate-90"
@@ -122,7 +164,7 @@
 							encrypt = true;
 						}}
 						class="mt-2 text-center text-sm text-neutral-400 dark:text-neutral-400 hover:underline"
-						>I want to download the encrypted version</button
+						>{$_('download_page.interactive.encrypt_version')}</button
 					>
 				{/if}
 
@@ -131,7 +173,7 @@
 					<input
 						type="text"
 						bind:value={$password}
-						placeholder="Pick a password"
+						placeholder={$_('download_page.interactive.password_placeholder')}
 						required
 						autofocus={!$isMobile}
 						autocapitalize="off"
@@ -142,7 +184,7 @@
 						disabled={$ncryptsec === ''}
 						on:click={downloadBackup}
 					>
-						Save my ncryptsec <img
+						{$_('download_page.interactive.save_ncryptsec')} <img
 							src="/icons/arrow-right.svg"
 							alt="continue"
 							class="ml-4 mr-2 h-5 w-5 rotate-90"
@@ -155,36 +197,33 @@
 							$password = '';
 						}}
 						class="mt-2 text-center text-sm text-neutral-400 dark:text-neutral-500 hover:underline"
-						>Nevermind, I want do download the plain nsec</button
+						>{$_('download_page.interactive.plain_nsec')}</button
 					>
 				{/if}
 				<div class="mt-8 text-neutral-600 dark:text-neutral-300">
-					From your nsec you can generate your npub, so it is the only information you really need
-					to keep safe.
+					{$_('download_page.interactive.nsec_explanation')}
 				</div>
 			{:else}
 				<div class="flex justify-center h-24 text-neutral-700 dark:text-neutral-300">
 						<DoneIcon />
 				</div>
 				<div class="mt-10 text-neutral-600 dark:text-neutral-300">
-					Now please open the file and check that the long string after your npub matches these
-					starting and finishing characters:
+					{$_('download_page.interactive.verify_backup.title')}
 					<div class="my-4 rounded bg-yellow-100 dark:bg-yellow-500 px-6 py-4 dark:text-neutral-950">
 						{previewDownloadKey(backupPrivKey)}
 					</div>
 					{#if encrypt}
-						Finally, copy the file in another safe place as additional backup and separately save
-						the chosen password (<strong>{$password}</strong>).
+						{@html $_('download_page.interactive.verify_backup.save_password', { values: { password: $password } })}
 					{:else}
-						Finally, copy the file in another safe place as additional backup.
+						{$_('download_page.interactive.verify_backup.save_file')}
 					{/if}
 				</div>
 				<div class="mt-8">
 					<CheckboxWithLabel bind:checked={backupDone}>
 						{#if encrypt}
-							I saved the file and the password in a couple of safe places
+							{$_('download_page.interactive.verify_backup.checkbox_encrypted')}
 						{:else}
-							I saved the file in a couple of safe places
+							{$_('download_page.interactive.verify_backup.checkbox_plain')}
 						{/if}
 					</CheckboxWithLabel>
 				</div>
@@ -194,7 +233,7 @@
 						backupDone = false;
 					}}
 					class="mt-6 text-left text-sm text-neutral-400 dark:text-neutral-400 hover:underline"
-					>Do you need to download it again?</button
+					>{$_('download_page.interactive.verify_backup.download_again')}</button
 				>
 			{/if}
 		</div>
@@ -203,8 +242,62 @@
 			<ContinueButton
 				onClick={navigateContinue}
 				disabled={!backupDone && !$backupDownloaded}
-				text="Continue"
+				text={$_('download_page.buttons.continue')}
 			/>
 		</div>
 	</div>
 </TwoColumnLayout>
+
+<BasicLayout>
+	<div slot="content" class="animate-fade1">
+		<!-- Welcome title -->
+		<div class="relative mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
+			<h1 class="font-bold">
+				<div class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[3rem]">{$_('download_page.title.part1')}</div>
+				<div class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[3.5rem]" id="tw">
+					{$_('download_page.title.part2')}
+				</div>
+			</h1>
+			{#if $bunkerURI}
+				<div
+					class="absolute right-0 top-8 hidden w-48 rotate-6 flex-col items-center text-center sm:flex"
+				>
+					<QrCode className="" data={$bunkerURI} />
+					<span class="mt-4 text-sm text-accent">{$_('keys_page.qr_code.scan')}</span>
+				</div>
+			{/if}
+		</div>
+
+		<!-- Intro text -->
+		<div class="text-neutral-700 dark:text-neutral-200 sm:w-[100%]">
+			<p class="text-xl sm:w-[80%]">
+				{@html $_('download_page.intro.well_done', { values: { name: $name } })}
+			</p>
+			<p class="mt-6">
+				{@html $_('download_page.intro.public_key')}
+			</p>
+			<p class="mt-6">
+				{@html $_('download_page.intro.private_key')}
+			</p>
+			<p class="mt-6">
+				{@html $_('download_page.intro.download')}
+			</p>
+			<div class="mt-8">
+				<button
+					on:click={$callingAppType === 'popup' ? redirectAndClose : redirectBack}
+					type="submit"
+					class="inline-flex items-center rounded bg-accent px-6 py-4 text-[1.8rem] text-white sm:px-10"
+				>
+					{$_('download_page.buttons.download')}
+					<img src="/icons/arrow-right.svg" alt="Icon" class="ml-4 mr-2 h-7 w-7" />
+				</button>
+			</div>
+			<p class="mt-6 sm:w-[80%]">
+				{$_('keys_page.intro.paragraph4')}<br />
+				<a href="https://njump.me/{$npub}" target="_blank" class="break-all underline"
+					>njump.me/{$npub}</a
+				>
+			</p>
+		</div>
+	</div>
+</BasicLayout>

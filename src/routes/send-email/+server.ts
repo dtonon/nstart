@@ -9,83 +9,68 @@ import {
 	SMTP_USER,
 	SMTP_PASS,
 	SMTP_FROM_NAME,
-	VITE_SMTP_FROM_EMAIL
+	SMTP_FROM_EMAIL
 } from '$env/static/private';
+import { json } from '@sveltejs/kit';
+import type { RequestHandler } from './$types';
+import { get } from 'svelte/store';
+import { _ } from 'svelte-i18n';
 
-export const POST = async ({ request }: { request: Request }) => {
+export const POST: RequestHandler = async ({ request }) => {
+	const i18n = get(_);
 	try {
-		const evt = JSON.parse(atob(request.headers.get('Authorization')!.substring(6))) as NostrEvent;
+		const { event, email, password } = await request.json();
 
-		// check if they have sent enough pow
-		if (!verifyEvent(evt)) {
-			throw 'invalid authorization event signature';
-		}
-		if (getPow(evt.id) < 20) {
-			throw 'insufficient pow';
+		// Verify the event
+		if (!verifyEvent(event)) {
+			return json({ error: 'Invalid authorization event' }, { status: 400 });
 		}
 
-		const { to, ncryptsec, npub } = await request.json();
+		// Check if the event has enough proof of work
+		const pow = event.tags.find((tag: [string, string]) => tag[0] === 'nonce')?.[1];
+		if (!pow || parseInt(pow) < 20) {
+			return json({ error: 'Insufficient proof of work' }, { status: 400 });
+		}
 
-		// Create a transporter object using the nodemailer library
-		const transporter = (nodemailer as any).createTransport({
-			host: SMTP_HOST!,
-			port: SMTP_PORT!,
+		// Create email transporter
+		const transporter = nodemailer.createTransport({
+			host: SMTP_HOST,
+			port: parseInt(SMTP_PORT),
 			secure: SMTP_SECURE === 'yes',
 			auth: {
-				user: SMTP_USER!,
-				pass: SMTP_PASS!
-			}
+				user: SMTP_USER,
+				pass: SMTP_PASS,
+			},
 		});
 
-		// Set up email data
-		const mail_options = {
-			from: `"${SMTP_FROM_NAME}" <${VITE_SMTP_FROM_EMAIL}>`,
-			to: to,
-			subject: 'Your Nostr account',
-			text: `Hello!
+		// Prepare email content
+		const emailContent = `
+${i18n('email_server.content.greeting')}
 
-This is your Nostr npub:
-${npub}
+${i18n('email_server.content.npub_intro')}
+${event.pubkey}
 
-And this is your encrypted Nostr key:
-${ncryptsec}
+${i18n('email_server.content.key_intro')}
+${password}
 
-Remember to save the chosen password in a safe place!
+${i18n('email_server.content.password_reminder')}
 
-Welcome to Nostr :)
+${i18n('email_server.content.welcome')}
 
-PS: This email address does not accept replies, to request support please tag https://njump.me/dtonon.com or https://njump.me/fiatjaf.com on Nostr
-`
-		};
+${i18n('email_server.content.ps')}
+		`.trim();
 
 		// Send email
-		const info = await transporter.sendMail(mail_options);
+		await transporter.sendMail({
+			from: `"${SMTP_FROM_NAME}" <${SMTP_FROM_EMAIL}>`,
+			to: email,
+			subject: i18n('email_server.subject'),
+			text: emailContent,
+		});
 
-		// Return a Response object
-		return new Response(
-			JSON.stringify({
-				message: 'Email sent successfully',
-				messageId: info.messageId
-			}),
-			{
-				status: 200,
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			}
-		);
+		return json({ message: i18n('email_server.responses.success') });
 	} catch (error) {
-		console.error(error); // Log the error for debugging
-		return new Response(
-			JSON.stringify({
-				error: 'Internal server error'
-			}),
-			{
-				status: 500,
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			}
-		);
+		console.error('Error sending email:', error);
+		return json({ error: i18n('email_server.responses.error') }, { status: 500 });
 	}
 };

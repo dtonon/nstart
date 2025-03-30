@@ -13,6 +13,7 @@
 	import ContinueButton from '$lib/ContinueButton.svelte';
 	import { mineEmail, publishRelayList, publishProfile } from '$lib/actions';
 	import { isWasmSupported } from '$lib/wasm';
+	import { _ } from 'svelte-i18n';
 
 	let picturePreview: string | null = null;
 	let activationProgress = 0;
@@ -122,29 +123,26 @@
 		<div class="w-full sm:mr-10 sm:max-w-[350px]">
 			<div class="mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
 				<h1 class="font-bold">
-					<div class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[3rem]">PRESENT</div>
-					<div class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[3.5rem]" id="tw">
-						YOURSELF
+					<div class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[3rem]">{$_('preset')}</div>
+					<div class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[7rem]" id="tw">
+						{$_('yourself')}
 					</div>
 				</h1>
 			</div>
 
 			<div class="leading-5 text-neutral-700 dark:text-neutral-300 sm:w-[90%]">
-				<p class="">On Nostr you decide to be whoever you want.</p>
+				<p class="">{$_('yourself_page.intro.decide')}</p>
 				<p class="mt-6">
-					A Nostr profile usually includes a name, a picture and some additional information, but
-					it's all optional.
+					{$_('yourself_page.intro.profile_info')}
 				</p>
 
 				<p class="mt-6">
-					The name is not a unique username, we can have as many Jacks we want! Feel free to use
-					your real name or a nickname; you can always change it later.<br />
-					But remember: online privacy matters, don't share sensitive data.
+					{$_('yourself_page.intro.name_explanation')}<br />
+					{$_('yourself_page.intro.privacy_note')}
 				</p>
 
 				<p class="mt-6">
-					And yes, to join Nostr you don't need to give your email address, phone number or anything
-					like that, it is KYC free.
+					{$_('yourself_page.intro.kyc_free')}
 				</p>
 			</div>
 		</div>
@@ -152,7 +150,7 @@
 
 	<div slot="interactive">
 		<div class="mb-6 flex items-end justify-end">
-			<button on:click={triggerFileInput} class="text-xl text-neutral-400 dark:text-neutral-500">Your image</button>
+			<button on:click={triggerFileInput} class="text-xl text-neutral-400 dark:text-neutral-500">{$_('yourself_page.form.image')}</button>
 			<div class="-mr-8 ml-2 mt-2 h-1 w-20 border-t-2 border-neutral-300 dark:border-neutral-600"></div>
 			<button
 				on:click={triggerFileInput}
@@ -180,39 +178,39 @@
 			<!-- svelte-ignore a11y-autofocus -->
 			<div class="mb-1 flex items-end justify-between">
 				{#if $name != ''}<label for="name" class="ml-4 text-xs uppercase text-neutral-700 dark:text-neutral-300"
-						>Your (nick)name</label
+						>{$_('form.nickname.label')}</label
 					>{:else}<div></div>{/if}
-				<div class="mr-4 text-right text-xs uppercase text-neutral-500 dark:text-neutral-400">required</div>
+				<div class="mr-4 text-right text-xs uppercase text-neutral-500 dark:text-neutral-400">{$_('form.nickname.required')}</div>
 			</div>
 			<input
 				id="name"
 				type="text"
-				placeholder="Your (nick)name"
+				placeholder={$_('form.nickname.placeholder')}
 				bind:value={$name}
 				autofocus={!isMobile}
 				class="input-hover-enabled mb-4 w-full rounded border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-4 py-2 text-xl text-black dark:text-white focus:border-neutral-700 dark:focus:border-neutral-400 focus:outline-none"
 			/>
 			<div class="mb-1 flex items-end justify-between">
 				{#if $about != ''}<label for="about" class="ml-4 text-xs uppercase text-neutral-700 dark:text-neutral-300"
-						>Something about you</label
+						>{$_('form.about.label')}</label
 					>{:else}<div></div>{/if}
-				<div class="mr-4 text-right text-xs uppercase text-neutral-400 dark:text-neutral-600">optional</div>
+				<div class="mr-4 text-right text-xs uppercase text-neutral-400 dark:text-neutral-600">{$_('form.about.optional')}</div>
 			</div>
 			<textarea
 				id="about"
-				placeholder="Something about you"
+				placeholder={$_('form.about.placeholder')}
 				bind:value={$about}
 				class="input-hover-enabled mb-4 w-full rounded border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-4 py-2 text-xl text-black dark:text-white focus:border-neutral-700 dark:focus:border-neutral-400 focus:outline-none"
 			></textarea>
 			<div class="mb-1 flex items-end justify-between">
 				{#if $website != ''}<label for="about" class="ml-4 text-xs uppercase text-neutral-700 dark:text-neutral-300"
-						>Your website</label
+						>{$_('form.website.label')}</label
 					>{:else}<div></div>{/if}
-				<div class="mr-4 text-right text-xs uppercase text-neutral-400 dark:text-neutral-600">optional</div>
+				<div class="mr-4 text-right text-xs uppercase text-neutral-400 dark:text-neutral-600">{$_('form.website.optional')}</div>
 			</div>
 			<input
 				type="text"
-				placeholder="Your website"
+				placeholder={$_('form.website.label')}
 				bind:value={$website}
 				class="input-hover-enabled w-full rounded border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-4 py-2 text-xl text-black dark:text-white focus:border-neutral-700 dark:focus:border-neutral-400 focus:outline-none"
 			/>
@@ -226,7 +224,7 @@
 			<ContinueButton
 				onClick={navigateContinue}
 				disabled={activationProgress > 0 || !$name}
-				text={activationProgress > 0 ? 'Uploading...' : 'Continue'}
+				text={activationProgress > 0 ? $_('yourself_page.form.uploading') : $_('yourself_page.form.continue')}
 			/>
 		</div>
 	</div>

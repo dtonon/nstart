@@ -1,0 +1,201 @@
+{
+  "meta": {
+    "title": "Bienvenido a NStart",
+    "description": "Crea tu perfil de Nostr en segundos"
+  },
+  "welcome": {
+    "title": "¡Hola!",
+    "to": "Bienvenido a",
+    "nostr": "Nostr"
+  },
+  "intro": {
+    "paragraph1": "NStart es la forma más rápida de empezar con Nostr. En segundos, crearemos tu perfil y te ayudaremos a configurarlo.",
+    "paragraph2": "No te preocupes, no guardamos ninguna de tus información. Todo se maneja localmente en tu dispositivo.",
+    "paragraph3": "¿Empezamos?",
+    "paragraph3_with_app": "¿Empezamos con {appName}?"
+  },
+  "buttons": {
+    "lets_start": "Empecemos"
+  },
+  "footer": {
+    "learn_more": "¿Quieres saber más?",
+    "read_intro": "Lee la introducción a Nostr",
+    "source_code": "El código fuente es",
+    "free_and_open": "gratuito y de código abierto"
+  },
+  "language_switcher": {
+    "select_language": "Seleccionar idioma",
+    "languages": {
+      "en": "Inglés",
+      "de": "Alemán",
+      "it": "Italiano",
+      "fr": "Francés",
+      "es": "Español"
+    }
+  },
+  "yourself_page": {
+    "intro": {
+      "decide": "En Nostr puedes decidir ser quien quieras.",
+      "profile_info": "Un perfil de Nostr generalmente incluye un nombre, una imagen y alguna información adicional, pero todo es opcional.",
+      "name_explanation": "El nombre no es un nombre de usuario único, ¡podemos tener tantos Jack como queramos! Siéntete libre de usar tu nombre real o un apodo; siempre puedes cambiarlo más tarde.",
+      "privacy_note": "Pero recuerda: la privacidad en línea es importante, no compartas datos sensibles.",
+      "kyc_free": "Y sí, para unirte a Nostr no necesitas dar tu dirección de correo electrónico, número de teléfono ni nada por el estilo, es libre de KYC."
+    },
+    "form": {
+      "image": "Tu imagen",
+      "uploading": "Subiendo...",
+      "continue": "Continuar",
+      "alert": "Por favor ingresa un nombre, la biografía y el sitio web son opcionales"
+    }
+  },
+  "keys_page": {
+    "title": {
+      "part1": "TUS CLAVES",
+      "part2": "ESTÁN LISTAS"
+    },
+    "intro": {
+      "paragraph1": "¡Terminamos, {name}! Ahora puedes comenzar a explorar Nostr, usando una aplicación web o descargando una app. Aquí hay algunas sugerencias para comenzar inmediatamente:",
+      "paragraph2": "Esta es solo una selección rápida de las más de 80 aplicaciones que ya se han desarrollado en Nostr,",
+      "paragraph3": "descúbrelas todas",
+      "paragraph4": "Este es tu perfil web, puedes compartirlo en cualquier lugar y con cualquier persona:"
+    },
+    "buttons": {
+      "go_back": "Volver a {appName}"
+    },
+    "qr_code": {
+      "scan": "¡Escanea el código QR para iniciar sesión rápidamente desde tu móvil!"
+    },
+    "apps": {
+      "coracle": {
+        "name": "Coracle",
+        "description": "Social & Micro blogging",
+        "type": "App web"
+      },
+      "chachi": {
+        "name": "Chachi",
+        "description": "Conversaciones grupales",
+        "type": "App web"
+      },
+      "olas": {
+        "name": "Olas",
+        "description": "Social de fotos y videos",
+        "type": "Android / iOS"
+      },
+      "nostur": {
+        "name": "Nostur",
+        "description": "Social & Micro blogging",
+        "type": "iOS / macOS"
+      },
+      "jumble": {
+        "name": "Jumble.social",
+        "description": "Social & Micro blogging",
+        "type": "App web"
+      }
+    }
+  },
+  "download_page": {
+    "title": {
+      "part1": "TUS CLAVES",
+      "part2": "ESTÁN LISTAS"
+    },
+    "intro": {
+      "well_done": "¡Muy bien {name}, tu perfil de Nostr está listo! Sí, fue así de fácil.",
+      "public_key": "En Nostr, tu par de claves está identificado por una cadena única que comienza con <em class=\"italic\">npub</em>. Este es tu código de perfil público que puedes compartir con cualquiera.",
+      "private_key": "Luego está la clave privada. Comienza con <em class=\"italic\">nsec</em> y se usa para controlar tu perfil y publicar notas. Esta debe mantenerse absolutamente secreta.",
+      "download": "Ahora, por favor, descarga tu <em class=\"italic\">nsec</em> (es un archivo de texto) y guárdalo en un lugar seguro, por ejemplo, en tu gestor de contraseñas."
+    },
+    "buttons": {
+      "download": "Descargar tu clave privada",
+      "continue": "Continuar"
+    }
+  },
+  "email_page": {
+    "title": {
+      "part1": "CORREO",
+      "part2": "BACKUP"
+    },
+    "intro": {
+      "offer": "Te ofrecemos la posibilidad de enviar tu <em class=\"italic\">nsec</em> cifrado (por lo tanto, un <em class=\"italic\">ncryptsec</em>) a tu dirección de correo electrónico para tener otra ubicación de respaldo conveniente.",
+      "password_new": "Simplemente elige una contraseña fuerte y guárdala de forma segura, escríbela ahora, asegúrate de no perderla.",
+      "password_existing": "Usaremos la misma contraseña que elegiste anteriormente. La escribiste, ¿verdad? :)",
+      "email_notice": "Recibirás un correo electrónico de {email}. Si no ves nada, revisa tu carpeta de spam."
+    },
+    "form": {
+      "checkbox": "Quiero enviar mi nsec cifrado {with_password} a la siguiente dirección de correo electrónico:",
+      "with_password": "(con la misma contraseña ya ingresada anteriormente)",
+      "email_placeholder": "Tu dirección de correo electrónico",
+      "password_placeholder": "Elegir una contraseña",
+      "wasm_error": "Lo siento, tu navegador no soporta WASM, por lo que no puedes usar esta función"
+    },
+    "buttons": {
+      "send": "Enviar ahora",
+      "sending": "Enviando...",
+      "skip": "No, gracias, continuar"
+    },
+    "alerts": {
+      "missing_fields": "Por favor, ingresa tu dirección de correo electrónico y elige una contraseña",
+      "invalid_email": "Por favor, verifica tu dirección de correo electrónico"
+    }
+  },
+  "email_server": {
+    "subject": "Tu cuenta Nostr",
+    "content": {
+      "greeting": "¡Hola!",
+      "npub_intro": "Este es tu npub de Nostr:",
+      "key_intro": "Y esta es tu clave Nostr encriptada:",
+      "password_reminder": "¡Recuerda guardar la contraseña elegida en un lugar seguro!",
+      "welcome": "Bienvenido a Nostr :)",
+      "ps": "PD: Esta dirección de correo no acepta respuestas. Para solicitar soporte, por favor menciona a https://njump.me/dtonon.com o https://njump.me/fiatjaf.com en Nostr"
+    },
+    "responses": {
+      "success": "Correo enviado con éxito",
+      "error": "Error interno del servidor"
+    }
+  },
+  "bunker_page": {
+    "title": {
+      "part1": "MULTI SIGNER",
+      "part2": "BUNKER"
+    },
+    "intro": {
+      "split_nsec": "Ahora tienes la posibilidad de dividir tu <em class=\"italic\">nsec</em> en 3 usando una técnica llamada",
+      "frost_link": "FROST",
+      "frost_explanation": "y distribuir cada parte a un firmante remoto de confianza independiente.",
+      "bunker_code": "Esto te dará un código <em class=\"italic\">bunker</em> que podrás usar para iniciar sesión en muchas aplicaciones web, móviles y de escritorio sin exponer tu <em class=\"italic\">nsec</em>.",
+      "recovery": "Si alguna vez pierdes tu código <em class=\"italic\">bunker</em>, si los firmantes desaparecen y deja de funcionar o si es robado por un virus malicioso, puedes usar tu <em class=\"italic\">nsec</em> para crear uno nuevo e invalidar el antiguo."
+    },
+    "interactive": {
+      "checkbox": "Quiero guardar mi nsec, dividido en un grupo de firmantes remotos para ser usado en conexiones \"bunker\"",
+      "wasm_error": "Lo siento, tu navegador no soporta WASM, por lo que no puedes usar esta función",
+      "processing": "La clave será dividida y compartida con estos 3 firmantes independientes. El procedimiento puede tardar un tiempo, por favor espera.",
+      "success": {
+        "title": "¡Listo! Tu código bunker está listo. Guárdalo para más adelante para poder iniciar sesión en clientes Nostr sin tener que usar tu clave secreta:",
+        "copy_message": "¡Copiado!",
+        "download_button": "Guardar mi bunker"
+      }
+    },
+    "buttons": {
+      "activate": "Activar el bunker",
+      "activating": "Activando...",
+      "continue": "Continuar",
+      "skip": "No, gracias, continuar"
+    }
+  },
+  "follow_page": {
+    "title": {
+      "part1": "SIGUE",
+      "part2": "A ALGUIEN"
+    },
+    "intro": {
+      "suggestion": "¿Qué te parece seguir algunos perfiles interesantes? Te ofrecemos la posibilidad de copiar la lista completa de seguidos de algunos usuarios de Nostr, para que puedas comenzar tu viaje en Nostr con un feed lleno de publicaciones de personas ya curadas.",
+      "control": "Podrás seguir a más personas más adelante o dejar de seguir a algunas; con Nostr controlas lo que quieres ver, sin algoritmos oscuros y engañosos, sin imposiciones."
+    },
+    "interactive": {
+      "feed_intro": "Ve las mismas cosas que estos usuarios de Nostr ven en su feed:",
+      "loading": "Cargando..."
+    },
+    "buttons": {
+      "continue": "Continuar"
+    }
+  }
+} 
