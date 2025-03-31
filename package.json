@@ -47,6 +47,7 @@
 		"nostr-tools": "2.9.4",
 		"polka": "^0.5.2",
 		"qr-code-styling": "^1.8.4",
-		"svelte-i18n": "^4.0.1"
+		"svelte-i18n": "^4.0.1",
+		"stoppable": "^1.1.0"
 	}
 }
