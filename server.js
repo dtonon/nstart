@@ -1,13 +1,12 @@
 import polka from 'polka';
-import stoppable from 'stoppable';
 
 const PORT = process.env.PORT || 8001;
 
 const app = polka();
-const server = stoppable(app.listen(PORT, (err) => {
+const server = app.listen(PORT, (err) => {
     if (err) throw err;
     console.log(`Server is listening on port ${PORT}`);
-}));
+});
 
 let isShuttingDown = false;
 
@@ -20,7 +19,7 @@ const shutdown = () => {
     isShuttingDown = true;
     console.log('Received shutdown signal, closing server gracefully...');
 
-    server.stop((err) => {
+    server.close((err) => {
         if (err) {
             console.error('Error during server shutdown:', err);
         }
