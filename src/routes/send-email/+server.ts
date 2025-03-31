@@ -15,21 +15,59 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { get } from 'svelte/store';
 import { _ } from 'svelte-i18n';
+import { init } from 'svelte-i18n';
+
+// Initialize i18n with default locale
+init({
+	fallbackLocale: 'en',
+	initialLocale: 'en',
+	loadingDelay: 200,
+	formats: {
+		number: {
+			scientific: { notation: 'scientific' }
+		},
+		date: {
+			short: {
+				day: 'numeric',
+				month: 'short',
+				year: 'numeric'
+			}
+		},
+		time: {
+			short: {
+				hour: 'numeric',
+				minute: 'numeric'
+			}
+		}
+	}
+});
+
+// Helper function to convert hex string to Uint8Array
+function hexToUint8Array(hex: string): Uint8Array {
+	return new Uint8Array(hex.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16)));
+}
 
 export const POST: RequestHandler = async ({ request }) => {
 	const i18n = get(_);
 	try {
-		const { event, email, password } = await request.json();
+		const body = await request.json();
 
-		// Verify the event
-		if (!verifyEvent(event)) {
-			return json({ error: 'Invalid authorization event' }, { status: 400 });
+		if (!body || typeof body !== 'object') {
+			return json({ error: 'Invalid request body' }, { status: 400 });
 		}
 
-		// Check if the event has enough proof of work
-		const pow = event.tags.find((tag: [string, string]) => tag[0] === 'nonce')?.[1];
-		if (!pow || parseInt(pow) < 20) {
-			return json({ error: 'Insufficient proof of work' }, { status: 400 });
+		const { to, ncryptsec, npub } = body;
+
+		if (!to || typeof to !== 'string') {
+			return json({ error: 'Missing or invalid email address' }, { status: 400 });
+		}
+
+		if (!ncryptsec || typeof ncryptsec !== 'string') {
+			return json({ error: 'Missing or invalid encrypted secret' }, { status: 400 });
+		}
+
+		if (!npub || typeof npub !== 'string') {
+			return json({ error: 'Missing or invalid public key' }, { status: 400 });
 		}
 
 		// Create email transporter
@@ -48,10 +86,10 @@ export const POST: RequestHandler = async ({ request }) => {
 ${i18n('email_server.content.greeting')}
 
 ${i18n('email_server.content.npub_intro')}
-${event.pubkey}
+${npub}
 
 ${i18n('email_server.content.key_intro')}
-${password}
+${ncryptsec}
 
 ${i18n('email_server.content.password_reminder')}
 
@@ -63,7 +101,7 @@ ${i18n('email_server.content.ps')}
 		// Send email
 		await transporter.sendMail({
 			from: `"${SMTP_FROM_NAME}" <${VITE_SMTP_FROM_EMAIL}>`,
-			to: email,
+			to: to,
 			subject: i18n('email_server.subject'),
 			text: emailContent,
 		});

@@ -17,24 +17,37 @@ export async function sendEmail(
 	}
 
 	try {
+		const event = await mining;
+		// Convert Uint8Array to hex string for JSON serialization
+		const serializedEvent = {
+			...event,
+			pubkey: event.pubkey,
+			id: event.id,
+			sig: event.sig
+		};
+		
 		const response = await fetch('/send-email', {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json',
-				Authorization: 'Nostr ' + btoa(JSON.stringify(await mining))
+				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({ to: email, ncryptsec, npub: npub })
+			body: JSON.stringify({ 
+				event: serializedEvent,
+				email,
+				password: ncryptsec
+			})
 		});
 
 		const result = await response.json();
-		if (response.ok) {
-		} else {
+		if (!response.ok) {
 			throw result.error;
 		}
 	} catch (err) {
 		console.log('failed to send email', err);
+		throw err;
+	} finally {
+		resetMining();
 	}
-	resetMining();
 }
 
 export async function publishRelayList(sk: Uint8Array, pk: string) {
