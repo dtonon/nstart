@@ -187,7 +187,6 @@
 				type="text"
 				placeholder={$_('form.nickname.placeholder')}
 				bind:value={$name}
-				autofocus={!isMobile}
 				class="input-hover-enabled mb-4 w-full rounded border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-4 py-2 text-xl text-black dark:text-white focus:border-neutral-700 dark:focus:border-neutral-400 focus:outline-none"
 			/>
 			<div class="mb-1 flex items-end justify-between">

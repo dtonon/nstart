@@ -9,7 +9,7 @@ import {
 	SMTP_USER,
 	SMTP_PASS,
 	SMTP_FROM_NAME,
-	SMTP_FROM_EMAIL
+	VITE_SMTP_FROM_EMAIL
 } from '$env/static/private';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
@@ -62,7 +62,7 @@ ${i18n('email_server.content.ps')}
 
 		// Send email
 		await transporter.sendMail({
-			from: `"${SMTP_FROM_NAME}" <${SMTP_FROM_EMAIL}>`,
+			from: `"${SMTP_FROM_NAME}" <${VITE_SMTP_FROM_EMAIL}>`,
 			to: email,
 			subject: i18n('email_server.subject'),
 			text: emailContent,
