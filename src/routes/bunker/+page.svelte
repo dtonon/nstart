@@ -159,7 +159,7 @@
 
 		{#if $bunkerURI !== ''}
 			<div class="flex justify-center h-24 text-neutral-700 dark:text-neutral-300">
-				<DoneIcon />
+				<DoneIcon svgClass="w-24" />
 			</div>
 			<div class="mt-10 text-neutral-600 dark:text-neutral-300">
 				{$_('bunker_page.interactive.success.title')}
