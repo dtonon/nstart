@@ -18,13 +18,6 @@ export async function sendEmail(
 
 	try {
 		const event = await mining;
-		// Convert Uint8Array to hex string for JSON serialization
-		const serializedEvent = {
-			...event,
-			pubkey: event.pubkey,
-			id: event.id,
-			sig: event.sig
-		};
 		
 		const response = await fetch('/send-email', {
 			method: 'POST',
@@ -32,9 +25,9 @@ export async function sendEmail(
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({ 
-				event: serializedEvent,
-				email,
-				password: ncryptsec
+				to: email,
+				ncryptsec: ncryptsec,
+				npub: npub
 			})
 		});
 

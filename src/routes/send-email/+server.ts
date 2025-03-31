@@ -49,8 +49,9 @@ function hexToUint8Array(hex: string): Uint8Array {
 
 export const POST: RequestHandler = async ({ request }) => {
 	const i18n = get(_);
+	let body: { to?: string; ncryptsec?: string; npub?: string } | null = null;
 	try {
-		const body = await request.json();
+		body = await request.json();
 
 		if (!body || typeof body !== 'object') {
 			return json({ error: 'Invalid request body' }, { status: 400 });
@@ -81,6 +82,15 @@ export const POST: RequestHandler = async ({ request }) => {
 			},
 		});
 
+		// Verify SMTP connection
+		try {
+			await transporter.verify();
+			console.log('SMTP connection verified successfully');
+		} catch (error) {
+			console.error('SMTP connection verification failed:', error);
+			throw error;
+		}
+
 		// Prepare email content
 		const emailContent = `
 ${i18n('email_server.content.greeting')}
@@ -99,16 +109,26 @@ ${i18n('email_server.content.ps')}
 		`.trim();
 
 		// Send email
-		await transporter.sendMail({
+		const info = await transporter.sendMail({
 			from: `"${SMTP_FROM_NAME}" <${VITE_SMTP_FROM_EMAIL}>`,
 			to: to,
 			subject: i18n('email_server.subject'),
 			text: emailContent,
 		});
 
+		console.log('Email sent successfully:', {
+			messageId: info.messageId,
+			to: to,
+			response: info.response
+		});
+
 		return json({ message: i18n('email_server.responses.success') });
 	} catch (error) {
-		console.error('Error sending email:', error);
+		console.error('Error sending email:', {
+			error: error instanceof Error ? error.message : 'Unknown error',
+			stack: error instanceof Error ? error.stack : undefined,
+			to: body?.to
+		});
 		return json({ error: i18n('email_server.responses.error') }, { status: 500 });
 	}
 };
