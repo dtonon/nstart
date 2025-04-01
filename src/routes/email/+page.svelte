@@ -21,6 +21,7 @@
 	import { sendEmail } from '$lib/actions';
 	import { isWasmSupported } from '$lib/wasm';
 	import ContinueButton from '$lib/ContinueButton.svelte';
+	import { _ } from 'svelte-i18n';
 
 	let wantEmailBackup = false;
 	let emailInput: HTMLInputElement;
@@ -46,17 +47,15 @@
 		}
 	});
 
-	async function send(ev: MouseEvent) {
-		ev.preventDefault();
-
+	async function send() {
 		if (!$email || !$password) {
-			alert('Please enter your email and pick a password');
+			alert($_('email_page.alerts.missing_fields'));
 			return;
 		}
 
 		const inputElement = document.getElementById('email');
 		if (inputElement && !(inputElement as HTMLObjectElement).validity!.valid) {
-			alert('Please double check your email');
+			alert($_('email_page.alerts.invalid_email'));
 			return;
 		}
 
@@ -95,49 +94,48 @@
 		<div class="w-full sm:mr-10 sm:max-w-[350px]">
 			<div class="mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
 				<h1 class="font-bold">
-					<div class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[3rem]">EMAIL</div>
+					<div class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[3rem]">{$_('email_page.title.part1')}</div>
 					<div class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[3.5rem]" id="tw">
-						BACKUP
+						{$_('email_page.title.part2')}
 					</div>
 				</h1>
 			</div>
 
 			<div class="leading-5 text-neutral-700 dark:text-neutral-300 sm:w-[90%]">
 				<p class="mt-6">
-					We offer you the possibility to send your encrypted <em class="italic">nsec</em> (so
-					actually a <em class="italic">ncryptsec</em>) to your email address to have another
-					convenient backup location.<br />
+					{@html $_('email_page.intro.offer')}
 				</p>
 				<p class="mt-6">
 					{#if needsPassword}
-						Just pick a strong password and keep it safe, write it down now, make sure you don't
-						lose it.
+						{$_('email_page.intro.password_new')}
 					{:else}
-						We will use the same password you picked up previously. You wrote it down, right? :)
+						{$_('email_page.intro.password_existing')}
 					{/if}
 				</p>
 				<p class="mt-6">
-					You will receive an email from {smtpFromEmail}. If you see nothing, check your spam
-					folder.
+					{@html $_('email_page.intro.email_notice', { values: { email: smtpFromEmail } })}
 				</p>
 			</div>
 		</div>
 	</div>
 
 	<div slot="interactive">
-		<div class=" mt-6 text-neutral-700 dark:text-neutral-300">
+		<div class="mt-6 text-neutral-700 dark:text-neutral-300">
 			<div>
 				<CheckboxWithLabel
 					bind:checked={wantEmailBackup}
 					disabled={activationProgress > 0 || !isWasmSupported()}
 				>
-					I want to send my encrypted nsec {#if !needsPassword}(with the same password already
-						entered previously){/if} to the following email address:
+					{@html $_('email_page.form.checkbox', { 
+						values: { 
+							with_password: needsPassword ? '' : $_('email_page.form.with_password')
+						}
+					})}
 				</CheckboxWithLabel>
 			</div>
 			{#if !isWasmSupported()}
 				<div class="mt-6 bg-amber-100 p-2">
-					Sorry your browser doesn't support WASM, so you cannot use this feature
+					{$_('email_page.form.wasm_error')}
 				</div>
 			{/if}
 			<!-- svelte-ignore a11y-autofocus -->
@@ -145,7 +143,7 @@
 				bind:this={emailInput}
 				id="email"
 				type="email"
-				placeholder="Your email address"
+				placeholder={$_('email_page.form.email_placeholder')}
 				bind:value={$email}
 				autofocus={!$isMobile}
 				disabled={!wantEmailBackup || activationProgress > 0}
@@ -156,7 +154,7 @@
 			{#if needsPassword}
 				<input
 					type="text"
-					placeholder="Pick a password"
+					placeholder={$_('email_page.form.password_placeholder')}
 					bind:value={$password}
 					disabled={!wantEmailBackup || activationProgress > 0}
 					autocapitalize="off"
@@ -176,10 +174,10 @@
 				<ContinueButton
 					onClick={send}
 					disabled={$ncryptsec === '' || activationProgress > 0}
-					text={activationProgress > 0 ? 'Sending...' : 'Send now'}
+					text={activationProgress > 0 ? $_('email_page.buttons.sending') : $_('email_page.buttons.send')}
 				/>
 			{:else}
-				<ContinueButton onClick={navigateContinue} disabled={false} text="No, thanks, continue" />
+				<ContinueButton onClick={navigateContinue} disabled={false} text={$_('email_page.buttons.skip')} />
 			{/if}
 		</div>
 	</div>

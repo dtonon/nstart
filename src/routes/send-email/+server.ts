@@ -11,81 +11,124 @@ import {
 	SMTP_FROM_NAME,
 	VITE_SMTP_FROM_EMAIL
 } from '$env/static/private';
+import { json } from '@sveltejs/kit';
+import type { RequestHandler } from './$types';
+import { get } from 'svelte/store';
+import { _ } from 'svelte-i18n';
+import { init } from 'svelte-i18n';
 
-export const POST = async ({ request }: { request: Request }) => {
+// Initialize i18n with default locale
+init({
+	fallbackLocale: 'en',
+	initialLocale: 'en',
+	loadingDelay: 200,
+	formats: {
+		number: {
+			scientific: { notation: 'scientific' }
+		},
+		date: {
+			short: {
+				day: 'numeric',
+				month: 'short',
+				year: 'numeric'
+			}
+		},
+		time: {
+			short: {
+				hour: 'numeric',
+				minute: 'numeric'
+			}
+		}
+	}
+});
+
+// Helper function to convert hex string to Uint8Array
+function hexToUint8Array(hex: string): Uint8Array {
+	return new Uint8Array(hex.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16)));
+}
+
+export const POST: RequestHandler = async ({ request }) => {
+	const i18n = get(_);
+	let body: { to?: string; ncryptsec?: string; npub?: string } | null = null;
 	try {
-		const evt = JSON.parse(atob(request.headers.get('Authorization')!.substring(6))) as NostrEvent;
+		body = await request.json();
 
-		// check if they have sent enough pow
-		if (!verifyEvent(evt)) {
-			throw 'invalid authorization event signature';
-		}
-		if (getPow(evt.id) < 20) {
-			throw 'insufficient pow';
+		if (!body || typeof body !== 'object') {
+			return json({ error: 'Invalid request body' }, { status: 400 });
 		}
 
-		const { to, ncryptsec, npub } = await request.json();
+		const { to, ncryptsec, npub } = body;
 
-		// Create a transporter object using the nodemailer library
-		const transporter = (nodemailer as any).createTransport({
-			host: SMTP_HOST!,
-			port: SMTP_PORT!,
+		if (!to || typeof to !== 'string') {
+			return json({ error: 'Missing or invalid email address' }, { status: 400 });
+		}
+
+		if (!ncryptsec || typeof ncryptsec !== 'string') {
+			return json({ error: 'Missing or invalid encrypted secret' }, { status: 400 });
+		}
+
+		if (!npub || typeof npub !== 'string') {
+			return json({ error: 'Missing or invalid public key' }, { status: 400 });
+		}
+
+		// Create email transporter
+		const transporter = nodemailer.createTransport({
+			host: SMTP_HOST,
+			port: parseInt(SMTP_PORT),
 			secure: SMTP_SECURE === 'yes',
 			auth: {
-				user: SMTP_USER!,
-				pass: SMTP_PASS!
-			}
+				user: SMTP_USER,
+				pass: SMTP_PASS,
+			},
 		});
 
-		// Set up email data
-		const mail_options = {
-			from: `"${SMTP_FROM_NAME}" <${VITE_SMTP_FROM_EMAIL}>`,
-			to: to,
-			subject: 'Your Nostr account',
-			text: `Hello!
+		// Verify SMTP connection
+		try {
+			await transporter.verify();
+			console.log('SMTP connection verified successfully');
+		} catch (error) {
+			console.error('SMTP connection verification failed:', error);
+			throw error;
+		}
 
-This is your Nostr npub:
+		// Prepare email content
+		const emailContent = `
+${i18n('email_server.content.greeting')}
+
+${i18n('email_server.content.npub_intro')}
 ${npub}
 
-And this is your encrypted Nostr key:
+${i18n('email_server.content.key_intro')}
 ${ncryptsec}
 
-Remember to save the chosen password in a safe place!
+${i18n('email_server.content.password_reminder')}
 
-Welcome to Nostr :)
+${i18n('email_server.content.welcome')}
 
-PS: This email address does not accept replies, to request support please tag https://njump.me/dtonon.com or https://njump.me/fiatjaf.com on Nostr
-`
-		};
+${i18n('email_server.content.ps')}
+		`.trim();
 
 		// Send email
-		const info = await transporter.sendMail(mail_options);
+		const info = await transporter.sendMail({
+			from: `"${SMTP_FROM_NAME}" <${VITE_SMTP_FROM_EMAIL}>`,
+			to: to,
+			subject: i18n('email_server.subject'),
+			text: emailContent,
+		});
 
-		// Return a Response object
-		return new Response(
-			JSON.stringify({
-				message: 'Email sent successfully',
-				messageId: info.messageId
-			}),
-			{
-				status: 200,
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			}
-		);
+		console.log('Email sent successfully:', {
+			messageId: info.messageId,
+			to: to,
+			response: info.response
+		});
+
+		return json({ message: i18n('email_server.responses.success') });
 	} catch (error) {
-		console.error(error); // Log the error for debugging
-		return new Response(
-			JSON.stringify({
-				error: 'Internal server error'
-			}),
-			{
-				status: 500,
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			}
-		);
+		console.error('Error sending email:', {
+			error: error instanceof Error ? error.message : 'Unknown error',
+			stack: error instanceof Error ? error.stack : undefined,
+			to: body?.to
+		});
+		return json({ error: i18n('email_server.responses.error') }, { status: 500 });
 	}
 };

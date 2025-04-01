@@ -16,6 +16,7 @@
 	} from '$lib/store';
 	import { getContext } from 'svelte';
 	import { theme } from '$lib/store';
+	import { _ } from 'svelte-i18n';
 
 	const isModal = getContext('isModal');
 
@@ -96,15 +97,15 @@
 </script>
 
 <svelte:head>
-	<title>Create your Nostr account</title>
+	<title>{$_('meta.title')}</title>
 	<meta
 		name="description"
-		content="Create your Nostr account, back it up, and get a Nostr Connect bunker URL in few easy steps!"
+		content={$_('meta.description')}
 	/>
-	<meta property="og:title" content="Create your Nostr account" />
+	<meta property="og:title" content={$_('meta.title')} />
 	<meta
 		property="og:description"
-		content="Create your Nostr account, back it up, and get a Nostr Connect bunker URL in few easy steps!"
+		content={$_('meta.description')}
 	/>
 	<meta property="og:image" content="{baseUrl}/images/relay.png" />
 </svelte:head>
@@ -138,13 +139,13 @@
 								style="animation-delay: 0.2s;"
 							>
 								<h1 class="font-bold">
-									<div class="text-[3rem] leading-[1em] sm:text-[5rem] text-black dark:text-white">WELCOME</div>
+									<div class="text-[3rem] leading-[1em] sm:text-[5rem] text-black dark:text-white">{$_('welcome.title')}</div>
 									<div
 										class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[6rem]"
 										id="tw"
 									>
-										<span class="text-neutral-500 dark:text-neutral-400">TO</span>
-										<span class="text-accent">NOSTR</span>
+										<span class="text-neutral-500 dark:text-neutral-400">{$_('welcome.to')}</span>
+										<span class="text-accent">{$_('welcome.nostr')}</span>
 									</div>
 								</h1>
 							</div>
@@ -155,23 +156,16 @@
 								style="animation-delay: 0.5s;"
 							>
 								<p class="">
-									To join Nostr you need a profile, but it is not the usual one that a company
-									generates and manages for you. You create it yourself, no permissions are required.
+									{$_('intro.paragraph1')}
 								</p>
 								<p class="mt-6">
-									Nostr is a different experience from the beginning: because there is no central
-									authority taking care of who is who, each user is identified by a cryptographic
-									keypair; don't worry about the tech slang, it is just a strong password that you
-									will have to keep safe.
+									{$_('intro.paragraph2')}
 								</p>
 								<p class="mt-6">
 									{#if $callingAppName}
-										This wizard is used by <strong>{$callingAppName}</strong> to let you create your new
-										profile and safely manage it, in a few steps.
+										{@html $_('intro.paragraph3_with_app', { values: { appName: $callingAppName } })}
 									{:else}
-										This wizard is one of the many ways to bootstrap a Nostr profile that you can
-										later use in other apps. We help you to create your keypair and safely manage it
-										in a few steps. Are you ready?
+										{$_('intro.paragraph3')}
 									{/if}
 								</p>
 							</div>
@@ -185,7 +179,7 @@
 									class="inline-flex items-center rounded bg-accent px-10 py-4 text-[1.8rem] text-white"
 									href="/yourself"
 								>
-									Let's Start <img
+									{$_('buttons.lets_start')} <img
 										src="/icons/arrow-right.svg"
 										alt="Icon"
 										class="ml-4 mr-2 h-7 w-7"
@@ -199,8 +193,8 @@
 									class="animate-fade1 leading-6 text-neutral-500 dark:text-neutral-300 opacity-0"
 									style="animation-delay: 1s;"
 								>
-									Would you like to know more about Nostr first?<br class="hidden sm:inline-block" />
-									<a href="https://njump.me" class="underline">Read a quick introduction</a>
+									{$_('footer.learn_more')}<br class="hidden sm:inline-block" />
+									<a href="https://njump.me" class="underline">{$_('footer.read_intro')}</a>
 								</div>
 							{/if}
 						</div>
@@ -209,10 +203,10 @@
 						class="mt-10 animate-fade1 text-center text-sm text-neutral-400 dark:text-neutral-500 opacity-0 sm:mt-4"
 						style="animation-delay: 1.2s;"
 					>
-						The source code for this service is <a
+						{$_('footer.source_code')} <a
 							href="https://github.com/dtonon/nstart"
 							target="_blank"
-							class="underline">free and open</a
+							class="underline">{$_('footer.free_and_open')}</a
 						>
 					</div>
 					<!-- /content -->

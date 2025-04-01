@@ -122,9 +122,14 @@ export const inboxes = readable<{ [pubkey: string]: string[] }>({}, (set) => {
 		signers.map(async (pk) => {
 			try {
 				const rl = await loadRelayList(pk);
-				inboxes[pk] = rl.items.filter((r) => r.read).map((r) => r.url);
+				if (rl && rl.items) {
+					inboxes[pk] = rl.items.filter((r) => r.read).map((r) => r.url);
+				} else {
+					inboxes[pk] = [];
+				}
 			} catch (err) {
 				console.error('failed to load inbox relays for', pk, err);
+				inboxes[pk] = [];
 			}
 		})
 	).then(() => {

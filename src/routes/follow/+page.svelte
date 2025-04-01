@@ -9,6 +9,7 @@
 	import { publishFollows } from '$lib/actions';
 	import { pool } from '@nostr/gadgets/global';
 	import ContinueButton from '$lib/ContinueButton.svelte';
+	import { _ } from 'svelte-i18n';
 
 	const FOLLOWS = [
 		{
@@ -101,16 +102,20 @@
 		buildSuggestionList();
 	});
 
-	async function buildSuggestionList(): string[] {
+	async function buildSuggestionList(): Promise<void> {
 		const users = [];
 		for (const suggestion of $followerSuggestions) {
 			let profile = await getProfile(suggestion);
-			if (profile) {
-				const parsedContent = JSON.parse(profile.content);
-				let name = parsedContent.name || null;
-				let image = parsedContent.picture || null;
-				users.push({ name: name, pubkey: profile.pubkey, image: image });
-				toggleUserSelection({ pubkey: profile.pubkey });
+			if (profile && typeof profile === 'object' && 'content' in profile && 'pubkey' in profile) {
+				try {
+					const parsedContent = JSON.parse(profile.content as string);
+					let name = parsedContent.name || null;
+					let image = parsedContent.picture || null;
+					users.push({ name: name, pubkey: profile.pubkey as string, image: image });
+					toggleUserSelection({ pubkey: profile.pubkey as string });
+				} catch (e) {
+					console.error('Error parsing profile content:', e);
+				}
 			}
 		}
 
@@ -194,22 +199,19 @@
 		<div class="w-full sm:mr-10 sm:max-w-[350px]">
 			<div class="mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
 				<h1 class="font-bold">
-					<div class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[3rem]">FOLLOW</div>
+					<div class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[3rem]">{$_('follow_page.title.part1')}</div>
 					<div class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[3.5rem]" id="tw">
-						SOMEONE
+						{$_('follow_page.title.part2')}
 					</div>
 				</h1>
 			</div>
 
 			<div class="leading-5 text-neutral-700 dark:text-neutral-300 sm:w-[90%]">
 				<p class="">
-					What do you think now of following some interesting profiles? We offer you the possibility
-					to copy the full following list of some Nostr users, so you can start your Nostr journey
-					with a feed full of posts from already curated individuals.
+					{$_('follow_page.intro.suggestion')}
 				</p>
 				<p class="mt-6">
-					You can later follow more people, or unfollow some as well; with Nostr you control what
-					you want to see, no obscure and deceptive algorithms, no impositions.
+					{$_('follow_page.intro.control')}
 				</p>
 			</div>
 		</div>
@@ -218,7 +220,7 @@
 	<div slot="interactive">
 		<div class="sm:mt-20">
 			<!-- list of follows -->
-			<div class="text-neutral-700 dark:text-neutral-300">See the same things these Nostr users are seeing in their feed:</div>
+			<div class="text-neutral-700 dark:text-neutral-300">{$_('follow_page.interactive.feed_intro')}</div>
 			<div class="mt-4">
 				{#each suggestedUsers as user}
 					<CheckboxWithLabel
@@ -249,7 +251,7 @@
 			<ContinueButton
 				onClick={navigateContinue}
 				disabled={activationProgress > 0}
-				text={activationProgress > 0 ? 'Finishing...' : 'Finish'}
+				text={$_('follow_page.buttons.continue')}
 			/>
 		</div>
 	</div>

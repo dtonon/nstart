@@ -17,24 +17,30 @@ export async function sendEmail(
 	}
 
 	try {
+		const event = await mining;
+		
 		const response = await fetch('/send-email', {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json',
-				Authorization: 'Nostr ' + btoa(JSON.stringify(await mining))
+				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({ to: email, ncryptsec, npub: npub })
+			body: JSON.stringify({ 
+				to: email,
+				ncryptsec: ncryptsec,
+				npub: npub
+			})
 		});
 
 		const result = await response.json();
-		if (response.ok) {
-		} else {
+		if (!response.ok) {
 			throw result.error;
 		}
 	} catch (err) {
 		console.log('failed to send email', err);
+		throw err;
+	} finally {
+		resetMining();
 	}
-	resetMining();
 }
 
 export async function publishRelayList(sk: Uint8Array, pk: string) {

@@ -16,6 +16,7 @@
 	} from '$lib/store';
 	import BasicLayout from '$lib/BasicLayout.svelte';
 	import { name, npub } from '$lib/store';
+	import { _ } from 'svelte-i18n';
 
 	let loginToken;
 	let actionURL: string;
@@ -80,9 +81,9 @@
 		<!-- Welcome title -->
 		<div class="relative mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
 			<h1 class="font-bold">
-				<div class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[6rem]">YOU ARE</div>
+				<div class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[6rem]">{$_('keys_page.title.part1')}</div>
 				<div class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[7rem]" id="tw">
-					READY TO GO!
+					{$_('keys_page.title.part2')}
 				</div>
 			</h1>
 		</div>
@@ -90,8 +91,7 @@
 		<!-- Intro text -->
 		<div class="text-neutral-700 dark:text-neutral-200 sm:w-[90%]">
 			<p class="text-xl sm:w-[80%]">
-				We're done, <strong>{$name}</strong>! Now you can start exploring Nostr — just click below
-				to go back to <strong>{$callingAppName}</strong>:
+				{@html $_('keys_page.intro.paragraph1', { values: { name: $name, appName: $callingAppName } })}
 			</p>
 			<div class="mt-8">
 				<button
@@ -99,18 +99,18 @@
 					type="submit"
 					class="inline-flex items-center rounded bg-accent px-6 py-4 text-[1.8rem] text-white sm:px-10"
 				>
-					Go back to {$callingAppName}
+					{$_('keys_page.buttons.go_back', { values: { appName: $callingAppName } })}
 					<img src="/icons/arrow-right.svg" alt="Icon" class="ml-4 mr-2 h-7 w-7" />
 				</button>
 			</div>
 			{#if $callingAppType != 'popup'}
 				<p class="mt-8 text-neutral-500 dark:text-neutral-400 sm:w-[80%]">
-					{$callingAppName} is only one of the 80+ applications that have already been built on Nostr,
-					<a href="https://nostrapps.com" target="_blank" class="underline">discover them all</a>!
+					{@html $_('keys_page.intro.paragraph2', { values: { appName: $callingAppName } })}
+					<a href="https://nostrapps.com" target="_blank" class="underline">{$_('keys_page.intro.paragraph3')}</a>!
 				</p>
 			{/if}
 			<p class="mt-6 sm:w-[80%]">
-				This is your web profile, you can share it anywhere and with anyone:<br />
+				{$_('keys_page.intro.paragraph4')}<br />
 				<a href="https://njump.me/{$npub}" target="_blank" class="break-all underline"
 					>njump.me/{$npub}</a
 				>

@@ -5,12 +5,16 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { theme } from '$lib/store';
 	import ThemeSwitcher from '$lib/ThemeSwitcher.svelte';
+	import LanguageSwitcher from '$lib/LanguageSwitcher.svelte';
+	import { setupI18n } from '$lib/i18n';
+	import { isI18nInitialized, initialBrowserLocale } from '$lib/i18n/store';
+	import { _ } from 'svelte-i18n';
 
 	let isModal = browser && window.self !== window.top;
 	setContext('isModal', isModal);
 
 	let mediaQuery: MediaQueryList | null = null;
-	let systemTheme: string | null = null;
+	let systemTheme: string = 'light';
 
 	function updateTheme(preferredTheme: string) {
 		if (!browser) return;
@@ -40,7 +44,7 @@
 		}
 	}
 
-	onMount(() => {
+	onMount(async () => {
 		if (browser) {
 			mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 			systemTheme = mediaQuery.matches ? 'dark' : 'light';
@@ -57,6 +61,10 @@
 
 			// Listen for theme updates from parent window
 			window.addEventListener('message', handleThemeUpdate);
+
+			// Initialize i18n
+			console.log('Initializing i18n...');
+			await setupI18n();
 		}
 	});
 
@@ -70,10 +78,19 @@
 	$: updateTheme($theme);
 </script>
 
-{#if !isModal}
-	<div class="fixed right-4 top-4 z-50">
-		<ThemeSwitcher />
+{#if browser && !$isI18nInitialized}
+	<div class="flex min-h-screen items-center justify-center">
+		<div class="text-neutral-700 dark:text-neutral-300">Loading...</div>
 	</div>
-{/if}
+{:else}
+	{#if browser && !isModal}
+		<div class="fixed right-4 top-4 z-50 flex gap-2">
+			{#if $initialBrowserLocale && $initialBrowserLocale !== 'en'}
+				<LanguageSwitcher />
+			{/if}
+			<ThemeSwitcher />
+		</div>
+	{/if}
 
-<slot />
+	<slot />
+{/if}
