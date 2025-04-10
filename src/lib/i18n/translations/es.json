@@ -129,5 +129,10 @@
 		"button_back": "Volver a {$1}",
 		"text2": "{$1} es solo una de las más de 80 aplicaciones que ya existen en Nostr, <a>¡descúbrelas todas!</a>",
 		"text3": "Este es tu perfil web, puedes compartirlo con quien quieras:<br /><a {$1}>njump.me/{$2}</a>"
+	},
+
+	"confirmation_email": {
+	"subject": "Tu cuenta de Nostr",
+	"body": "¡Hola!\n\nEste es tu npub de Nostr:\n{$1}\n\nY esta es tu clave de Nostr cifrada:\n{$2}\n\n¡Recuerda guardar la contraseña elegida en un lugar seguro!\n\nBienvenido a Nostr :)\n\nPD: Esta dirección de correo no acepta respuestas. Para solicitar ayuda, menciona a https://njump.me/dtonon.com o https://njump.me/fiatjaf.com en Nostr"
 	}
 }
