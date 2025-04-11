@@ -19,11 +19,11 @@
 
 	"yourself": {
 		"title1": "PRESÉNTATE",
-		"title2": "",
+		"title2": "AL MUNDO",
 		"side1": "En Nostr decides quién quieres ser.",
 		"side2": "Un perfil de Nostr suele incluir un nombre, una foto y algo de información adicional, pero todo es opcional.",
 		"side3": "El nombre no es un nombre de usuario único, ¡podemos tener todos los 'Juanes' que queramos! Puedes usar tu nombre real o un apodo; siempre puedes cambiarlo después.<br /> Pero recuerda: la privacidad online es importante, no compartas datos sensibles.",
-		"side4": "Y sí, para unirte a Nostr no necesitas dar tu correo electrónico, número de teléfono ni nada por el estilo. No hay KYC.",
+		"side4": "Y sí, para unirte a Nostr no tienes que compartir tu correo, número de teléfono ni ningún dato personal.",
 		"label_image": "Tu imagen",
 		"label_nickname": "Tu nombre o apodo",
 		"label_about": "Algo sobre ti",
