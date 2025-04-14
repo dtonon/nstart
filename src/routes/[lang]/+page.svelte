@@ -139,16 +139,33 @@
 								style="animation-delay: 0.2s;"
 							>
 								<h1 class="font-bold">
-									<div class="text-[3rem] leading-[1em] text-black dark:text-white sm:text-[5rem]">
-										{t('home.title1')}
-									</div>
-									<div
-										class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[6rem]"
-										id="tw"
-									>
-										<span class="text-neutral-500 dark:text-neutral-400">{t('home.title2')}</span>
-										<span class="text-accent">{t('home.title3')}</span>
-									</div>
+									{#if $currentLanguage === 'ja'}
+										<div
+											class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[6rem]"
+											id="tw"
+										>
+											<span class="text-accent">{t('home.title1')}</span>
+											<span class="text-neutral-500 dark:text-neutral-400">{t('home.title2')}</span>
+										</div>
+										<div
+											class="text-[3rem] leading-[1em] text-black dark:text-white sm:text-[5rem]"
+										>
+											{t('home.title3')}
+										</div>
+									{:else}
+										<div
+											class="text-[3rem] leading-[1em] text-black dark:text-white sm:text-[5rem]"
+										>
+											{t('home.title1')}
+										</div>
+										<div
+											class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[6rem]"
+											id="tw"
+										>
+											<span class="text-neutral-500 dark:text-neutral-400">{t('home.title2')}</span>
+											<span class="text-accent">{t('home.title3')}</span>
+										</div>
+									{/if}
 								</h1>
 							</div>
 
