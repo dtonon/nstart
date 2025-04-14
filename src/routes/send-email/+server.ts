@@ -3,7 +3,15 @@ import nodemailer from 'nodemailer';
 import { t } from '$lib/i18n';
 import { getPow } from '@nostr/tools/nip13';
 import { verifyEvent, type NostrEvent } from '@nostr/tools/pure';
-import { env } from '$env/dynamic/private';
+import {
+	SMTP_HOST,
+	SMTP_PORT,
+	SMTP_SECURE,
+	SMTP_USER,
+	SMTP_PASS,
+	SMTP_FROM_NAME,
+	VITE_SMTP_FROM_EMAIL
+} from '$env/static/private';
 
 export const POST = async ({ request }: { request: Request }) => {
 	try {
@@ -20,13 +28,13 @@ export const POST = async ({ request }: { request: Request }) => {
 		const { to, ncryptsec, npub } = await request.json();
 
 		// Create a transporter object using the nodemailer library
-		const transporter = nodemailer.createTransport({
-			host: env.SMTP_HOST,
-			port: Number(env.SMTP_PORT),
-			secure: env.SMTP_SECURE === 'yes',
+		const transporter = (nodemailer as any).createTransport({
+			host: SMTP_HOST!,
+			port: SMTP_PORT!,
+			secure: SMTP_SECURE === 'yes',
 			auth: {
-				user: env.SMTP_USER,
-				pass: env.SMTP_PASS
+				user: SMTP_USER!,
+				pass: SMTP_PASS!
 			}
 		});
 
@@ -38,7 +46,7 @@ export const POST = async ({ request }: { request: Request }) => {
 
 		// Set up email data
 		const mail_options = {
-			from: `"${env.SMTP_FROM_NAME}" <${env.VITE_SMTP_FROM_EMAIL}>`,
+			from: `"${SMTP_FROM_NAME}" <${VITE_SMTP_FROM_EMAIL}>`,
 			to: to,
 			subject: t('confirmation_email.subject'),
 			text: t('confirmation_email.body', npub, ncryptsec)
