@@ -59,7 +59,7 @@
 
 	"email": {
 		"title1": "COURRIEL",
-		"title2": "SAUVEGARDE",
+		"title2": "COPIE",
 		"side1": "Nous vous offrons la possibilité d'envoyer votre <em {$1}>nsec</em> chiffré (donc en réalité un <em {$1}>ncryptsec</em>) à votre adresse email pour avoir un autre emplacement de sauvegarde pratique.",
 		"side2": "Choisissez simplement un mot de passe fort et gardez-le en sécurité, notez-le maintenant, assurez-vous de ne pas le perdre.",
 		"side3": "Nous utiliserons le même mot de passe que vous avez choisi précédemment. Vous l'avez noté, n'est-ce pas ? :)",
@@ -129,10 +129,10 @@
 		"button_back": "Retourner à {$1}",
 		"text2": "{$1} n'est qu'une des 80+ applications qui ont déjà été construites sur Nostr, <a>découvrez-les toutes</a> !",
 		"text3": "Voici votre profil web, vous pouvez le partager partout et avec tout le monde :<br /><a {$1}>njump.me/{$2}</a>"
-		},
+	},
 
 	"confirmation_email": {
 		"subject": "Votre compte Nostr",
 		"body": "Bonjour !\n\nVoici votre npub Nostr :\n{$1}\n\nEt voici votre clé Nostr chiffrée :\n{$2}\n\nN'oubliez pas de sauvegarder le mot de passe choisi dans un endroit sûr !\n\nBienvenue sur Nostr :)\n\nPS: Cette adresse email n'accepte pas les réponses, pour demander de l'aide veuillez taguer https://njump.me/dtonon.com ou https://njump.me/fiatjaf.com sur Nostr"
-		}
 	}
+}
