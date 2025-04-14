@@ -1,7 +1,9 @@
 export const availableLanguages = [
 	{ code: 'en', name: 'English', default: true },
 	{ code: 'es', name: 'Español' },
-	{ code: 'it', name: 'Italiano' }
+	{ code: 'it', name: 'Italiano' },
+	{ code: 'de', name: 'Deutsch' },
+	{ code: 'ja', name: '日本語' }
 ];
 
 export const defaultLanguage =

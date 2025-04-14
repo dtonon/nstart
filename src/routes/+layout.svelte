@@ -7,6 +7,7 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import ThemeSwitcher from '$lib/ThemeSwitcher.svelte';
+	import LanguageSelector from '$lib/LanguageSelector.svelte';
 	import { availableLanguages, defaultLanguage } from '$lib/i18n/config';
 	import { setLanguage, currentLanguage, translationsLoaded } from '$lib/i18n';
 
@@ -44,8 +45,7 @@
 		}
 	}
 
-	async function changeLanguage(event: Event) {
-		const newLang = (event.target as HTMLSelectElement).value;
+	async function changeLanguage(newLang: string) {
 		const currentPath = $page.url.pathname;
 
 		// First set the language and load translations
@@ -126,17 +126,12 @@
 {#if !isModal}
 	<div class="absolute right-4 top-4 z-50 flex items-center gap-3">
 		{#if $page.route.id === '/[lang]'}
-			<!-- Language Selector -->
-			<select
-				class="rounded-md border border-neutral-300 bg-transparent px-4 py-2 text-sm text-neutral-700 transition-colors hover:bg-neutral-50 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
-				on:change={changeLanguage}
-				value={$currentLanguage}
-				disabled={!$translationsLoaded}
-			>
-				{#each availableLanguages as language}
-					<option value={language.code}>{language.name}</option>
-				{/each}
-			</select>
+			<LanguageSelector
+				{availableLanguages}
+				currentLanguage={$currentLanguage}
+				translationsLoaded={$translationsLoaded}
+				onChange={changeLanguage}
+			/>
 		{/if}
 		<!-- Theme Switcher -->
 		<ThemeSwitcher />
