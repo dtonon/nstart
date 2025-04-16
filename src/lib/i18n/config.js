@@ -5,7 +5,8 @@ export const availableLanguages = [
 	{ code: 'fr', name: 'Français' },
 	{ code: 'de', name: 'Deutsch' },
 	{ code: 'ja', name: '日本語' },
-	{ code: 'zh', name: '简体中文' }
+	{ code: 'zh', name: '简体中文' },
+	{ code: 'fa', name: 'پارسی' }
 ];
 
 export const defaultLanguage =
