@@ -1,16 +1,16 @@
 {
-  "name": "nstart-modal",
-  "version": "1.4.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsc",
-    "prepublishOnly": "npm run build"
-  },
-  "files": [
-    "dist"
-  ],
-  "devDependencies": {
-    "typescript": "^5.0.0"
-  }
+	"name": "nstart-modal",
+	"version": "1.4.0",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"build": "tsc",
+		"prepublishOnly": "npm run build"
+	},
+	"files": [
+		"dist"
+	],
+	"devDependencies": {
+		"typescript": "^5.0.0"
+	}
 }
