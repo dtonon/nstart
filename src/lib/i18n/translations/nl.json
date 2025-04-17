@@ -4,8 +4,8 @@
 		"text_nowasm": "Sorry your browser doesn't support WASM, so you cannot use this feature"
 	},
 	"home": {
-		"title1": "WELCOME",
-		"title2": "TO",
+		"title1": "WELKOM",
+		"title2": "BIJ",
 		"title3": "NOSTR",
 		"text1": "To join Nostr you need a profile, but it is not the usual one that a company generates and manages for you. You create it yourself, no permissions are required.",
 		"text2": "Nostr is a different experience from the beginning: because there is no central authority taking care of who is who, each user is identified by a cryptographic keypair; don't worry about the tech slang, it is just a strong password that you will have to keep safe.",
