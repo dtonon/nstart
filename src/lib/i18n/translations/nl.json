@@ -1,0 +1,138 @@
+{
+  "shared": {
+    "button_continue": "Continue",
+    "text_nowasm": "Sorry your browser doesn't support WASM, so you cannot use this feature"
+  },
+  "home": {
+    "title1": "WELKOM",
+    "title2": "BIJ",
+    "title3": "NOSTR",
+    "text1": "To join Nostr you need a profile, but it is not the usual one that a company generates and manages for you. You create it yourself, no permissions are required.",
+    "text2": "Nostr is a different experience from the beginning: because there is no central authority taking care of who is who, each user is identified by a cryptographic keypair; don't worry about the tech slang, it is just a strong password that you will have to keep safe.",
+    "text3a": "This wizard is used by <strong>{$1}</strong> to let you create your new profile and safely manage it, in a few steps.",
+    "text3b": "This wizard is one of the many ways to bootstrap a Nostr profile that you can later use in other apps. We help you to create your keypair and safely manage it in a few steps. Are you ready?",
+    "continue_button": "Let's Start",
+    "footer1": "Would you like to know more about Nostr first?",
+    "footer2": "Read a quick introduction",
+    "footer3": "The source code for this service is <a {$1}>free and open</a>"
+  },
+
+  "yourself": {
+    "title1": "PRESENT",
+    "title2": "YOURSELF",
+    "side1": "On Nostr you decide to be whoever you want.",
+    "side2": "A Nostr profile usually includes a name, a picture and some additional information, but it's all optional.",
+    "side3": "The name is not a unique username, we can have as many Jacks we want! Feel free to use your real name or a nickname; you can always change it later.<br /> But remember: online privacy matters, don't share sensitive data.",
+    "side4": "And yes, to join Nostr you don't need to give your email address, phone number or other identifying information.",
+    "label_image": "Your image",
+    "label_nickname": "Your (nick)name",
+    "label_about": "Something about you",
+    "label_website": "Your website",
+    "label_required": "required",
+    "label_optional": "optional",
+    "alert_failedupload": "Image upload failed. Please try again",
+    "alert_validation": "Please enter a name, bio and website are optional",
+    "button_uploading": "Uploading..."
+  },
+
+  "download": {
+    "title1": "YOUR KEYS",
+    "title2": "ARE READY",
+    "side1": "Well done <strong>{$1}</strong>, your Nostr profile is ready! Yes, it was that easy.",
+    "side2": "On Nostr your keypair is identified by a unique string that starts with <em {$1}>npub</em>. this is your public profile code you can share with anyone.",
+    "side3": "Then there is the private key. It starts with <em {$1}>nsec</em>, and is used to control your profile and to publish notes. This must be kept absolutely secret.",
+    "side4": "Now please download your <em {$1}>nsec</em> (it's a text file) and save it in a safe place, for example your password manager.",
+    "label_yournpub": "Your npub is",
+    "label_password": "Pick a password",
+    "button_save1": "Save my nsec",
+    "button_save2": "Save my ncryptsec",
+    "label_switch1": "I want to download the encrypted version",
+    "label_switch2": "Nevermind, I want do download the plain nsec",
+    "text1": "From your nsec you can generate your npub, so it is the only information you really need to keep safe.",
+    "text2": "Now please open the file and check that the long string after your npub matches these starting and finishing characters:",
+    "text3": "Finally, copy the file in another safe place as additional backup and separately save the chosen password (<strong>{$1}</strong>).",
+    "text4": "Finally, copy the file in another safe place as additional backup.",
+    "text5": "I saved the file and the password in a couple of safe places",
+    "text6": "I saved the file in a couple of safe places",
+    "text7": "Do you need to download it again?"
+  },
+
+  "email": {
+    "title1": "EMAIL",
+    "title2": "BACKUP",
+    "side1": "We offer you the possibility to send your encrypted <em {$1}>nsec</em> (so actually a <em {$1}>ncryptsec</em>) to your email address to have another convenient backup location.",
+    "side2": "Just pick a strong password and keep it safe, write it down now, make sure you don't lose it.",
+    "side3": "We will use the same password you picked up previously. You wrote it down, right? :)",
+    "side4": "You will receive an email from {$1}. If you see nothing, check your spam folder.",
+    "label_check1": "I want to send my encrypted nsec {$1} to the following email address:",
+    "label_check1b": "(with the same password already entered previously)",
+    "label_email": "Your email address",
+    "label_password": "Pick a password",
+    "button_send": "Send now",
+    "button_sending": "Sending...",
+    "button_skip": "No, thanks, continue"
+  },
+
+  "bunker": {
+    "title1": "MULTI SIGNER",
+    "title2": "BUNKER",
+    "side1": "Now you have the possibility to split your <em {$1}>nsec</em> using a technique called <a {$2}>FROST</a> and distribute each shard to an independent trusted remote signer.",
+    "side2": "This will give you a <em {$1}>bunker</em> code that you can use to login in many web, mobile and desktop apps without exposing your <em {$2}>nsec</em>.",
+    "side3": "If you ever lose your <em {$1}>bunker</em> code, if the signers vanish from Earth and it stops working or if it gets stolen by a malware virus you can use your <em {$1}>nsec</em> to create a new and invalidate the old one.",
+    "label_check1": "I want to save my nsec, split in a pool of remote signers to be used for \"bunker\" connections",
+    "label_check1b": "(with the same password already entered previously)",
+    "text_nowasm": "Sorry your browser doesn't support WASM, so you cannot use this feature",
+    "text1": "The key will be split and shared with {$1} independent signers, {$2} signers are required to sign an event.",
+    "text2": "The procedure could require some time, please hold on.",
+    "switch1": "Advanced signers selection",
+    "switch2": "I want to use the automatic signers selection",
+    "text3": "Select the desidered signers:",
+    "text4": "Select at least {$1} {$2}",
+    "text4b": "more signer",
+    "text4c": "more signers",
+    "text5": "We'll use a 2-of-2 multi-signature schema using the selected signers",
+    "text6": "We'll use a {$1}-of-{$2} multi-signature schema using the selected signers",
+    "text7": "<strong>Warning</strong>, this scheme is risky, if one of the signers is offline, the events will not be able to be signed.",
+    "text8": "All done! your bunker code is ready. Save it for later so that you can log into Nostr apps without having to use your secret key:",
+    "button_save": "Save my bunker",
+    "button_activate": "Activate the bunker",
+    "button_activating": "Activating...",
+    "button_skip": "No, thanks, continue"
+  },
+
+  "follow": {
+    "title1": "FOLLOW",
+    "title2": "SOMEONE",
+    "side1": "What do you think now of following some interesting profiles? We offer you the possibility to copy the full following list of some Nostr users, so you can start your Nostr journey with a feed full of posts from already curated individuals.",
+    "side2": "You can later follow more people, or unfollow some as well; with Nostr you control what you want to see, no obscure and deceptive algorithms, no impositions.",
+    "text1": "See the same things these Nostr users are seeing in their feed:",
+    "button_finish": "Finish",
+    "button_finishing": "Finishing..."
+  },
+
+  "finish": {
+    "title1": "EXPLORE",
+    "title2": "NOSTR",
+    "text1": "Scan the QrCode for quick login from mobile!",
+    "text2": "We're done, <strong>{$1}</strong>! Now you can start exploring Nostr, using a web application or by downloading an app. These are some suggestions for getting started immediately:",
+    "text3": "This is only a quick selection of the 80+ applications that have already been built on Nostr, <a {$1}}>discover them all</a>!",
+    "text4": "This is your web profile, you can share it anywhere and with anyone:<br /><a {$1}>njump.me/{$2}</a>",
+    "label1": "Social & Micro blogging",
+    "label2": "Group conversations",
+    "label3": "Photo & video social"
+  },
+
+  "back": {
+    "title1": "YOU ARE",
+    "title2": "READY TO GO!",
+    "text1": "We're done, <strong>{$1}</strong>! Now you can start exploring Nostr — just click below to go back to <strong>{$2}</strong>:",
+    "button_back": "Go back to {$1}",
+    "text2": "{$1} is only one of the 80+ applications that have already been built on Nostr, <a>discover them all</a>!",
+    "text3": "This is your web profile, you can share it anywhere and with anyone:<br /><a {$1}>njump.me/{$2}</a>"
+  },
+
+  "confirmation_email": {
+    "subject": "Your Nostr account",
+    "body": "Hello!\n\nThis is your Nostr npub:\n{$1}\n\nAnd this is your encrypted Nostr key:\n{$2}\n\nRemember to save the chosen password in a safe place!\n\nWelcome to Nostr :)\n\nPS: This email address does not accept replies, to request support please tag https://njump.me/dtonon.com or https://njump.me/fiatjaf.com on Nostr"
+  }
+}
