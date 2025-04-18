@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import WizardAnalyticsClient from '$lib/wizard-analytics-client';
 	import { t, currentLanguage } from '$lib/i18n';
 	import { finalizeEvent, type EventTemplate } from '@nostr/tools/pure';
 	import { calculateFileHash } from '@nostr/tools/nip96';
@@ -18,11 +19,15 @@
 	let picturePreview: string | null = null;
 	let activationProgress = 0;
 
-	onMount(() => {
+	const analytics = new WizardAnalyticsClient();
+
+	onMount(async () => {
 		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
 		if ($sk.length === 0 && isWasmSupported()) {
 			mineEmail($sk, $pk);
 		}
+
+		await analytics.startStep('youserlf');
 	});
 
 	function triggerFileInput() {
@@ -113,6 +118,12 @@
 				$website.trim() === '' ? '' : $website.startsWith('http') ? $website : `https://${$website}`
 		});
 		publishRelayList($sk, $pk);
+
+		await analytics.completeStep({
+			picture: $picture != '',
+			about: $about != '',
+			website: $website != ''
+		});
 
 		goto(`/${$currentLanguage}/download`);
 	}

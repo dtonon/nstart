@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import WizardAnalyticsClient from '$lib/wizard-analytics-client';
 	import { t, currentLanguage } from '$lib/i18n';
 	import { goto } from '$app/navigation';
 	import {
@@ -28,10 +29,7 @@
 	let needsPassword = true;
 	let activationProgress = 0;
 
-	onMount(() => {
-		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
-		needsPassword = !$password || $password == '';
-	});
+	const analytics = new WizardAnalyticsClient();
 
 	const smtpFromEmail = import.meta.env.VITE_SMTP_FROM_EMAIL;
 
@@ -41,10 +39,15 @@
 		}, 10); // Use a timeout to ensure the DOM has updated
 	}
 
-	onMount(() => {
+	onMount(async () => {
+		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
+		needsPassword = !$password || $password == '';
+
 		if ($name.length === 0) {
 			goto('/');
 		}
+
+		await analytics.startStep('email');
 	});
 
 	async function send(ev: MouseEvent) {
@@ -69,12 +72,16 @@
 		clearInterval(intv);
 		activationProgress = 100;
 
+		await analytics.completeStep({});
+
 		setTimeout(() => {
 			goto(`/${$currentLanguage}/bunker`);
 		}, 1000);
 	}
 
-	function navigateContinue() {
+	async function navigateContinue() {
+		await analytics.completeStep({}, true, $skipBunker && $skipFollow);
+
 		if ($skipBunker) {
 			if ($skipFollow) {
 				if ($callingAppCode) {
