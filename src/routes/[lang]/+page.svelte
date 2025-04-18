@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import WizardAnalyticsClient from '$lib/wizard-analytics-client';
 	import { page } from '$app/stores';
 	import { t, currentLanguage } from '$lib/i18n';
 	import {
@@ -21,7 +22,9 @@
 
 	const isModal = getContext('isModal');
 
-	onMount(() => {
+	const analytics = new WizardAnalyticsClient();
+
+	onMount(async () => {
 		const params = new URLSearchParams(window.location.search);
 
 		// Set the accent color, if present, otherwise use the store default
@@ -92,6 +95,25 @@
 		if (skipFollow == 'yes') {
 			$skipFollow = true;
 		}
+
+		let currentLang: string;
+		currentLanguage.subscribe((value) => {
+			currentLang = value;
+		});
+
+		await analytics.initSession({
+			languageCode: currentLang!,
+			appType: $callingAppType,
+			appName: $callingAppName,
+			accentColor: $accent,
+			themeMode: $theme,
+			forceBunker: $forceBunker,
+			skipBunker: $skipBunker,
+			avoidNsec: $avoidNsec,
+			avoidNcryptsec: $avoidNcryptsec,
+			customReadRelays: $readRelays,
+			customWriteRelays: $writeRelays
+		});
 	});
 </script>
 
