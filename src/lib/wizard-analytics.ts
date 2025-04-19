@@ -230,11 +230,11 @@ class WizardAnalytics {
 		await this.db.run(
 			`UPDATE wizard_steps SET
         completed = ?,
-        completed_time = ?,
+        completed_time = datetime('now'),
         skipped = ?,
         time_spent_seconds = ?
       WHERE step_id = ?`,
-			[skipped ? 0 : 1, currentTimestamp, skipped ? 1 : 0, timeSpent, stepId]
+			[skipped ? 0 : 1, skipped ? 1 : 0, timeSpent, stepId]
 		);
 
 		// Record any options provided
