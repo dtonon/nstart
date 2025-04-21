@@ -132,7 +132,6 @@
 
   "confirmation_email": {
     "subject": "Jouw Nostr-account",
-    "body": "Hallo!\n\nDit is je Nostr npub:\n{$1}\n\nEn dit is je vergrendelde Nostr-sleutel:\n{$2}\n\nVergeet niet het gekozen wachtwoord op een veilige plek te bewaren!\n\nWelkom bij Nostr :)\n\nPS: Dit e-mailadres accepteert geen reacties. Om ondersteuning aan te vragen, tag https://njump.me/dtonon.com of https://njump.me/fiatjaf.com op Nostr
-"
+    "body": "Hallo!\n\nDit is je Nostr npub:\n{$1}\n\nEn dit is je vergrendelde Nostr-sleutel:\n{$2}\n\nVergeet niet het gekozen wachtwoord op een veilige plek te bewaren!\n\nWelkom bij Nostr :)\n\nPS: Dit e-mailadres accepteert geen reacties. Om ondersteuning aan te vragen, tag https://njump.me/dtonon.com of https://njump.me/fiatjaf.com op Nostr"
   }
 }
