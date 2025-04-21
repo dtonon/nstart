@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 	import WizardAnalyticsClient from '$lib/wizard-analytics-client';
 	import { page } from '$app/stores';
 	import { t, currentLanguage } from '$lib/i18n';
@@ -215,13 +216,16 @@
 								class="my-8 flex animate-fade1 justify-center opacity-0 sm:-mr-20 sm:justify-end"
 								style="animation-delay: 0.7s;"
 							>
-								<a
+								<button
 									class="inline-flex items-center rounded bg-accent px-10 py-4 text-[1.8rem] text-white"
-									href="/{$currentLanguage}/yourself"
+									on:click={() => goto('/en/yourself')}
 								>
-									{t('home.continue_button')}
-									<img src="/icons/arrow-right.svg" alt="Icon" class="ml-4 mr-2 h-7 w-7" />
-								</a>
+									Let's Start <img
+										src="/icons/arrow-right.svg"
+										alt="Icon"
+										class="ml-4 mr-2 h-7 w-7"
+									/>
+								</button>
 							</div>
 
 							{#if !isModal}
