@@ -84,7 +84,7 @@ function createLocalWritable<T>(label: string, initialValue: T): Writable<T> {
 	}
 	const store = writable<T>(data);
 	if (isBrowser) {
-		store.subscribe(value => {
+		store.subscribe((value) => {
 			localStorage.setItem(label, JSON.stringify({ type: typeof value, value }));
 		});
 	}
@@ -114,6 +114,7 @@ export const writeRelays = createSessionWritable('writeRelays', []);
 export const skipFollow = createSessionWritable('skipFollow', false);
 export const accent = createSessionWritable('accent', 'e32a6d');
 export const theme = createLocalWritable('theme', ''); // Empty = system
+export const sessionId = createSessionWritable('sessionId', ''); // Empty = system
 
 // Runtime stores
 export const inboxes = readable<{ [pubkey: string]: string[] }>({}, (set) => {

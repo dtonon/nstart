@@ -8,6 +8,7 @@
 	import { goto } from '$app/navigation';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import {
+		sessionId,
 		accent,
 		sk,
 		name,
@@ -94,8 +95,8 @@
 	onMount(async () => {
 		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
 
-		if ($name.length === 0) {
-			goto('/');
+		if ($sessionId.length === 0) {
+			goto(`/${$currentLanguage}/`);
 			return;
 		}
 

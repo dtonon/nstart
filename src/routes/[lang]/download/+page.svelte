@@ -6,7 +6,16 @@
 	import * as nip49 from '@nostr/tools/nip49';
 
 	import { goto } from '$app/navigation';
-	import { accent, sk, npub, ncryptsec, backupDownloaded, name, password } from '$lib/store';
+	import {
+		sessionId,
+		accent,
+		sk,
+		npub,
+		ncryptsec,
+		backupDownloaded,
+		name,
+		password
+	} from '$lib/store';
 	import { isMobile } from '$lib/mobile';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
@@ -24,8 +33,9 @@
 	onMount(async () => {
 		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
 
-		if ($name.length === 0) {
-			goto('/');
+		if ($sessionId.length === 0) {
+			goto(`/${$currentLanguage}/`);
+			return;
 		}
 
 		if ($password) {

@@ -1,3 +1,5 @@
+import { sessionId } from '$lib/store';
+
 export interface SessionParams {
 	languageCode: string;
 	appType?: string;
@@ -19,13 +21,12 @@ interface StepOptions {
 class WizardAnalyticsClient {
 	private currentSessionId: string | null = null;
 	private currentStepId: string | null = null;
-	private readonly SESSION_STORAGE_KEY = 'wizard_analytics_session';
 
 	constructor() {
 		// Try to restore the session ID on initialization
-		if (typeof sessionStorage !== 'undefined') {
-			this.currentSessionId = sessionStorage.getItem(this.SESSION_STORAGE_KEY);
-		}
+		sessionId.subscribe((value) => {
+			this.currentSessionId = value;
+		});
 	}
 
 	/**
@@ -61,9 +62,7 @@ class WizardAnalyticsClient {
 
 			this.currentSessionId = data.sessionId;
 
-			if (typeof sessionStorage !== 'undefined') {
-				sessionStorage.setItem(this.SESSION_STORAGE_KEY, data.sessionId);
-			}
+			sessionId.set(data.sessionId);
 
 			return data.sessionId;
 		} catch (error) {
