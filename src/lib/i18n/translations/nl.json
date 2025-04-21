@@ -1,7 +1,7 @@
 {
   "shared": {
     "button_continue": "Verder gaan",
-    "text_nowasm": "Helaas ondersteunt uw browser WASM niet, dus kan je deze functie niet gebruiken"
+    "text_nowasm": "Je browser ondersteunt geen WASM, dus deze functie is niet beschikbaar"
   },
   "home": {
     "title1": "WELKOM",
@@ -10,10 +10,10 @@
     "text1": "Eerst en vooral heb je een profiel nodig, maar het is niet het gebruikelijke profiel dat een bedrijf voor je aanmaakt en beheert. Je maakt het zelf aan, geen toestemming vereist.",
     "text2": "Nostr is vanaf het begin een nieuwe ervaring: omdat er geen centrale autoriteit is die controleert wie je bent, wordt elke gebruiker geïdentificeerd door een cryptografisch sleutelpaar; maak je geen zorgen over de technische details, het is gewoon een sterk wachtwoord dat je veilig moet bewaren.",
     "text3a": "Deze wizard wordt gebruikt door <strong>{$1}</strong> om je in een paar stappen een nieuwe profiel te laten maken en veilig te beheren.",
-    "text3b": "Deze wizard is een van de vele manieren om een ​​Nostr-profiel te lanceren dat je later in andere apps kunt gebruiken. We helpen je in een paar stappen je sleutelpaar aan te maken en veilig te beheren. Ben je er klaar voor?,
+    "text3b": "Deze wizard is een van de vele manieren om een Nostr-profiel aan te maken die je later in andere apps kunt gebruiken. We helpen je in een paar stappen je sleutelpaar aan te maken en veilig te beheren. Ben je er klaar voor?",
     "footer1": "Wil je eerst meer weten over Nostr?",
     "footer2": "Lees een korte introductie",
-    "footer3": "De broncode voor deze service is <a {$1}>free and open</a>"
+    "footer3": "De broncode voor deze service is <a {$1}>vrij beschikbaar</a>"
   },
 
   "yourself": {
@@ -22,7 +22,6 @@
     "side1": "Op Nostr bepaal je zelf wie je wilt zijn.",
     "side2": "Een Nostr-profiel bevat meestal een naam, een foto en wat aanvullende informatie, maar dit is allemaal optioneel.",
     "side3": "Deze naam is geen unieke gebruikersnaam, we kunnen zoveel Jacks hebben als we willen! Je mag gerust je echte naam of een bijnaam te gebruiken; deze kan je later altijd wijzigen.<br /> Maar vergeet niet: online privacy is belangrijk, deel geen gevoelige gegevens.",
-
     "side4": "En inderdaad, om lid te worden van Nostr hoef je geen e-mailadres, telefoonnummer of andere identificatie doorgeven.",
     "label_image": "Jouw afbeelding",
     "label_nickname": "Jouw (bij)naam",
@@ -31,7 +30,7 @@
     "label_required": "vereist",
     "label_optional": "optioneel",
     "alert_failedupload": "Uploaden van afbeelding mislukt. Probeer het opnieuw",
-    "alert_validation": "Voer een naam in, bio en website zijn optioneel",
+    "alert_validation": "Voer een naam in, een biografie en website zijn optioneel",
     "button_uploading": "Uploaden..."
   },
 
