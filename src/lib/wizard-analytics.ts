@@ -5,6 +5,7 @@ import fs from 'fs';
 import path from 'path';
 
 export interface SessionParams {
+	existingSessionId: string;
 	languageCode: string;
 	appType?: string;
 	appName?: string;
@@ -47,8 +48,6 @@ interface OptionStat {
 class WizardAnalytics {
 	private db: Database | null = null;
 	private currentSessionId: string | null = null;
-
-	private readonly SESSION_STORAGE_KEY = 'wizard_analytics_session';
 
 	async initialize(): Promise<void> {
 		if (this.db) return;
@@ -315,14 +314,6 @@ class WizardAnalytics {
       WHERE session_id = ?`,
 			[timeSpent, completed ? 1 : 0, activeSessionId]
 		);
-
-		// Clear storage when session is completed
-		if (activeSessionId === this.currentSessionId) {
-			this.currentSessionId = null;
-			if (typeof localStorage !== 'undefined') {
-				localStorage.removeItem(this.SESSION_STORAGE_KEY);
-			}
-		}
 	}
 
 	/**

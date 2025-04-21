@@ -150,14 +150,6 @@ class WizardAnalyticsClient {
 			// Reset current step ID if successful
 			this.currentStepId = null;
 
-			// Reset session ID if session was completed and remove from sessionStorage
-			if (completeSession) {
-				this.currentSessionId = null;
-				if (typeof sessionStorage !== 'undefined') {
-					sessionStorage.removeItem(this.SESSION_STORAGE_KEY);
-				}
-			}
-
 			return true;
 		} catch (error) {
 			console.error('Analytics error:', error);
