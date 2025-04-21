@@ -119,6 +119,18 @@ class WizardAnalytics {
 			throw new Error('Database not initialized');
 		}
 
+		// If a session already exist, skip the creation of a new one
+		if (params.existingSessionId) {
+			const existingSession = await this.db.get(
+				'SELECT session_id, completed FROM wizard_sessions WHERE session_id = ?',
+				[params.existingSessionId]
+			);
+
+			if (existingSession) {
+				return params.existingSessionId;
+			}
+		}
+
 		// Create a new session
 		const sessionId = uuidv4();
 		this.currentSessionId = sessionId;
