@@ -1,17 +1,17 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { t } from '$lib/i18n';
+	import { t, currentLanguage } from '$lib/i18n';
 	import { goto } from '$app/navigation';
-	import { bunkerURI } from '$lib/store';
 	import BasicLayout from '$lib/BasicLayout.svelte';
-	import { accent, name, npub } from '$lib/store';
+	import { sessionId, accent, name, npub, bunkerURI } from '$lib/store';
 	import QrCode from '$lib/QrCode.svelte';
 
 	onMount(() => {
 		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
 
-		if ($name.length === 0) {
-			goto('/');
+		if ($sessionId.length === 0) {
+			goto(`/${$currentLanguage}/`);
+			return;
 		}
 	});
 </script>

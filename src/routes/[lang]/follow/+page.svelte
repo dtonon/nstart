@@ -3,7 +3,7 @@
 	import WizardAnalyticsClient from '$lib/wizard-analytics-client';
 	import { t, currentLanguage } from '$lib/i18n';
 	import { goto } from '$app/navigation';
-	import { accent, sk, name, followerSuggestions, callingAppCode } from '$lib/store';
+	import { sessionId, accent, sk, name, followerSuggestions, callingAppCode } from '$lib/store';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';
@@ -98,10 +98,11 @@
 	onMount(async () => {
 		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
 
-		if ($name.length === 0) {
-			goto('/');
-			return; // Exit early if redirecting
+		if ($sessionId.length === 0) {
+			goto(`/${$currentLanguage}/`);
+			return;
 		}
+
 		buildSuggestionList();
 		await analytics.startStep('follow');
 	});

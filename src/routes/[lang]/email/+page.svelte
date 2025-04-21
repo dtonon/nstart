@@ -4,6 +4,7 @@
 	import { t, currentLanguage } from '$lib/i18n';
 	import { goto } from '$app/navigation';
 	import {
+		sessionId,
 		accent,
 		sk,
 		pk,
@@ -43,8 +44,9 @@
 		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
 		needsPassword = !$password || $password == '';
 
-		if ($name.length === 0) {
-			goto('/');
+		if ($sessionId.length === 0) {
+			goto(`/${$currentLanguage}/`);
+			return;
 		}
 
 		await analytics.startStep('email');
