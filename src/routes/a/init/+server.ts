@@ -30,32 +30,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		const analytics = await getAnalyticsService();
 
 		let sessionId: string;
-
-		// If we have an existing session ID, check if it's valid
-		if (sessionParams.existingSessionId) {
-			const db = analytics['db']; // Accessing private property
-
-			if (db) {
-				const existingSession = await db.get(
-					'SELECT session_id, completed FROM wizard_sessions WHERE session_id = ?',
-					[sessionParams.existingSessionId]
-				);
-
-				if (existingSession && existingSession.completed === 0) {
-					// Session exists and is not completed, reuse it
-					sessionId = sessionParams.existingSessionId;
-				} else {
-					// Start a new session if the existing one is completed or doesn't exist
-					sessionId = await analytics.startSession(sessionParams);
-				}
-			} else {
-				// If DB is not initialized, start a new session
-				sessionId = await analytics.startSession(sessionParams);
-			}
-		} else {
-			// No existing session, start a new one
-			sessionId = await analytics.startSession(sessionParams);
-		}
+		sessionId = await analytics.startSession(sessionParams);
 
 		return json({
 			success: true,
