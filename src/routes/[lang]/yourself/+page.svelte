@@ -247,7 +247,7 @@
 			<ContinueButton
 				onClick={navigateContinue}
 				disabled={activationProgress > 0 || !$name}
-				text={activationProgress > 0 ? t('shared.button_uploading') : t('shared.button_continue')}
+				text={activationProgress > 0 ? t('yourself.button_uploading') : t('shared.button_continue')}
 			/>
 		</div>
 	</div>

@@ -83,7 +83,7 @@
 
 	{#if dropdownOpen}
 		<div
-			class="absolute right-0 z-10 mt-1 max-h-60 w-48 overflow-auto rounded-md border border-neutral-200 bg-white py-1 shadow-lg dark:border-neutral-700 dark:bg-neutral-800"
+			class="absolute right-0 z-10 mt-1 w-48 overflow-auto rounded-md border border-neutral-200 bg-white py-1 shadow-lg dark:border-neutral-700 dark:bg-neutral-800"
 			role="listbox"
 		>
 			{#each availableLanguages as language}
