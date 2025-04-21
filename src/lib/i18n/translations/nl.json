@@ -1,6 +1,6 @@
 {
   "shared": {
-    "button_continue": "Verder gaan",
+    "button_continue": "Volgende stap",
     "text_nowasm": "Je browser ondersteunt geen WASM, dus deze functie is niet beschikbaar"
   },
   "home": {
@@ -11,6 +11,7 @@
     "text2": "Nostr is vanaf het begin een nieuwe ervaring: omdat er geen centrale autoriteit is die controleert wie je bent, wordt elke gebruiker geïdentificeerd door een cryptografisch sleutelpaar; maak je geen zorgen over de technische details, het is gewoon een sterk wachtwoord dat je veilig moet bewaren.",
     "text3a": "Deze wizard wordt gebruikt door <strong>{$1}</strong> om je in een paar stappen een nieuwe profiel te laten maken en veilig te beheren.",
     "text3b": "Deze wizard is een van de vele manieren om een Nostr-profiel aan te maken die je later in andere apps kunt gebruiken. We helpen je in een paar stappen je sleutelpaar aan te maken en veilig te beheren. Ben je er klaar voor?",
+    "continue_button": "Aan de slag",
     "footer1": "Wil je eerst meer weten over Nostr?",
     "footer2": "Lees een korte introductie",
     "footer3": "De broncode voor deze service is <a {$1}>vrij beschikbaar</a>"
@@ -38,17 +39,17 @@
     "title1": "JOUW SLEUTELS",
     "title2": "ZIJN KLAAR",
     "side1": "Goed gedaan <strong>{$1}</strong>, Je Nostr-profiel is klaar! Zo makkelijk was het.",
-    "side2": "Op Nostr wordt je sleutelpaar geïdentificeerd door een unieke string die begint met <em {$1}>npub</em>. Dit is uw openbare profielcode die u met iedereen kunt delen.",
+    "side2": "Op Nostr wordt je sleutelpaar geïdentificeerd door een unieke string die begint met <em {$1}>npub</em>. Dit is jouw openbare profielcode die je met iedereen kunt delen.",
     "side3": "Dan is er de privésleutel. Deze begint met <em {$1}>nsec</em> en wordt gebruikt om je profiel te beheren en notes te publiceren. Deze moet absoluut geheim blijven.",
-    "side4": "Download nu uw <em {$1}>nsec</em> (het is een tekstbestand) en bewaar het op een veilige plek, bijvoorbeeld uw wachtwoordbeheerder.",
+    "side4": "Download nu jouw <em {$1}>nsec</em> (het is een tekstbestand) en bewaar het op een veilige plek, bijvoorbeeld jouw wachtwoordbeheerder.",
     "label_yournpub": "Jouw npub is",
     "label_password": "Kies een wachtwoord",
     "button_save1": "Bewaar mijn nsec",
     "button_save2": "Bewaar mijn ncryptsec",
     "label_switch1": "Ik wil de versleutelde versie downloaden",
     "label_switch2": "Ik ben van gedacht veranderd, ik wil toch de gewone nsec downloaden",
-    "text1": "Vanuit uw nsec kunt u uw npub genereren, dus dit is de enige informatie die u echt veilig moet houden.",
-    "text2": "Open nu het bestand en controleer of de lange string na uw npub overeenkomt met deze begin- en eindtekens:",
+    "text1": "Vanuit jouw nsec kunt je jouw npub genereren, dus dit is de enige informatie die je echt veilig moet houden.",
+    "text2": "Open nu het bestand en controleer of de lange string na jouw npub overeenkomt met deze begin- en eindtekens:",
     "text3": "Kopieer ten slotte het bestand naar een andere veilige plaats als extra back-up en sla het gekozen wachtwoord apart op (<strong>{$1}</strong>).",
     "text4": "Kopieer ten slotte het bestand naar een andere veilige plek als extra back-up.",
     "text5": "Ik heb het bestand en het wachtwoord op een paar veilige plekken opgeslagen",
@@ -59,7 +60,7 @@
   "email": {
     "title1": "E-MAIL",
     "title2": "BACKUP",
-    "side1": "We bieden je de mogelijkheid om uw versleutelde <em {$1}>nsec</em> (dus eigenlijk een <em {$1}>ncryptsec</em>) naar je e-mailadres te sturen, zodat je de backup op nog een andere handige locatie kunt bewaren.",
+    "side1": "We bieden je de mogelijkheid om jouw versleutelde <em {$1}>nsec</em> (dus eigenlijk een <em {$1}>ncryptsec</em>) naar je e-mailadres te sturen, zodat je de backup op nog een andere handige locatie kunt bewaren.",
     "side2": "Kies een sterk wachtwoord en bewaar het op een veilige plek. Schrijf het op en zorg ervoor dat je het niet kwijtraakt.",
     "side3": "We gebruiken hetzelfde wachtwoord dat je eerder hebt gekozen. Je hebt het toch opgeschreven hè? :)",
     "side4": "Je ontvangt een e-mail van {$1}. Als je niets ziet, controleer dan je spamfolder.",
@@ -80,7 +81,7 @@
     "side3": "Als je ooit je <em {$1}>bunker</em>code kwijtraakt, en als de signers van de aarde verdwijnen en het niet meer werkt, of als het wordt gestolen door een malware-virus, dan kan je je <em {$1}>nsec</em> gebruiken om een ​​nieuwe te maken en de oude ongeldig te maken.",
     "label_check1": "Ik wil mijn Nsec opslaan en opsplitsen in een pool van externe signers die gebruikt kunnen worden voor \"bunker\" verbindingen.",
     "label_check1b": "(met hetzelfde wachtwoord dat al eerder is ingevoerd)",
-    "text_nowasm": "Helaas ondersteunt uw browser WASM niet, dus kan je deze functie niet gebruiken",
+    "text_nowasm": "Helaas ondersteunt jouw browser WASM niet, dus kan je deze functie niet gebruiken",
     "text1": "De sleutel wordt gesplitst en gedeeld met {$1} onafhankelijke signers. Er zijn {$2} signers nodig om een ​​event te ondertekenen.",
     "text2": "Het kan enige tijd duren voordat de procedure is voltooid. Even geduld a.u.b..",
     "switch1": "Selectie geavanceerde signers",
