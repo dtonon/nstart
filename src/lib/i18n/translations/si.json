@@ -1,0 +1,138 @@
+{
+	"shared": {
+		"button_continue": "Nadaljuj",
+		"text_nowasm": "Tvoj brskalnik ne podpira WebAssembly (WASM), zato ta funkcija ni na voljo."
+	},
+	"home": {
+		"title1": "DOBRODOŠLI",
+		"title2": "NA",
+		"title3": "NOSTRU",
+		"text1": "Da začnete uporabljati Nostr potrebujete profil, kateri pa ni običajen profil katerega ustvari in upravlja neko podjetje. Ustvarite ga sami brez kakršnih koli dovoljenj ali odobritev.",
+		"text2": "Nostr je drugačna izkušnje že od samega začetka: ker ni osrednje entitete, ki bi skrbela za to kdo je kdo. Vsak uporabnik je prepoznan s pomočjo kriptografskega para ključev; Naj vas nikar ne prestraši tehnični žargon saj gre preprosto za zelo močno geslo katerega morate hraniti na varnem mestu.",
+		"text3a": "Tega čarovnika uporablja <strong>{$1}</strong>, da vam omogoči ustvariti nov profil, in ga varno upravljati v nekaj preprostih korakih.",
+		"text3b": "Ta čarovnik je le eden izmed načinov za kreiranje Nostr profila, katerega lahko nato uporabite tudi v drugih aplikacijah. V le nekaj korakih vam bomo pomagali ustvariti kriptografski par ključev in poskrbeli, da boste z njimi varno upravljali. Ste pripravljen?",
+		"continue_button": "Pa začnimo",
+		"footer1": "Bi želeli izvedeti kaj več o Nostru, predno začnemo?",
+		"footer2": "Preberite si kratko predstavitev v angleškem jeziku",
+		"footer3": "Izvorna koda te storitve je <a {$1}>prosto dostopna in odprta</a>"
+	},
+
+	"yourself": {
+		"title1": "PREDSTAVITE",
+		"title2": "SE",
+		"side1": "Na Nostru ste lahko kdorkoli želite.",
+		"side2": "Profil na Nostru običajno vključuje ime, sliko in nekaj dodatnih informacij, vendar je to povsem neobvezno.",
+		"side3": "Ime ni unikatno uporabniško ime, lahko imamo neomejeno Janezov in Mick! Po svoji volji lahko uporabite vaše pravo ime ali vzdevek; kasneje ga lahko kadarkoli spremenite.<br /> V vednost: spletna zasebnost je zelo pomembna, zato nikar ne delite osebnih in občutljivih podatkov.",
+        "side4": "In ja! Da se pridružite uporabi Nostra, vam ni potrebno vnesti e-poštnega naslova, telefonske številke ali drugih osebnih podatkov.",
+		"label_image": "Vaša slika",
+		"label_nickname": "Vaš vzdevek",
+		"label_about": "Nekaj o vas",
+		"label_website": "Vaša spletna stran",
+		"label_required": "obvezno",
+		"label_optional": "neobvezno",
+		"alert_failedupload": "Nalaganje slike ni uspelo. Poskusite znova.",
+		"alert_validation": "Vnesite ime; opis in spletna stran sta neobvezna.",
+		"button_uploading": "Nalagam..."
+	},
+
+	"download": {
+		"title1": "VAŠI KLJUČI",
+		"title2": "SO PRIPRAVLJENI",
+		"side1": "Odlično opravljeno <strong>{$1}</strong>, vaš Nostr profil je pripravljen! Ja, tako enostavno je bilo.",
+		"side2": "Na Nostru je vaš par ključev prepoznaven po edinstvenem nizu, ki se začne z <em {$1}>npub</em>.  To je vaša javna koda profila, ki jo lahko delite z ostalimi.",
+		"side3": "Obstaja pa tudi zasebni ključ. Ta se začne z <em {$1}>nsec</em>, in se uporablja za upravljanje vašega profila ter objavljanje zapiskov. Ta ključ mora ostati strogo zaupen le vam.",
+		"side4": "Sedaj prosim prenesite vaš <em {$1}>nsec</em> (gre za besedilno datoteko) in jo shranite na varno mesto, na primer v upravljalnik gesel.",
+		"label_yournpub": "Vaš npub je",
+		"label_password": "Izberite geslo",
+		"button_save1": "Shrani moj nsec",
+		"button_save2": "Shrani moj ncryptsec",
+		"label_switch1": "Želim prenesti šifrirano različico",
+		"label_switch2": "Nima veze, želim prenesti le nsec",
+		"text1": "Iz vašega nsec-a lahko vedno ustvarite npub, zato je to edina stvar, ki jo morate shraniti na varno mesto.",
+		"text2": "Sedaj prosim odprite datoteko in preverite, ali se dolg niz za vašim npub-om ujema s temi začetnimi in končnimi znaki:",
+		"text3": "Na koncu kopirajte datoteko še na drugo poljubno varno mesto kot dodatno varnostno kopijo in ločeno shranite izbrano geslo (<strong>{$1}</strong>).",
+		"text4": "Na koncu kopirajte datoteko še na drugo poljubno varno mesto kot dodatno varnostno kopijo.",
+		"text5": "Datoteko in geslo sem shranil/-a na več varnih mest",
+		"text6": "Datoteko sem shranil/-a na več varnih mest",
+		"text7": "Jo želite znova prenesti?"
+	},
+
+	"email": {
+		"title1": "E-POŠTNA",
+		"title2": "VARNOSTNA KOPIJA",
+		"side1": "Ponujamo vam možnost, da vaš šifrirani <em {$1}>nsec</em> (ali <em {$1}>ncryptsec</em>) pošljete na vaš e-poštni naslov kot dodatno varnostno kopijo.",
+		"side2": "Izberite močno geslo in ga shrani na varno, write it down now, zapiši si ga zdaj in bodi previden/-na, da ga ne izgubiš.",
+		"side3": "Uporabili bomo isto geslo, ki ste ga izbrali prej. Saj ste si ga zapisali, kajne? :)",
+		"side4": "Prejeli boste e-pošto iz {$1}. Če je ne vidite, preverite mapo z nezaželeno pošto (spam).",
+		"label_check1": "Želim poslati svoj šifrirani nsec {$1} na sledeči e-poštni naslov:",
+		"label_check1b": "(z istim geslom, ki je bilo vneseno prej)",
+		"label_email": "Vaš e-poštni naslov",
+		"label_password": "Izberite geslo",
+		"button_send": "Pošlji zdaj",
+		"button_sending": "Pošiljam...",
+		"button_skip": "Ne, hvala, nadaljuj"
+	},
+
+	"bunker": {
+		"title1": "VEČPODPISNI",
+		"title2": "BUNKER",
+		"side1": "Sedaj imate možnost razdeliti svoj <em {$1}>nsec</em> zasebni ključ z uporabo tehnike, imenovane <a {$2}>FROST</a> in vsak delček zaupati neodvisnemu oddaljenemu podpisniku.",
+		"side2": "To vam bo dalo <em {$1}>bunker</em> kodo, ki jo lahko uporabite za prijavo v številne spletne, mobilne in namizne aplikacije brez razkritja vašega <em {$2}>nsec</em> zasebnega ključa.",
+		"side3": "Če kodo <em {$1}>bunker</em> kadarkoli izgubite, če podpisniki izginejo s sveta ali če pride do okužbe z zlonamerno programsko opremo, lahko uporabite svoj <em {$1}>nsec</em> za ustvarjanje nove kode in razveljavitev stare.",
+		"label_check1": "Želim shraniti svoj nsec, razdeljen med skupino oddaljenih podpisnikov za uporabo v \"bunker\" povezavah",
+		"label_check1b": "(z istim geslom, ki je bilo vneseno prej)",
+		"text_nowasm": "Žal tvoj brskalnik ne podpira WebAssembly (WASM), zato te funkcije ne moreš uporabljati",
+		"text1": "Ključ bo razdeljen in poslan {$1} neodvisnim podpisnikom, za podpis dogodka pa bo potrebnih {$2} podpisnikov.",
+		"text2": "Postopek lahko traja nekaj časa, prosimo, bodite potrpežljivi.",
+		"switch1": "Napredna izbira podpisnikov",
+		"switch2": "Želim uporabiti samodejno izbiro podpisnikov",
+		"text3": "Izberite želene podpisnike:",
+		"text4": "Izberite vsaj {$1} {$2}",
+		"text4b": "dodatnega podpisnika",
+		"text4c": "dodatnih podpisnikov",
+		"text5": "Uporabili bomo 2-od-2 večpodpisno shemo z izbranimi podpisniki",
+		"text6": "Uporabili bomo {$1}-of-{$2} večpodpisno shemo z izbranimi podpisniki",
+		"text7": "<strong>Opozorilo</strong>, ta shema je tvegana saj, če je eden izmed podpisnikov nedosegljiv, dogodkov ne bo mogoče podpisati.",
+		"text8": "Vse pripravljeno! Tvoja bunker koda je pripravljena. Shranite jo, saj se boste z njo prijavljali v Nostr aplikacije brez uporabe (nsec) zasebnega ključa:",
+		"button_save": "Shrani moj bunker",
+		"button_activate": "Aktiviraj bunker",
+		"button_activating": "Aktiviram...",
+		"button_skip": "Ne, hvala, nadaljuj"
+	},
+
+	"follow": {
+		"title1": "SLEDITE",
+		"title2": "NEKOMU",
+		"side1": "Kaj pravite na to, da začnete slediti nekaterim zanimivim profilom? Ponujamo vam možnost, da kopirate celoten seznam profilov, katerim sledijo nekaterih uporabnikov Nostra, da boste svojo pot začeli s pregledom vsebine od že izbranih posameznikov.",
+		"side2": "Kasneje lahko sledite še več profilom ali koga tudi od-sledite; Z Nostrom imate popoln nadzor nad tem, kaj želite videti, Brez nejasnih in zavajajočih algoritmov, brez vsiljevanja.",
+		"text1": "Glej enako vsebino, kot jo vidijo ti uporabniki Nostra v svojih virih:",
+		"button_finish": "Zaključi",
+		"button_finishing": "Zaključujem..."
+	},
+
+	"finish": {
+		"title1": "RAZIŠČI",
+		"title2": "NOSTR",
+		"text1": "Skeniraj QR kodo za hitro prijavo iz mobilnega telefona!",
+		"text2": "Končali smo, <strong>{$1}</strong>! Sedaj lahko začnete z raziskovanjem Nostra, prek spletne aplikacije ali z namestitvijo mobilne aplikacije. Tukaj je nekaj predlogov za hiter začetek:",
+		"text3": "To je le kratek izbor 80+ aplikacij, zgrajenih na Nostru - <a {$1}}>odkrij vse aplikacije</a>!",
+		"text4": "To je vaš spletni profil, lahko ga delite kjerkoli in s komerkoli:<br /><a {$1}>njump.me/{$2}</a>",
+		"label1": "Družbena omrežja & mikroblogi",
+		"label2": "Skupinski pogovori",
+		"label3": "Deljenje fotografij in videov"
+	},
+
+	"back": {
+		"title1": "PRIPRAVLJENI STE,",
+		"title2": "DA ZAČNETE!",
+		"text1": "Končali smo, <strong>{$1}</strong>! Sedaj lahko začnete z raziskovanjem Nostra — kliknite spodaj, da se vrnete na <strong>{$2}</strong>:",
+		"button_back": "Nazaj na {$1}",
+		"text2": "{$1} je le ena izmed več kot 80+ aplikacij, zgrajenih na Nostru <a>odkrij vse aplikacije</a>!",
+		"text3": "To je vaš spletni profil,  lahko ga delite kjerkoli in s komerkoli:<br /><a {$1}>njump.me/{$2}</a>"
+	},
+
+	"confirmation_email": {
+		"subject": "Vaš Nostr račun",
+		"body": "Pozdravljeni!\n\nTo je vaš Nostr npub:\n{$1}\n\nIn to je vaš šifriran Nostr ključ:\n{$2}\n\nNe pozabite shraniti izbranega gesla na varno mesto!\n\nDobrodošel na Nostru :)\n\nPS: Ta e-poštni naslov ne sprejema odgovorov. Za podporo se obrni na  https://njump.me/dtonon.com or https://njump.me/fiatjaf.com na Nostru"
+	}
+}
