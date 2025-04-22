@@ -36,8 +36,18 @@ class WizardAnalyticsClient {
 	 */
 	async initSession(params: SessionParams): Promise<string> {
 		try {
-			// If we already have a session ID, send it with the request
 			const requestBody: any = { ...params };
+
+			// Add referrer and user agent information from browser
+			if (typeof document !== 'undefined') {
+				requestBody.referrer = document.referrer || '';
+			}
+
+			if (typeof navigator !== 'undefined') {
+				requestBody.userAgent = navigator.userAgent || '';
+			}
+
+			// If we already have a session ID, send it with the request
 			if (this.currentSessionId) {
 				requestBody.existingSessionId = this.currentSessionId;
 			}
