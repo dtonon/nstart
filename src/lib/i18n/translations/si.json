@@ -37,7 +37,7 @@
 
 	"download": {
 		"title1": "VAŠI KLJUČI",
-		"title2": "SO PRIPRAVLJENI",
+		"title2": "SO NARED",
 		"side1": "Odlično opravljeno <strong>{$1}</strong>, vaš Nostr profil je pripravljen! Ja, tako enostavno je bilo.",
 		"side2": "Na Nostru je vaš par ključev prepoznaven po edinstvenem nizu, ki se začne z <em {$1}>npub</em>.  To je vaša javna koda profila, ki jo lahko delite z ostalimi.",
 		"side3": "Obstaja pa tudi zasebni ključ. Ta se začne z <em {$1}>nsec</em>, in se uporablja za upravljanje vašega profila ter objavljanje zapiskov. Ta ključ mora ostati strogo zaupen le vam.",
