@@ -3,6 +3,7 @@ import { Database, open } from 'sqlite';
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
 import path from 'path';
+import { DatabaseMigrator } from './migrations';
 
 export interface SessionParams {
 	existingSessionId: string;
@@ -65,53 +66,9 @@ class WizardAnalytics {
 			driver: SQLite.Database
 		});
 
-		// Create tables if they don't exist
-		await this.db.exec(`
-      CREATE TABLE IF NOT EXISTS wizard_sessions (
-        session_id TEXT PRIMARY KEY,
-        language_code TEXT,
-        start_time DATETIME,
-        end_time DATETIME,
-        time_spent_seconds INTEGER,
-        completed BOOLEAN,
-        app_type TEXT,
-        app_name TEXT,
-        accent_color TEXT,
-        theme_mode TEXT,
-        force_bunker BOOLEAN,
-        skip_bunker BOOLEAN,
-        avoid_nsec BOOLEAN,
-        avoid_ncryptsec BOOLEAN,
-        custom_read_relays TEXT,
-        custom_write_relays TEXT,
-        referrer TEXT,
-        user_agent TEXT
-      );
-
-      CREATE TABLE IF NOT EXISTS wizard_steps (
-        step_id TEXT PRIMARY KEY,
-        session_id TEXT,
-        step_name TEXT,
-        entered_time DATETIME,
-        completed_time DATETIME,
-        time_spent_seconds INTEGER,
-        completed BOOLEAN,
-        skipped BOOLEAN,
-        FOREIGN KEY (session_id) REFERENCES wizard_sessions(session_id)
-      );
-
-      CREATE TABLE IF NOT EXISTS step_options (
-        option_id TEXT PRIMARY KEY,
-        step_id TEXT,
-        option_name TEXT,
-        option_value TEXT,
-        option_type TEXT,
-        FOREIGN KEY (step_id) REFERENCES wizard_steps(step_id)
-      );
-
-      CREATE INDEX IF NOT EXISTS idx_wizard_steps_session_id ON wizard_steps(session_id);
-      CREATE INDEX IF NOT EXISTS idx_step_options_step_id ON step_options(step_id);
-    `);
+		// Run migrations to apply schema updates
+		const migrator = new DatabaseMigrator(this.db);
+		await migrator.migrate();
 	}
 
 	// Start tracking a new wizard session
