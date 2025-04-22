@@ -17,6 +17,8 @@ export interface SessionParams {
 	avoidNcryptsec?: boolean;
 	customReadRelays?: string[];
 	customWriteRelays?: string[];
+	referrer?: string;
+	userAgent?: string;
 }
 
 interface StepOptions {
@@ -81,7 +83,9 @@ class WizardAnalytics {
         avoid_nsec BOOLEAN,
         avoid_ncryptsec BOOLEAN,
         custom_read_relays TEXT,
-        custom_write_relays TEXT
+        custom_write_relays TEXT,
+        referrer TEXT,
+        user_agent TEXT
       );
 
       CREATE TABLE IF NOT EXISTS wizard_steps (
@@ -143,8 +147,8 @@ class WizardAnalytics {
         session_id, language_code, start_time, completed,
         app_type, app_name, accent_color, theme_mode,
         force_bunker, skip_bunker, avoid_nsec, avoid_ncryptsec,
-        custom_read_relays, custom_write_relays
-      ) VALUES (?, ?, datetime('now'), 0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        custom_read_relays, custom_write_relays, referrer, user_agent
+      ) VALUES (?, ?, datetime('now'), 0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 			[
 				sessionId,
 				params.languageCode,
@@ -157,7 +161,9 @@ class WizardAnalytics {
 				params.avoidNsec ? 1 : 0,
 				params.avoidNcryptsec ? 1 : 0,
 				params.customReadRelays ? JSON.stringify(params.customReadRelays) : null,
-				params.customWriteRelays ? JSON.stringify(params.customWriteRelays) : null
+				params.customWriteRelays ? JSON.stringify(params.customWriteRelays) : null,
+				params.referrer || null,
+				params.userAgent || null
 			]
 		);
 
