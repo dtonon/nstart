@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount, afterUpdate } from 'svelte';
+	import WizardAnalyticsClient from '$lib/wizard-analytics-client';
 	import { t, currentLanguage } from '$lib/i18n';
 	import { shardGetBunker } from '@fiatjaf/promenade-trusted-dealer';
 	import { pool } from '@nostr/gadgets/global';
@@ -7,6 +8,7 @@
 	import { goto } from '$app/navigation';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import {
+		sessionId,
 		accent,
 		sk,
 		name,
@@ -34,6 +36,8 @@
 	const defaultSelected = 3;
 	const minThreshold = 2;
 	let threshold = defaultThreshold;
+
+	const analytics = new WizardAnalyticsClient();
 
 	function toggleAdvancedMode() {
 		advanceSignersSelection = !advanceSignersSelection;
@@ -88,13 +92,15 @@
 	// Run after each update to ensure event listeners are current
 	afterUpdate(updateEventListeners);
 
-	onMount(() => {
+	onMount(async () => {
 		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
 
-		if ($name.length === 0) {
-			goto('/');
+		if ($sessionId.length === 0) {
+			goto(`/${$currentLanguage}/`);
 			return;
 		}
+
+		await analytics.startStep('bunker');
 	});
 
 	async function activate(event: Event) {
@@ -147,7 +153,18 @@
 		document.body.removeChild(link);
 	}
 
-	function navigateContinue() {
+	async function navigateContinue() {
+		await analytics.completeStep(
+			activateBunker
+				? {
+						signers: selectedSigners.size,
+						threshold: threshold
+					}
+				: undefined,
+			!activateBunker,
+			$skipFollow
+		);
+
 		if ($skipFollow) {
 			if ($callingAppCode) {
 				goto(`/${$currentLanguage}/back`);

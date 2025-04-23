@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import WizardAnalyticsClient from '$lib/wizard-analytics-client';
 	import { t, currentLanguage } from '$lib/i18n';
 	import { finalizeEvent, type EventTemplate } from '@nostr/tools/pure';
 	import { calculateFileHash } from '@nostr/tools/nip96';
@@ -7,7 +8,7 @@
 	import { base64 } from '@scure/base';
 
 	import { goto } from '$app/navigation';
-	import { accent, sk, pk, name, picture, about, website } from '$lib/store';
+	import { sessionId, accent, sk, pk, name, picture, about, website } from '$lib/store';
 	import { isMobile } from '$lib/mobile';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';
@@ -18,11 +19,20 @@
 	let picturePreview: string | null = null;
 	let activationProgress = 0;
 
-	onMount(() => {
+	const analytics = new WizardAnalyticsClient();
+
+	onMount(async () => {
+		if ($sessionId.length === 0) {
+			goto(`/${$currentLanguage}/`);
+			return;
+		}
+
 		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
 		if ($sk.length === 0 && isWasmSupported()) {
 			mineEmail($sk, $pk);
 		}
+
+		await analytics.startStep('youserlf');
 	});
 
 	function triggerFileInput() {
@@ -113,6 +123,12 @@
 				$website.trim() === '' ? '' : $website.startsWith('http') ? $website : `https://${$website}`
 		});
 		publishRelayList($sk, $pk);
+
+		await analytics.completeStep({
+			picture: $picture != '',
+			about: $about != '',
+			website: $website != ''
+		});
 
 		goto(`/${$currentLanguage}/download`);
 	}
