@@ -65,6 +65,13 @@ export class DatabaseMigrator {
         ALTER TABLE wizard_sessions ADD COLUMN referrer TEXT;
         ALTER TABLE wizard_sessions ADD COLUMN user_agent TEXT;
       `
+		},
+		{
+			id: 2,
+			name: 'add_skip_follow',
+			sql: `
+        ALTER TABLE wizard_sessions ADD COLUMN skip_follow BOOLEAN;
+      `
 		}
 	];
 

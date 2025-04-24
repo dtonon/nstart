@@ -110,6 +110,7 @@
 			themeMode: $theme,
 			forceBunker: $forceBunker,
 			skipBunker: $skipBunker,
+			skipFollow: $skipFollow,
 			avoidNsec: $avoidNsec,
 			avoidNcryptsec: $avoidNcryptsec,
 			customReadRelays: $readRelays,

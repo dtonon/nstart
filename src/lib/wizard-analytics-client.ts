@@ -8,6 +8,7 @@ export interface SessionParams {
 	themeMode?: string;
 	forceBunker?: boolean;
 	skipBunker?: boolean;
+	skipFollow?: boolean;
 	avoidNsec?: boolean;
 	avoidNcryptsec?: boolean;
 	customReadRelays?: string[];
