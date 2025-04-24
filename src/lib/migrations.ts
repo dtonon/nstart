@@ -72,6 +72,13 @@ export class DatabaseMigrator {
 			sql: `
         ALTER TABLE wizard_sessions ADD COLUMN skip_follow BOOLEAN;
       `
+		},
+		{
+			id: 3,
+			name: 'fix yourself',
+			sql: `
+        UPDATE wizard_steps SET step_name = 'yourself' WHERE step_name = 'youserlf';
+      `
 		}
 	];
 
