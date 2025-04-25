@@ -8,10 +8,15 @@
 	import { setLanguage } from '$lib/i18n';
 
 	onMount(() => {
+		// Skip language check for the /analytics page
+		if (window.location.pathname === '/analytics') {
+			return;
+		}
+
 		const params = new URLSearchParams(window.location.search);
 		// Initialize language based on URL structure, passed param, browser lang
 		// Or fallback to the default (en)
-		//
+
 		const queryString = window.location.search;
 		const paramLang = params.get('al');
 		const urlLang = $page.params.lang;
