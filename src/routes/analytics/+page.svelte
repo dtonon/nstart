@@ -216,7 +216,7 @@
 				<!-- Partial Sessions -->
 				<div class="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
 					<h2 class="mb-2 text-sm font-medium uppercase text-gray-500 dark:text-gray-400">
-						Partial completions
+						Abandoned
 					</h2>
 					<p class="text-4xl font-bold text-yellow-600 dark:text-yellow-400">
 						{analyticsData.partialSessions}
@@ -225,10 +225,8 @@
 			</div>
 
 			<!-- Chart -->
-			<div class="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
-				<h2 class="mb-4 text-lg font-medium text-gray-800 dark:text-white">
-					Wizard activity (90 Days)
-				</h2>
+			<div class="mb-8 rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
+				<h2 class="mb-4 text-lg font-medium text-gray-800 dark:text-white">Wizard activity</h2>
 				<div class="h-96">
 					{#if browser && analyticsData}
 						<!-- Use plain Chart.js -->
@@ -241,6 +239,70 @@
 						</div>
 					{/if}
 				</div>
+			</div>
+
+			<!-- Top Sources Table -->
+			<div class="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
+				<h2 class="mb-4 text-lg font-medium text-gray-800 dark:text-white">Top 30 sources</h2>
+				{#if analyticsData.topSources && analyticsData.topSources.length > 0}
+					<div class="overflow-x-auto">
+						<table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+							<thead class="bg-gray-50 dark:bg-gray-900">
+								<tr>
+									<th
+										scope="col"
+										class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400"
+									>
+										Source
+									</th>
+									<th
+										scope="col"
+										class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400"
+									>
+										Sessions
+									</th>
+									<th
+										scope="col"
+										class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400"
+									>
+										% of Total
+									</th>
+								</tr>
+							</thead>
+							<tbody
+								class="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800"
+							>
+								{#each analyticsData.topSources as source, i}
+									<tr
+										class={i % 2 === 0
+											? 'bg-white dark:bg-gray-800'
+											: 'bg-gray-50 dark:bg-gray-700'}
+									>
+										<td
+											class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900 dark:text-white"
+										>
+											{source.source}
+										</td>
+										<td
+											class="whitespace-nowrap px-6 py-4 text-sm text-gray-500 dark:text-gray-300"
+										>
+											{source.sessions}
+										</td>
+										<td
+											class="whitespace-nowrap px-6 py-4 text-sm text-gray-500 dark:text-gray-300"
+										>
+											{analyticsData.totalSessions > 0
+												? ((source.sessions / analyticsData.totalSessions) * 100).toFixed(1)
+												: 0}%
+										</td>
+									</tr>
+								{/each}
+							</tbody>
+						</table>
+					</div>
+				{:else}
+					<p class="text-gray-500 dark:text-gray-400">No source data available.</p>
+				{/if}
 			</div>
 		{/if}
 	</div>
