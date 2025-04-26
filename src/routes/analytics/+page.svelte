@@ -1,13 +1,15 @@
 <script lang="ts">
 	import { onMount, afterUpdate } from 'svelte';
-	import type { AnalyticsSummary } from '$lib/analytics-service';
+	import type { AnalyticsSummary, FunnelStep } from '$lib/analytics-service';
 	import { browser } from '$app/environment';
 
 	let analyticsData: AnalyticsSummary | null = null;
 	let loading = true;
 	let error = false;
 	let chartCanvas: HTMLCanvasElement;
+	let funnelCanvas: HTMLCanvasElement;
 	let chart: any = null;
+	let funnelChart: any = null;
 
 	// Fetch data on mount
 	onMount(async () => {
@@ -163,11 +165,156 @@
 		}
 	});
 
-	// Clean up chart on component unmount
+	// Initialize funnel chart when canvas and data are available
+	afterUpdate(async () => {
+		if (browser && funnelCanvas && analyticsData && !funnelChart && analyticsData.funnelData) {
+			const { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend } =
+				await import('chart.js');
+
+			// Register required components if not already registered
+			Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
+
+			// Sort steps in the correct wizard order
+			const stepOrder = {
+				homepage: 0,
+				yourself: 1,
+				download: 2,
+				email: 3,
+				bunker: 4,
+				follow: 5
+			};
+
+			const sortedFunnelData = [...analyticsData.funnelData].sort(
+				(a, b) =>
+					stepOrder[a.step_name as keyof typeof stepOrder] -
+					stepOrder[b.step_name as keyof typeof stepOrder]
+			);
+
+			// Format step names for display (capitalize first letter)
+			const labels = sortedFunnelData.map(
+				(step) => step.step_name.charAt(0).toUpperCase() + step.step_name.slice(1)
+			);
+
+			// Extract data series
+			const completedData = sortedFunnelData.map((step) => step.completed);
+			const skippedData = sortedFunnelData.map((step) => step.skipped);
+
+			// Detect dark mode
+			const isDarkMode =
+				document.documentElement.classList.contains('dark') ||
+				document.body.classList.contains('dark') ||
+				window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+			// Set chart colors based on theme
+			const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+			const textColor = isDarkMode ? '#e5e7eb' : '#4b5563';
+
+			const ctx = funnelCanvas.getContext('2d');
+			if (ctx) {
+				// Create the chart
+				funnelChart = new Chart(ctx, {
+					type: 'bar',
+					data: {
+						labels,
+						datasets: [
+							{
+								label: 'Completed',
+								data: completedData,
+								backgroundColor: '#10b981', // green
+								borderColor: '#059669',
+								borderWidth: 1
+							},
+							{
+								label: 'Skipped',
+								data: skippedData,
+								backgroundColor: '#f59e0b', // amber
+								borderColor: '#d97706',
+								borderWidth: 1
+							}
+						]
+					},
+					options: {
+						indexAxis: 'y', // This makes it a horizontal bar chart
+						responsive: true,
+						maintainAspectRatio: false,
+						plugins: {
+							legend: {
+								position: 'top',
+								labels: {
+									usePointStyle: true,
+									boxWidth: 6,
+									color: textColor
+								}
+							},
+							tooltip: {
+								mode: 'index',
+								intersect: true,
+								backgroundColor: isDarkMode ? '#374151' : 'white',
+								titleColor: textColor,
+								bodyColor: textColor,
+								borderColor: isDarkMode ? '#4b5563' : '#e5e7eb',
+								borderWidth: 1,
+								callbacks: {
+									// Add total and percentage information
+									title: function (tooltipItems) {
+										const stepIndex = tooltipItems[0].dataIndex;
+										const stepName =
+											sortedFunnelData[stepIndex].step_name.charAt(0).toUpperCase() +
+											sortedFunnelData[stepIndex].step_name.slice(1);
+										const totalUsers = sortedFunnelData[stepIndex].total;
+										return [`${stepName} (Total: ${totalUsers} users)`];
+									},
+									label: function (context) {
+										const stepIndex = context.dataIndex;
+										const datasetIndex = context.datasetIndex;
+										const datasetLabel = context.dataset.label || '';
+										const value = context.parsed.x;
+
+										const totalForStep = sortedFunnelData[stepIndex].total;
+										const percentage =
+											totalForStep > 0 ? ((value / totalForStep) * 100).toFixed(1) : '0';
+
+										return `${datasetLabel}: ${value} (${percentage}%)`;
+									}
+								}
+							}
+						},
+						scales: {
+							x: {
+								stacked: true,
+								beginAtZero: true,
+								grid: {
+									color: gridColor,
+									drawBorder: false
+								},
+								ticks: {
+									color: textColor
+								}
+							},
+							y: {
+								stacked: true,
+								grid: {
+									display: false
+								},
+								ticks: {
+									color: textColor
+								}
+							}
+						}
+					}
+				});
+			}
+		}
+	});
+
+	// Clean up charts on component unmount
 	onMount(() => {
 		return () => {
 			if (chart) {
 				chart.destroy();
+			}
+			if (funnelChart) {
+				funnelChart.destroy();
 			}
 		};
 	});
@@ -281,7 +428,7 @@
 				</div>
 			</div>
 
-			<!-- Chart -->
+			<!-- Activity Chart -->
 			<div class="mb-8 rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
 				<h2 class="mb-4 text-lg font-medium text-gray-800 dark:text-white">
 					Wizard activity (90 Days)
@@ -298,6 +445,84 @@
 						</div>
 					{/if}
 				</div>
+			</div>
+
+			<!-- Funnel Visualization -->
+			<div class="mb-8 rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
+				<h2 class="mb-4 text-lg font-medium text-gray-800 dark:text-white">
+					Wizard funnel analysis
+				</h2>
+				<div class="h-96">
+					{#if browser && analyticsData && analyticsData.funnelData}
+						<canvas id="funnelChart" bind:this={funnelCanvas}></canvas>
+					{:else}
+						<div class="flex h-full items-center justify-center">
+							<div
+								class="h-12 w-12 animate-spin rounded-full border-b-2 border-t-2 border-blue-500"
+							></div>
+						</div>
+					{/if}
+				</div>
+
+				{#if browser && analyticsData && analyticsData.funnelData}
+					<div class="mt-6 rounded-lg border border-gray-200 p-4 dark:border-gray-700">
+						<h3 class="text-md mb-2 font-medium text-gray-800 dark:text-white">Funnel insights</h3>
+						<ul class="list-disc pl-5 text-sm text-gray-600 dark:text-gray-300">
+							<li class="mb-1">
+								The horizontal bars show the number of users at each step of the wizard
+							</li>
+							<li class="mb-1">
+								<span class="font-medium text-green-600 dark:text-green-400">Green</span> segments represent
+								users who completed the step
+							</li>
+							<li class="mb-1">
+								<span class="font-medium text-yellow-500 dark:text-yellow-400">Yellow</span> segments
+								represent users who skipped the step
+							</li>
+							<li class="mb-1">
+								{#if analyticsData.funnelData.length > 0}
+									The biggest drop-off occurs between
+									{(() => {
+										const stepOrder = [
+											'homepage',
+											'yourself',
+											'download',
+											'email',
+											'bunker',
+											'follow'
+										];
+										const sortedSteps = [...analyticsData.funnelData].sort(
+											(a, b) => stepOrder.indexOf(a.step_name) - stepOrder.indexOf(b.step_name)
+										);
+
+										let biggestDropoff = { fromStep: '', toStep: '', percentage: 0 };
+
+										for (let i = 0; i < sortedSteps.length - 1; i++) {
+											const currentTotal = sortedSteps[i].total;
+											const nextTotal = sortedSteps[i + 1].total;
+
+											if (currentTotal > 0) {
+												const dropPercentage = ((currentTotal - nextTotal) / currentTotal) * 100;
+
+												if (dropPercentage > biggestDropoff.percentage) {
+													biggestDropoff = {
+														fromStep: sortedSteps[i].step_name,
+														toStep: sortedSteps[i + 1].step_name,
+														percentage: dropPercentage
+													};
+												}
+											}
+										}
+
+										return `<span class="font-medium">${biggestDropoff.fromStep}</span> and <span class="font-medium">${biggestDropoff.toStep}</span> (${biggestDropoff.percentage.toFixed(1)}% drop)`;
+									})()}
+								{:else}
+									Not enough data to determine drop-off points yet
+								{/if}
+							</li>
+						</ul>
+					</div>
+				{/if}
 			</div>
 
 			<!-- Top Sources Table -->

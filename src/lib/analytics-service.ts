@@ -7,6 +7,13 @@ export interface SourceStats {
 	completed: number;
 }
 
+export interface FunnelStep {
+	step_name: string;
+	total: number;
+	completed: number;
+	skipped: number;
+}
+
 export interface AnalyticsSummary {
 	totalSessions: number;
 	completedSessions: number;
@@ -16,6 +23,7 @@ export interface AnalyticsSummary {
 	followCompletedSessions: number;
 	dailyStats: DailyStats[];
 	topSources: SourceStats[];
+	funnelData: FunnelStep[];
 }
 
 export interface DailyStats {
@@ -68,33 +76,33 @@ export class AnalyticsService {
        WHERE ws.completed = 0 AND date(ws.start_time) >= date(?)`,
 			[ninetyDaysAgoStr]
 		);
-		
+
 		// Get step-specific completions
 		const emailCompletedSessions = await db.get<{ count: number }>(
 			`SELECT COUNT(DISTINCT ws.session_id) as count
        FROM wizard_sessions ws
        JOIN wizard_steps wst ON ws.session_id = wst.session_id
-       WHERE wst.step_name = 'email' 
+       WHERE wst.step_name = 'email'
          AND wst.completed = 1
          AND date(ws.start_time) >= date(?)`,
 			[ninetyDaysAgoStr]
 		);
-		
+
 		const bunkerCompletedSessions = await db.get<{ count: number }>(
 			`SELECT COUNT(DISTINCT ws.session_id) as count
        FROM wizard_sessions ws
        JOIN wizard_steps wst ON ws.session_id = wst.session_id
-       WHERE wst.step_name = 'bunker' 
+       WHERE wst.step_name = 'bunker'
          AND wst.completed = 1
          AND date(ws.start_time) >= date(?)`,
 			[ninetyDaysAgoStr]
 		);
-		
+
 		const followCompletedSessions = await db.get<{ count: number }>(
 			`SELECT COUNT(DISTINCT ws.session_id) as count
        FROM wizard_sessions ws
        JOIN wizard_steps wst ON ws.session_id = wst.session_id
-       WHERE wst.step_name LIKE 'follow%' 
+       WHERE wst.step_name LIKE 'follow%'
          AND wst.completed = 1
          AND date(ws.start_time) >= date(?)`,
 			[ninetyDaysAgoStr]
@@ -165,7 +173,7 @@ export class AnalyticsService {
            AND (app_name IS NOT NULL OR app_type IS NOT NULL)
          GROUP BY source
        ),
-       
+
        referrer_sources AS (
          -- Referrers
          SELECT
@@ -179,15 +187,15 @@ export class AnalyticsService {
            AND referrer != ''
          GROUP BY referrer
        ),
-       
+
        all_sources AS (
          SELECT source, sessions, completed FROM app_sources
          UNION ALL
          SELECT source, sessions, completed FROM referrer_sources
        )
-       
-       SELECT 
-         source, 
+
+       SELECT
+         source,
          SUM(sessions) as sessions,
          SUM(completed) as completed
        FROM all_sources
@@ -197,6 +205,113 @@ export class AnalyticsService {
        LIMIT 30`,
 			[ninetyDaysAgoStr, ninetyDaysAgoStr]
 		);
+
+		// Get funnel data for wizard steps
+		const funnelStepNames = ['homepage', 'yourself', 'download', 'email', 'bunker', 'follow'];
+
+		// Get counts for each step
+		const stepCounts = await db.all<{
+			step_name: string;
+			total: number;
+			completed: number;
+			skipped: number;
+		}>(
+			`SELECT
+				step_name,
+				COUNT(*) as total,
+				SUM(CASE WHEN completed = 1 THEN 1 ELSE 0 END) as completed,
+				SUM(CASE WHEN skipped = 1 THEN 1 ELSE 0 END) as skipped
+			FROM wizard_steps
+			WHERE step_name IN ('homepage', 'yourself', 'download', 'email', 'bunker', 'follow')
+				AND date(entered_time) >= date(?)
+			GROUP BY step_name`,
+			[ninetyDaysAgoStr]
+		);
+
+		// Get total completed sessions to check for missing steps
+		const totalSessionsWithSteps = await db.all<{ session_id: string; completed: number }>(
+			`SELECT ws.session_id, ws.completed
+			FROM wizard_sessions ws
+			WHERE date(ws.start_time) >= date(?)`,
+			[ninetyDaysAgoStr]
+		);
+
+		// Map to track which sessions have follow or bunker steps
+		const sessionSteps = new Map<string, Set<string>>();
+
+		// Get all steps for all sessions
+		const allSessionSteps = await db.all<{ session_id: string; step_name: string }>(
+			`SELECT session_id, step_name
+			FROM wizard_steps
+			WHERE date(entered_time) >= date(?)`,
+			[ninetyDaysAgoStr]
+		);
+
+		// Populate the sessionSteps map
+		for (const { session_id, step_name } of allSessionSteps) {
+			if (!sessionSteps.has(session_id)) {
+				sessionSteps.set(session_id, new Set());
+			}
+			sessionSteps.get(session_id)?.add(step_name);
+		}
+
+		// Process the funnel data with special handling for bunker and follow steps
+		const funnelData: FunnelStep[] = [];
+
+		// Create a map of existing step data
+		const stepDataMap = new Map<string, { total: number; completed: number; skipped: number }>();
+		for (const step of stepCounts) {
+			stepDataMap.set(step.step_name, {
+				total: step.total,
+				completed: step.completed,
+				skipped: step.skipped
+			});
+		}
+
+		// Make sure the homepage has at least the totalSessions count
+		if (!stepDataMap.has('homepage') || stepDataMap.get('homepage')!.total < totalSessions.count) {
+			stepDataMap.set('homepage', {
+				total: totalSessions.count || 0,
+				completed: totalSessions.count || 0,
+				skipped: 0
+			});
+		}
+
+		// Initialize funnel steps with data from DB
+		for (const stepName of funnelStepNames) {
+			const stepData = stepDataMap.get(stepName) || { total: 0, completed: 0, skipped: 0 };
+			funnelData.push({
+				step_name: stepName,
+				total: stepData.total,
+				completed: stepData.completed,
+				skipped: stepData.skipped
+			});
+		}
+
+		// Process each session to handle missing bunker and follow steps
+		for (const { session_id, completed } of totalSessionsWithSteps) {
+			const steps = sessionSteps.get(session_id) || new Set();
+
+			// Check if session is completed but missing bunker step
+			if (completed && !steps.has('bunker')) {
+				// Find bunker in funnelData and increment skipped
+				const bunkerStep = funnelData.find((s) => s.step_name === 'bunker');
+				if (bunkerStep) {
+					bunkerStep.skipped += 1;
+					bunkerStep.total += 1;
+				}
+			}
+
+			// Check if session is completed but missing follow step
+			if (completed && !steps.has('follow')) {
+				// Find follow in funnelData and increment skipped
+				const followStep = funnelData.find((s) => s.step_name === 'follow');
+				if (followStep) {
+					followStep.skipped += 1;
+					followStep.total += 1;
+				}
+			}
+		}
 
 		await this.wizardAnalytics.close();
 
@@ -208,7 +323,8 @@ export class AnalyticsService {
 			bunkerCompletedSessions: bunkerCompletedSessions?.count || 0,
 			followCompletedSessions: followCompletedSessions?.count || 0,
 			dailyStats: dailyStats || [],
-			topSources: topSources || []
+			topSources: topSources || [],
+			funnelData
 		};
 	}
 }
