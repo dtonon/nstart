@@ -11,6 +11,9 @@ export interface AnalyticsSummary {
 	totalSessions: number;
 	completedSessions: number;
 	partialSessions: number;
+	emailCompletedSessions: number;
+	bunkerCompletedSessions: number;
+	followCompletedSessions: number;
 	dailyStats: DailyStats[];
 	topSources: SourceStats[];
 }
@@ -63,6 +66,37 @@ export class AnalyticsService {
        FROM wizard_sessions ws
        JOIN wizard_steps wst ON ws.session_id = wst.session_id
        WHERE ws.completed = 0 AND date(ws.start_time) >= date(?)`,
+			[ninetyDaysAgoStr]
+		);
+		
+		// Get step-specific completions
+		const emailCompletedSessions = await db.get<{ count: number }>(
+			`SELECT COUNT(DISTINCT ws.session_id) as count
+       FROM wizard_sessions ws
+       JOIN wizard_steps wst ON ws.session_id = wst.session_id
+       WHERE wst.step_name = 'email' 
+         AND wst.completed = 1
+         AND date(ws.start_time) >= date(?)`,
+			[ninetyDaysAgoStr]
+		);
+		
+		const bunkerCompletedSessions = await db.get<{ count: number }>(
+			`SELECT COUNT(DISTINCT ws.session_id) as count
+       FROM wizard_sessions ws
+       JOIN wizard_steps wst ON ws.session_id = wst.session_id
+       WHERE wst.step_name = 'bunker' 
+         AND wst.completed = 1
+         AND date(ws.start_time) >= date(?)`,
+			[ninetyDaysAgoStr]
+		);
+		
+		const followCompletedSessions = await db.get<{ count: number }>(
+			`SELECT COUNT(DISTINCT ws.session_id) as count
+       FROM wizard_sessions ws
+       JOIN wizard_steps wst ON ws.session_id = wst.session_id
+       WHERE wst.step_name LIKE 'follow%' 
+         AND wst.completed = 1
+         AND date(ws.start_time) >= date(?)`,
 			[ninetyDaysAgoStr]
 		);
 
@@ -170,6 +204,9 @@ export class AnalyticsService {
 			totalSessions: totalSessions?.count || 0,
 			completedSessions: completedSessions?.count || 0,
 			partialSessions: partialSessions?.count || 0,
+			emailCompletedSessions: emailCompletedSessions?.count || 0,
+			bunkerCompletedSessions: bunkerCompletedSessions?.count || 0,
+			followCompletedSessions: followCompletedSessions?.count || 0,
 			dailyStats: dailyStats || [],
 			topSources: topSources || []
 		};

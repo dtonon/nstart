@@ -191,7 +191,7 @@
 				<span class="block sm:inline">Failed to load analytics data. Please try again later.</span>
 			</div>
 		{:else if analyticsData}
-			<!-- Stats Cards -->
+			<!-- Stats Cards - First Row -->
 			<div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
 				<!-- Total Sessions -->
 				<div class="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
@@ -216,7 +216,7 @@
 				<!-- Partial Sessions -->
 				<div class="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
 					<h2 class="mb-2 text-sm font-medium uppercase text-gray-500 dark:text-gray-400">
-						Abandoned
+						Partial completions
 					</h2>
 					<p class="text-4xl font-bold text-yellow-600 dark:text-yellow-400">
 						{analyticsData.partialSessions}
@@ -224,9 +224,68 @@
 				</div>
 			</div>
 
+			<!-- Stats Cards - Second Row (Step Completions) -->
+			<div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
+				<!-- Email Step Completed -->
+				<div class="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
+					<h2 class="mb-2 text-sm font-medium uppercase text-gray-500 dark:text-gray-400">
+						Email step completed
+					</h2>
+					<p class="text-4xl font-bold text-blue-600 dark:text-blue-400">
+						{analyticsData.emailCompletedSessions}
+					</p>
+					<p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+						{analyticsData.completedSessions > 0
+							? (
+									(analyticsData.emailCompletedSessions / analyticsData.completedSessions) *
+									100
+								).toFixed(1)
+							: 0}% of total sessions
+					</p>
+				</div>
+
+				<!-- Bunker Step Completed -->
+				<div class="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
+					<h2 class="mb-2 text-sm font-medium uppercase text-gray-500 dark:text-gray-400">
+						Bunker step completed
+					</h2>
+					<p class="text-4xl font-bold text-purple-600 dark:text-purple-400">
+						{analyticsData.bunkerCompletedSessions}
+					</p>
+					<p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+						{analyticsData.completedSessions > 0
+							? (
+									(analyticsData.bunkerCompletedSessions / analyticsData.completedSessions) *
+									100
+								).toFixed(1)
+							: 0}% of total sessions
+					</p>
+				</div>
+
+				<!-- Follow Step Completed -->
+				<div class="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
+					<h2 class="mb-2 text-sm font-medium uppercase text-gray-500 dark:text-gray-400">
+						Follow step completed
+					</h2>
+					<p class="text-4xl font-bold text-indigo-600 dark:text-indigo-400">
+						{analyticsData.followCompletedSessions}
+					</p>
+					<p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+						{analyticsData.completedSessions > 0
+							? (
+									(analyticsData.followCompletedSessions / analyticsData.completedSessions) *
+									100
+								).toFixed(1)
+							: 0}% of total sessions
+					</p>
+				</div>
+			</div>
+
 			<!-- Chart -->
 			<div class="mb-8 rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
-				<h2 class="mb-4 text-lg font-medium text-gray-800 dark:text-white">Wizard activity</h2>
+				<h2 class="mb-4 text-lg font-medium text-gray-800 dark:text-white">
+					Wizard activity (90 Days)
+				</h2>
 				<div class="h-96">
 					{#if browser && analyticsData}
 						<!-- Use plain Chart.js -->
@@ -265,6 +324,12 @@
 										scope="col"
 										class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400"
 									>
+										Completed
+									</th>
+									<th
+										scope="col"
+										class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400"
+									>
 										% of Total
 									</th>
 								</tr>
@@ -287,6 +352,16 @@
 											class="whitespace-nowrap px-6 py-4 text-sm text-gray-500 dark:text-gray-300"
 										>
 											{source.sessions}
+										</td>
+										<td
+											class="whitespace-nowrap px-6 py-4 text-sm text-gray-500 dark:text-gray-300"
+										>
+											<span class="text-green-600 dark:text-green-400">{source.completed}</span>
+											<span class="text-xs text-gray-400 dark:text-gray-500">
+												({source.sessions > 0
+													? ((source.completed / source.sessions) * 100).toFixed(1)
+													: 0}%)
+											</span>
 										</td>
 										<td
 											class="whitespace-nowrap px-6 py-4 text-sm text-gray-500 dark:text-gray-300"
