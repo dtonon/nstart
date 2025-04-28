@@ -72,8 +72,8 @@
 					window.matchMedia('(prefers-color-scheme: dark)').matches;
 
 				// Set chart colors based on theme
-				const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
-				const textColor = isDarkMode ? '#e5e7eb' : '#4b5563';
+				const gridColor = 'oklch(37.4% 0.01 67.558)'; // neutral-500
+				const textColor = 'oklch(86.9% 0.005 56.366)'; // neutral-300
 
 				// Create the chart
 				chart = new Chart(ctx, {
@@ -84,8 +84,8 @@
 							{
 								label: 'Total Visits',
 								data: totalData,
-								borderColor: '#6b7280', // gray-500, matching the dark text color
-								backgroundColor: 'rgba(107, 114, 128, 0.1)',
+								borderColor: 'oklch(97% 0 0)',
+								backgroundColor: 'oklch(97% 0 0)', // neutral-100
 								borderWidth: 2,
 								tension: 0.3,
 								pointRadius: 0,
@@ -94,8 +94,8 @@
 							{
 								label: 'Started Wizard',
 								data: partialData.map((partial, i) => partial + completedData[i]), // Sum of partial + completed
-								borderColor: '#f59e0b', // yellow-500
-								backgroundColor: 'rgba(245, 158, 11, 0.1)',
+								borderColor: 'oklch(82.8% 0.189 84.429)', // amber-400
+								backgroundColor: 'oklch(82.8% 0.189 84.429)',
 								borderWidth: 2,
 								tension: 0.3,
 								pointRadius: 0,
@@ -104,8 +104,8 @@
 							{
 								label: 'Completed Wizard',
 								data: completedData,
-								borderColor: '#10b981', // green-500
-								backgroundColor: 'rgba(16, 185, 129, 0.1)',
+								borderColor: 'oklch(69.6% 0.17 162.48)', // emerald-500
+								backgroundColor: 'oklch(69.6% 0.17 162.48)',
 								borderWidth: 2,
 								tension: 0.3,
 								pointRadius: 0,
@@ -126,16 +126,19 @@
 								labels: {
 									usePointStyle: true,
 									boxWidth: 6,
-									color: textColor
+									color: textColor,
+									pointStyle: 'circle',
+									pointStyleWidth: 16,
+									padding: 20
 								}
 							},
 							tooltip: {
 								mode: 'index',
 								intersect: false,
-								backgroundColor: isDarkMode ? '#374151' : 'white',
+								backgroundColor: 'oklch(43.9% 0 0)',
 								titleColor: textColor,
 								bodyColor: textColor,
-								borderColor: isDarkMode ? '#4b5563' : '#e5e7eb',
+								borderColor: 'oklch(43.9% 0 0)',
 								borderWidth: 1
 							}
 						},
@@ -199,7 +202,9 @@
 			const completedData = sortedFunnelData.map((step) => step.completed);
 			const skippedData = sortedFunnelData.map((step) => step.skipped);
 			// Calculate abandoned users (total - completed - skipped)
-			const abandonedData = sortedFunnelData.map((step) => step.total - step.completed - step.skipped);
+			const abandonedData = sortedFunnelData.map(
+				(step) => step.total - step.completed - step.skipped
+			);
 
 			// Detect dark mode
 			const isDarkMode =
@@ -208,8 +213,8 @@
 				window.matchMedia('(prefers-color-scheme: dark)').matches;
 
 			// Set chart colors based on theme
-			const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
-			const textColor = isDarkMode ? '#e5e7eb' : '#4b5563';
+			const gridColor = 'oklch(37.4% 0.01 67.558)'; // neutral-500
+			const textColor = 'oklch(86.9% 0.005 56.366)'; // neutral-300
 
 			const ctx = funnelCanvas.getContext('2d');
 			if (ctx) {
@@ -222,23 +227,23 @@
 							{
 								label: 'Completed',
 								data: completedData,
-								backgroundColor: '#10b981', // green
-								borderColor: '#059669',
-								borderWidth: 1
+								backgroundColor: 'oklch(69.6% 0.17 162.48)', // emerald-500
+								borderColor: 'oklch(69.6% 0.17 162.48)',
+								borderWidth: 2
 							},
 							{
 								label: 'Skipped',
 								data: skippedData,
-								backgroundColor: '#f59e0b', // amber
-								borderColor: '#d97706',
-								borderWidth: 1
+								backgroundColor: 'oklch(84.5% 0.143 164.978)', // emerald-200
+								borderColor: 'oklch(84.5% 0.143 164.978)',
+								borderWidth: 2
 							},
 							{
 								label: 'Abandoned',
 								data: abandonedData,
-								backgroundColor: '#94a3b8', // slate-400, grey
-								borderColor: '#64748b', // slate-500
-								borderWidth: 1
+								backgroundColor: 'oklch(70.4% 0.191 22.216)', // slate-400, grey
+								borderColor: 'oklch(70.4% 0.191 22.216)',
+								borderWidth: 2
 							}
 						]
 					},
@@ -252,16 +257,19 @@
 								labels: {
 									usePointStyle: true,
 									boxWidth: 6,
-									color: textColor
+									color: textColor,
+									pointStyle: 'circle',
+									pointStyleWidth: 16,
+									padding: 20
 								}
 							},
 							tooltip: {
 								mode: 'index',
 								intersect: true,
-								backgroundColor: isDarkMode ? '#374151' : 'white',
+								backgroundColor: 'oklch(43.9% 0 0)',
 								titleColor: textColor,
 								bodyColor: textColor,
-								borderColor: isDarkMode ? '#4b5563' : '#e5e7eb',
+								borderColor: 'oklch(43.9% 0 0)',
 								borderWidth: 1,
 								callbacks: {
 									// Add total and percentage information
@@ -329,9 +337,9 @@
 	});
 </script>
 
-<div class="min-h-screen bg-white p-8 dark:bg-gray-900">
+<div class="min-h-screen bg-neutral-900 p-8 pb-32">
 	<div class="mx-auto max-w-6xl">
-		<h1 class="mb-8 text-3xl font-bold text-gray-800 dark:text-white">Analytics dashboard</h1>
+		<h1 class="mb-8 text-3xl font-bold text-white">Nstart Analytics</h1>
 
 		{#if loading}
 			<div class="flex h-64 items-center justify-center">
@@ -350,32 +358,26 @@
 			<!-- Stats Cards - First Row -->
 			<div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
 				<!-- Total Sessions -->
-				<div class="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
-					<h2 class="mb-2 text-sm font-medium uppercase text-gray-500 dark:text-gray-400">
-						Total visits
-					</h2>
-					<p class="text-4xl font-bold text-gray-900 dark:text-white">
+				<div class="rounded-lg bg-neutral-800 p-6">
+					<h2 class="mb-2 text-sm font-medium uppercase text-neutral-300">Total visits</h2>
+					<p class="text-4xl font-bold text-white">
 						{analyticsData.totalSessions}
 					</p>
 				</div>
 
-				<!-- Completed Sessions -->
-				<div class="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
-					<h2 class="mb-2 text-sm font-medium uppercase text-gray-500 dark:text-gray-400">
-						Completed wizards
-					</h2>
-					<p class="text-4xl font-bold text-green-600 dark:text-green-400">
-						{analyticsData.completedSessions}
+				<!-- Started wizards -->
+				<div class="rounded-lg bg-neutral-800 p-6">
+					<h2 class="mb-2 text-sm font-medium uppercase text-neutral-300">Started wizards</h2>
+					<p class="text-4xl font-bold text-amber-400">
+						{analyticsData.partialSessions + analyticsData.completedSessions}
 					</p>
 				</div>
 
-				<!-- Partial Sessions -->
-				<div class="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
-					<h2 class="mb-2 text-sm font-medium uppercase text-gray-500 dark:text-gray-400">
-						Partial completions
-					</h2>
-					<p class="text-4xl font-bold text-yellow-600 dark:text-yellow-400">
-						{analyticsData.partialSessions}
+				<!-- Completed Sessions -->
+				<div class="rounded-lg bg-neutral-800 p-6">
+					<h2 class="mb-2 text-sm font-medium uppercase text-neutral-300">Completed wizards</h2>
+					<p class="text-4xl font-bold text-emerald-500">
+						{analyticsData.completedSessions}
 					</p>
 				</div>
 			</div>
@@ -383,65 +385,57 @@
 			<!-- Stats Cards - Second Row (Step Completions) -->
 			<div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
 				<!-- Email Step Completed -->
-				<div class="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
-					<h2 class="mb-2 text-sm font-medium uppercase text-gray-500 dark:text-gray-400">
-						Email step completed
-					</h2>
-					<p class="text-4xl font-bold text-blue-600 dark:text-blue-400">
+				<div class="rounded-lg bg-neutral-800 p-6">
+					<h2 class="mb-2 text-sm font-medium uppercase text-neutral-300">Backup email sent</h2>
+					<p class="text-4xl font-bold text-blue-400">
 						{analyticsData.emailCompletedSessions}
 					</p>
-					<p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-						{analyticsData.completedSessions > 0
+					<p class="mt-1 text-sm text-neutral-400">
+						in {analyticsData.completedSessions > 0
 							? (
 									(analyticsData.emailCompletedSessions / analyticsData.completedSessions) *
 									100
 								).toFixed(1)
-							: 0}% of total sessions
+							: 0}% of completed wizards
 					</p>
 				</div>
 
 				<!-- Bunker Step Completed -->
-				<div class="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
-					<h2 class="mb-2 text-sm font-medium uppercase text-gray-500 dark:text-gray-400">
-						Bunker step completed
-					</h2>
-					<p class="text-4xl font-bold text-purple-600 dark:text-purple-400">
+				<div class="rounded-lg bg-neutral-800 p-6">
+					<h2 class="mb-2 text-sm font-medium uppercase text-neutral-300">Bunker created</h2>
+					<p class="text-4xl font-bold text-blue-400">
 						{analyticsData.bunkerCompletedSessions}
 					</p>
-					<p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-						{analyticsData.completedSessions > 0
+					<p class="mt-1 text-sm text-neutral-400">
+						in {analyticsData.completedSessions > 0
 							? (
 									(analyticsData.bunkerCompletedSessions / analyticsData.completedSessions) *
 									100
 								).toFixed(1)
-							: 0}% of total sessions
+							: 0}% of completed wizards
 					</p>
 				</div>
 
 				<!-- Follow Step Completed -->
-				<div class="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
-					<h2 class="mb-2 text-sm font-medium uppercase text-gray-500 dark:text-gray-400">
-						Follow step completed
-					</h2>
-					<p class="text-4xl font-bold text-indigo-600 dark:text-indigo-400">
+				<div class="rounded-lg bg-neutral-800 p-6">
+					<h2 class="mb-2 text-sm font-medium uppercase text-neutral-300">Followed someone</h2>
+					<p class="text-4xl font-bold text-blue-400">
 						{analyticsData.followCompletedSessions}
 					</p>
-					<p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-						{analyticsData.completedSessions > 0
+					<p class="mt-1 text-sm text-neutral-400">
+						in {analyticsData.completedSessions > 0
 							? (
 									(analyticsData.followCompletedSessions / analyticsData.completedSessions) *
 									100
 								).toFixed(1)
-							: 0}% of total sessions
+							: 0}% of completed wizards
 					</p>
 				</div>
 			</div>
 
 			<!-- Activity Chart -->
-			<div class="mb-8 rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
-				<h2 class="mb-4 text-lg font-medium text-gray-800 dark:text-white">
-					Wizard activity (90 Days)
-				</h2>
+			<div class="mb-8 rounded-lg bg-neutral-800 p-6">
+				<h2 class="text-lg font-medium text-white">Visits and wizard sessions</h2>
 				<div class="h-96">
 					{#if browser && analyticsData}
 						<!-- Use plain Chart.js -->
@@ -457,10 +451,8 @@
 			</div>
 
 			<!-- Funnel Visualization -->
-			<div class="mb-8 rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
-				<h2 class="mb-4 text-lg font-medium text-gray-800 dark:text-white">
-					Wizard funnel analysis
-				</h2>
+			<div class="mb-8 rounded-lg bg-neutral-800 p-6">
+				<h2 class="mb-4 text-lg font-medium text-white">Wizard funnel analysis</h2>
 				<div class="h-96">
 					{#if browser && analyticsData && analyticsData.funnelData}
 						<canvas id="funnelChart" bind:this={funnelCanvas}></canvas>
@@ -472,141 +464,59 @@
 						</div>
 					{/if}
 				</div>
-
-				{#if browser && analyticsData && analyticsData.funnelData}
-					<div class="mt-6 rounded-lg border border-gray-200 p-4 dark:border-gray-700">
-						<h3 class="text-md mb-2 font-medium text-gray-800 dark:text-white">Funnel insights</h3>
-						<ul class="list-disc pl-5 text-sm text-gray-600 dark:text-gray-300">
-							<li class="mb-1">
-								The horizontal bars show the number of users at each step of the wizard
-							</li>
-							<li class="mb-1">
-								<span class="font-medium text-green-600 dark:text-green-400">Green</span> segments represent
-								users who completed the step
-							</li>
-							<li class="mb-1">
-								<span class="font-medium text-yellow-500 dark:text-yellow-400">Yellow</span> segments
-								represent users who skipped the step
-							</li>
-							<li class="mb-1">
-								<span class="font-medium text-slate-400 dark:text-slate-400">Grey</span> segments
-								represent users who abandoned the step
-							</li>
-							<li class="mb-1">
-								{#if analyticsData.funnelData.length > 0}
-									The biggest drop-off occurs between
-									{(() => {
-										const stepOrder = [
-											'homepage',
-											'yourself',
-											'download',
-											'email',
-											'bunker',
-											'follow'
-										];
-										const sortedSteps = [...analyticsData.funnelData].sort(
-											(a, b) => stepOrder.indexOf(a.step_name) - stepOrder.indexOf(b.step_name)
-										);
-
-										let biggestDropoff = { fromStep: '', toStep: '', percentage: 0 };
-
-										for (let i = 0; i < sortedSteps.length - 1; i++) {
-											const currentTotal = sortedSteps[i].total;
-											const nextTotal = sortedSteps[i + 1].total;
-
-											if (currentTotal > 0) {
-												const dropPercentage = ((currentTotal - nextTotal) / currentTotal) * 100;
-
-												if (dropPercentage > biggestDropoff.percentage) {
-													biggestDropoff = {
-														fromStep: sortedSteps[i].step_name,
-														toStep: sortedSteps[i + 1].step_name,
-														percentage: dropPercentage
-													};
-												}
-											}
-										}
-
-										return `<span class="font-medium">${biggestDropoff.fromStep}</span> and <span class="font-medium">${biggestDropoff.toStep}</span> (${biggestDropoff.percentage.toFixed(1)}% drop)`;
-									})()}
-								{:else}
-									Not enough data to determine drop-off points yet
-								{/if}
-							</li>
-						</ul>
-					</div>
-				{/if}
 			</div>
 
 			<!-- Top Sources Table -->
-			<div class="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
-				<h2 class="mb-4 text-lg font-medium text-gray-800 dark:text-white">Top 30 sources</h2>
+			<div class="rounded-lg bg-neutral-800">
+				<h2 class="mb-4 p-6 text-lg font-medium text-white">Top 30 sources</h2>
 				{#if analyticsData.topSources && analyticsData.topSources.length > 0}
 					<div class="overflow-x-auto">
-						<table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-							<thead class="bg-gray-50 dark:bg-gray-900">
+						<table class="min-w-full divide-y divide-neutral-700">
+							<thead class="bg-neutral-900">
 								<tr>
 									<th
 										scope="col"
-										class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400"
+										class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-400"
 									>
 										Source
 									</th>
 									<th
 										scope="col"
-										class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400"
+										class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-400"
 									>
 										Sessions
 									</th>
 									<th
 										scope="col"
-										class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400"
+										class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-400"
 									>
 										Completed
 									</th>
-									<th
-										scope="col"
-										class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400"
-									>
-										% of Total
-									</th>
 								</tr>
 							</thead>
-							<tbody
-								class="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800"
-							>
+							<tbody class="divide-y divide-neutral-700 bg-neutral-800">
 								{#each analyticsData.topSources as source, i}
-									<tr
-										class={i % 2 === 0
-											? 'bg-white dark:bg-gray-800'
-											: 'bg-gray-50 dark:bg-gray-700'}
-									>
+									<tr class={i % 2 === 0 ? 'bg-neutral-800' : 'bg-neutral-700'}>
 										<td
-											class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900 dark:text-white"
+											class="max-w-lg overflow-hidden text-ellipsis whitespace-nowrap px-6 py-4 text-sm font-medium text-neutral-100"
 										>
 											{source.source}
 										</td>
-										<td
-											class="whitespace-nowrap px-6 py-4 text-sm text-gray-500 dark:text-gray-300"
-										>
+										<td class="whitespace-nowrap px-6 py-4 text-sm text-neutral-100">
 											{source.sessions}
+											<span class="text-xs text-neutral-300">
+												({analyticsData.totalSessions > 0
+													? ((source.sessions / analyticsData.totalSessions) * 100).toFixed(1)
+													: 0}%)
+											</span>
 										</td>
-										<td
-											class="whitespace-nowrap px-6 py-4 text-sm text-gray-500 dark:text-gray-300"
-										>
-											<span class="text-green-600 dark:text-green-400">{source.completed}</span>
-											<span class="text-xs text-gray-400 dark:text-gray-500">
+										<td class="whitespace-nowrap px-6 py-4 text-sm text-emerald-500">
+											{source.completed}
+											<span class="text-xs text-neutral-300">
 												({source.sessions > 0
 													? ((source.completed / source.sessions) * 100).toFixed(1)
 													: 0}%)
 											</span>
-										</td>
-										<td
-											class="whitespace-nowrap px-6 py-4 text-sm text-gray-500 dark:text-gray-300"
-										>
-											{analyticsData.totalSessions > 0
-												? ((source.sessions / analyticsData.totalSessions) * 100).toFixed(1)
-												: 0}%
 										</td>
 									</tr>
 								{/each}
@@ -614,7 +524,7 @@
 						</table>
 					</div>
 				{:else}
-					<p class="text-gray-500 dark:text-gray-400">No source data available.</p>
+					<p class="text-neutral-400">No source data available.</p>
 				{/if}
 			</div>
 		{/if}
