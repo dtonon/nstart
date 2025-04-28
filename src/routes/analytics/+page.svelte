@@ -198,6 +198,8 @@
 			// Extract data series
 			const completedData = sortedFunnelData.map((step) => step.completed);
 			const skippedData = sortedFunnelData.map((step) => step.skipped);
+			// Calculate abandoned users (total - completed - skipped)
+			const abandonedData = sortedFunnelData.map((step) => step.total - step.completed - step.skipped);
 
 			// Detect dark mode
 			const isDarkMode =
@@ -229,6 +231,13 @@
 								data: skippedData,
 								backgroundColor: '#f59e0b', // amber
 								borderColor: '#d97706',
+								borderWidth: 1
+							},
+							{
+								label: 'Abandoned',
+								data: abandonedData,
+								backgroundColor: '#94a3b8', // slate-400, grey
+								borderColor: '#64748b', // slate-500
 								borderWidth: 1
 							}
 						]
@@ -478,6 +487,10 @@
 							<li class="mb-1">
 								<span class="font-medium text-yellow-500 dark:text-yellow-400">Yellow</span> segments
 								represent users who skipped the step
+							</li>
+							<li class="mb-1">
+								<span class="font-medium text-slate-400 dark:text-slate-400">Grey</span> segments
+								represent users who abandoned the step
 							</li>
 							<li class="mb-1">
 								{#if analyticsData.funnelData.length > 0}
