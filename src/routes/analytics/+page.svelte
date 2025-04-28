@@ -84,28 +84,28 @@
 							{
 								label: 'Total Visits',
 								data: totalData,
-								borderColor: '#3b82f6',
-								backgroundColor: 'rgba(59, 130, 246, 0.1)',
+								borderColor: '#6b7280', // gray-500, matching the dark text color
+								backgroundColor: 'rgba(107, 114, 128, 0.1)',
 								borderWidth: 2,
 								tension: 0.3,
 								pointRadius: 0,
 								pointHitRadius: 10
 							},
 							{
-								label: 'Completed',
-								data: completedData,
-								borderColor: '#10b981',
-								backgroundColor: 'rgba(16, 185, 129, 0.1)',
-								borderWidth: 2,
-								tension: 0.3,
-								pointRadius: 0,
-								pointHitRadius: 10
-							},
-							{
-								label: 'Partial',
-								data: partialData,
-								borderColor: '#f59e0b',
+								label: 'Started Wizard',
+								data: partialData.map((partial, i) => partial + completedData[i]), // Sum of partial + completed
+								borderColor: '#f59e0b', // yellow-500
 								backgroundColor: 'rgba(245, 158, 11, 0.1)',
+								borderWidth: 2,
+								tension: 0.3,
+								pointRadius: 0,
+								pointHitRadius: 10
+							},
+							{
+								label: 'Completed Wizard',
+								data: completedData,
+								borderColor: '#10b981', // green-500
+								backgroundColor: 'rgba(16, 185, 129, 0.1)',
 								borderWidth: 2,
 								tension: 0.3,
 								pointRadius: 0,
