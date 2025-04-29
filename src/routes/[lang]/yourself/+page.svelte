@@ -32,7 +32,7 @@
 			mineEmail($sk, $pk);
 		}
 
-		await analytics.startStep('youserlf');
+		await analytics.startStep('yourself');
 	});
 
 	function triggerFileInput() {
