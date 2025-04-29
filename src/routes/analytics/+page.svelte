@@ -1,31 +1,17 @@
 <script lang="ts">
 	import { onMount, afterUpdate } from 'svelte';
-	import type { AnalyticsSummary, FunnelStep } from '$lib/analytics-service';
+	import type { AnalyticsSummary } from '$lib/analytics-service';
 	import { browser } from '$app/environment';
+	import type { PageData } from './$types';
 
-	let analyticsData: AnalyticsSummary | null = null;
-	let loading = true;
-	let error = false;
+	export let data: PageData;
+	
+	let analyticsData: AnalyticsSummary | null = data.analyticsData || null;
+	let error = !!data.error;
 	let chartCanvas: HTMLCanvasElement;
 	let funnelCanvas: HTMLCanvasElement;
 	let chart: any = null;
 	let funnelChart: any = null;
-
-	// Fetch data on mount
-	onMount(async () => {
-		try {
-			const response = await fetch('/a/analytics');
-			if (!response.ok) {
-				throw new Error('Failed to fetch analytics data');
-			}
-			analyticsData = await response.json();
-		} catch (err) {
-			console.error('Error loading analytics data:', err);
-			error = true;
-		} finally {
-			loading = false;
-		}
-	});
 
 	// Initialize chart when canvas and data are available
 	afterUpdate(async () => {
@@ -341,13 +327,7 @@
 	<div class="mx-auto max-w-6xl">
 		<h1 class="mb-8 text-3xl font-bold text-white">Nstart Analytics</h1>
 
-		{#if loading}
-			<div class="flex h-64 items-center justify-center">
-				<div
-					class="h-12 w-12 animate-spin rounded-full border-b-2 border-t-2 border-blue-500"
-				></div>
-			</div>
-		{:else if error}
+		{#if error}
 			<div
 				class="relative rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700"
 				role="alert"
