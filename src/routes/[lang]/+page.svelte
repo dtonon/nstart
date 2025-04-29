@@ -29,9 +29,9 @@
 		const params = new URLSearchParams(window.location.search);
 
 		// Set the accent color, if present, otherwise use the store default
-		const accent = params.get('aa');
-		if (accent) {
-			$accent = accent;
+		const accentParam = params.get('aa');
+		if (accentParam) {
+			$accent = accentParam;
 		}
 		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
 
@@ -43,16 +43,18 @@
 		}
 
 		// Manage suggested profiles
-		const followerSuggestions = params.get('s');
-		$followerSuggestions = followerSuggestions ? followerSuggestions.split(',') : [];
+		const followerSuggestionsParam = params.get('s');
+		$followerSuggestions = followerSuggestionsParam
+			? (followerSuggestionsParam.split(',') as any)
+			: [];
 
 		// Manage return back auto-login
-		const callingAppName = params.get('an');
-		$callingAppName = callingAppName;
-		const callingAppType = params.get('at');
-		$callingAppType = callingAppType;
-		const callingAppCode = params.get('ac');
-		$callingAppCode = callingAppCode;
+		const callingAppNameParam = params.get('an');
+		$callingAppName = callingAppNameParam || '';
+		const callingAppTypeParam = params.get('at');
+		$callingAppType = callingAppTypeParam || '';
+		const callingAppCodeParam = params.get('ac');
+		$callingAppCode = callingAppCodeParam || '';
 
 		// If a param is missing, reset all
 		if (!$callingAppName || !$callingAppType || !$callingAppCode) {
@@ -86,10 +88,10 @@
 		}
 
 		// Manage custom relays
-		const readRelays = params.get('awr');
-		$readRelays = readRelays ? readRelays.split(',') : [];
-		const writeRelays = params.get('arr');
-		$writeRelays = writeRelays ? writeRelays.split(',') : [];
+		const readRelaysParam = params.get('awr');
+		$readRelays = readRelaysParam ? (readRelaysParam.split(',') as any) : [];
+		const writeRelaysParam = params.get('arr');
+		$writeRelays = writeRelaysParam ? (writeRelaysParam.split(',') as any) : [];
 
 		// Manage aaf to skip following
 		const skipFollow = params.get('asf');

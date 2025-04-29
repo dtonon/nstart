@@ -1,6 +1,6 @@
 import { availableLanguages, defaultLanguage } from '$lib/i18n/config';
 
-export function load({ params }) {
+export function load({ params }: { params: { lang: string } }) {
 	const { lang } = params;
 
 	// Validate the language

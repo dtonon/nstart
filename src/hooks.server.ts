@@ -1,4 +1,5 @@
 import { env } from '$env/dynamic/private';
+import type { Handle } from '@sveltejs/kit';
 
 function checkBasicAuth(authHeader: string | null): boolean {
 	if (!authHeader) return false;
@@ -13,7 +14,7 @@ function checkBasicAuth(authHeader: string | null): boolean {
 	}
 }
 
-export async function handle({ event, resolve }) {
+export const handle: Handle = async ({ event, resolve }) => {
 	// Check if this is an analytics route
 	if (event.url.pathname.startsWith('/analytics') || event.url.pathname === '/a/analytics') {
 		const authHeader = event.request.headers.get('Authorization');
@@ -29,4 +30,4 @@ export async function handle({ event, resolve }) {
 	}
 
 	return await resolve(event);
-}
+};

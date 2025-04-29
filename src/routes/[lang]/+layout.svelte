@@ -7,7 +7,7 @@
 	import { goto } from '$app/navigation';
 	import ThemeSwitcher from '$lib/ThemeSwitcher.svelte';
 	import LanguageSelector from '$lib/LanguageSelector.svelte';
-	import { availableLanguages, defaultLanguage } from '$lib/i18n/config';
+	import { availableLanguages } from '$lib/i18n/config';
 	import { setLanguage, currentLanguage, translationsLoaded } from '$lib/i18n';
 
 	let isModal = browser && window.self !== window.top;
@@ -37,7 +37,7 @@
 			const configuredTheme = event.data.configuredTheme;
 
 			if (configuredTheme === 'system') {
-				$theme = systemTheme;
+				$theme = systemTheme || 'light';
 			} else {
 				$theme = configuredTheme;
 			}

@@ -59,150 +59,150 @@ export class AnalyticsService {
 		// Get overall summary data
 		const totalSessions = await db.get<{ count: number }>(
 			`SELECT COUNT(*) as count FROM wizard_sessions
-       WHERE date(start_time) >= date(?)`,
+									WHERE date(start_time) >= date(?)`,
 			[ninetyDaysAgoStr]
 		);
 
 		const completedSessions = await db.get<{ count: number }>(
 			`SELECT COUNT(*) as count FROM wizard_sessions
-       WHERE completed = 1 AND date(start_time) >= date(?)`,
+									WHERE completed = 1 AND date(start_time) >= date(?)`,
 			[ninetyDaysAgoStr]
 		);
 
 		const partialSessions = await db.get<{ count: number }>(
 			`SELECT COUNT(DISTINCT ws.session_id) as count
-       FROM wizard_sessions ws
-       JOIN wizard_steps wst ON ws.session_id = wst.session_id
-       WHERE ws.completed = 0 AND date(ws.start_time) >= date(?)`,
+									FROM wizard_sessions ws
+									JOIN wizard_steps wst ON ws.session_id = wst.session_id
+									WHERE ws.completed = 0 AND date(ws.start_time) >= date(?)`,
 			[ninetyDaysAgoStr]
 		);
 
 		// Get step-specific completions
 		const emailCompletedSessions = await db.get<{ count: number }>(
 			`SELECT COUNT(DISTINCT ws.session_id) as count
-       FROM wizard_sessions ws
-       JOIN wizard_steps wst ON ws.session_id = wst.session_id
-       WHERE wst.step_name = 'email'
-         AND wst.completed = 1
-         AND date(ws.start_time) >= date(?)`,
+									FROM wizard_sessions ws
+									JOIN wizard_steps wst ON ws.session_id = wst.session_id
+									WHERE wst.step_name = 'email'
+											AND wst.completed = 1
+											AND date(ws.start_time) >= date(?)`,
 			[ninetyDaysAgoStr]
 		);
 
 		const bunkerCompletedSessions = await db.get<{ count: number }>(
 			`SELECT COUNT(DISTINCT ws.session_id) as count
-       FROM wizard_sessions ws
-       JOIN wizard_steps wst ON ws.session_id = wst.session_id
-       WHERE wst.step_name = 'bunker'
-         AND wst.completed = 1
-         AND date(ws.start_time) >= date(?)`,
+									FROM wizard_sessions ws
+									JOIN wizard_steps wst ON ws.session_id = wst.session_id
+									WHERE wst.step_name = 'bunker'
+											AND wst.completed = 1
+											AND date(ws.start_time) >= date(?)`,
 			[ninetyDaysAgoStr]
 		);
 
 		const followCompletedSessions = await db.get<{ count: number }>(
 			`SELECT COUNT(DISTINCT ws.session_id) as count
-       FROM wizard_sessions ws
-       JOIN wizard_steps wst ON ws.session_id = wst.session_id
-       WHERE wst.step_name LIKE 'follow%'
-         AND wst.completed = 1
-         AND date(ws.start_time) >= date(?)`,
+									FROM wizard_sessions ws
+									JOIN wizard_steps wst ON ws.session_id = wst.session_id
+									WHERE wst.step_name LIKE 'follow%'
+											AND wst.completed = 1
+											AND date(ws.start_time) >= date(?)`,
 			[ninetyDaysAgoStr]
 		);
 
 		// Get daily stats for the chart
 		const dailyStats = await db.all<DailyStats[]>(
 			`WITH dates AS (
-         SELECT date(datetime('now', '-' || n || ' days')) as date
-         FROM (
-           WITH RECURSIVE
-             cnt(n) AS (
-               SELECT 0
-               UNION ALL
-               SELECT n+1 FROM cnt
-               LIMIT 90
-             )
-           SELECT n FROM cnt
-         )
-       ),
-       total_sessions AS (
-         SELECT date(start_time) as date, COUNT(*) as count
-         FROM wizard_sessions
-         WHERE date(start_time) >= date(?)
-         GROUP BY date(start_time)
-       ),
-       completed_sessions AS (
-         SELECT date(start_time) as date, COUNT(*) as count
-         FROM wizard_sessions
-         WHERE completed = 1 AND date(start_time) >= date(?)
-         GROUP BY date(start_time)
-       ),
-       partial_sessions AS (
-         SELECT date(ws.start_time) as date, COUNT(DISTINCT ws.session_id) as count
-         FROM wizard_sessions ws
-         JOIN wizard_steps wst ON ws.session_id = wst.session_id
-         WHERE ws.completed = 0 AND date(ws.start_time) >= date(?)
-         GROUP BY date(ws.start_time)
-       )
-       SELECT
-         dates.date,
-         COALESCE(ts.count, 0) as totalSessions,
-         COALESCE(cs.count, 0) as completedSessions,
-         COALESCE(ps.count, 0) as partialSessions
-       FROM dates
-       LEFT JOIN total_sessions ts ON dates.date = ts.date
-       LEFT JOIN completed_sessions cs ON dates.date = cs.date
-       LEFT JOIN partial_sessions ps ON dates.date = ps.date
-       ORDER BY dates.date ASC`,
+											SELECT date(datetime('now', '-' || n || ' days')) as date
+											FROM (
+													WITH RECURSIVE
+															cnt(n) AS (
+																	SELECT 0
+																	UNION ALL
+																	SELECT n+1 FROM cnt
+																	LIMIT 90
+															)
+													SELECT n FROM cnt
+											)
+									),
+									total_sessions AS (
+											SELECT date(start_time) as date, COUNT(*) as count
+											FROM wizard_sessions
+											WHERE date(start_time) >= date(?)
+											GROUP BY date(start_time)
+									),
+									completed_sessions AS (
+											SELECT date(start_time) as date, COUNT(*) as count
+											FROM wizard_sessions
+											WHERE completed = 1 AND date(start_time) >= date(?)
+											GROUP BY date(start_time)
+									),
+									partial_sessions AS (
+											SELECT date(ws.start_time) as date, COUNT(DISTINCT ws.session_id) as count
+											FROM wizard_sessions ws
+											JOIN wizard_steps wst ON ws.session_id = wst.session_id
+											WHERE ws.completed = 0 AND date(ws.start_time) >= date(?)
+											GROUP BY date(ws.start_time)
+									)
+									SELECT
+											dates.date,
+											COALESCE(ts.count, 0) as totalSessions,
+											COALESCE(cs.count, 0) as completedSessions,
+											COALESCE(ps.count, 0) as partialSessions
+									FROM dates
+									LEFT JOIN total_sessions ts ON dates.date = ts.date
+									LEFT JOIN completed_sessions cs ON dates.date = cs.date
+									LEFT JOIN partial_sessions ps ON dates.date = ps.date
+									ORDER BY dates.date ASC`,
 			[ninetyDaysAgoStr, ninetyDaysAgoStr, ninetyDaysAgoStr]
 		);
 
 		// Get top 30 sources (app integrations and referrers) with completed wizard count
 		const topSources = await db.all<SourceStats[]>(
 			`WITH app_sources AS (
-         -- App integrations (app_name + app_type)
-         SELECT
-           CASE
-             WHEN app_name IS NOT NULL AND app_type IS NOT NULL THEN app_name || ' (' || app_type || ')'
-             WHEN app_name IS NOT NULL THEN app_name
-             WHEN app_type IS NOT NULL THEN app_type
-             ELSE NULL
-           END as source,
-           COUNT(*) as sessions,
-           SUM(CASE WHEN completed = 1 THEN 1 ELSE 0 END) as completed
-         FROM wizard_sessions
-         WHERE date(start_time) >= date(?)
-           AND (app_name IS NOT NULL OR app_type IS NOT NULL)
-         GROUP BY source
-       ),
+											-- App integrations (app_name + app_type)
+											SELECT
+													CASE
+															WHEN app_name IS NOT NULL AND app_type IS NOT NULL THEN app_name || ' (' || app_type || ')'
+															WHEN app_name IS NOT NULL THEN app_name
+															WHEN app_type IS NOT NULL THEN app_type
+															ELSE NULL
+													END as source,
+													COUNT(*) as sessions,
+													SUM(CASE WHEN completed = 1 THEN 1 ELSE 0 END) as completed
+											FROM wizard_sessions
+											WHERE date(start_time) >= date(?)
+													AND (app_name IS NOT NULL OR app_type IS NOT NULL)
+											GROUP BY source
+									),
 
-       referrer_sources AS (
-         -- Referrers
-         SELECT
-           referrer as source,
-           COUNT(*) as sessions,
-           SUM(CASE WHEN completed = 1 THEN 1 ELSE 0 END) as completed
-         FROM wizard_sessions
-         WHERE date(start_time) >= date(?)
-           AND referrer IS NOT NULL
-           AND app_name IS NULL
-           AND referrer != ''
-         GROUP BY referrer
-       ),
+									referrer_sources AS (
+											-- Referrers
+											SELECT
+													referrer as source,
+													COUNT(*) as sessions,
+													SUM(CASE WHEN completed = 1 THEN 1 ELSE 0 END) as completed
+											FROM wizard_sessions
+											WHERE date(start_time) >= date(?)
+													AND referrer IS NOT NULL
+													AND app_name IS NULL
+													AND referrer != ''
+											GROUP BY referrer
+									),
 
-       all_sources AS (
-         SELECT source, sessions, completed FROM app_sources
-         UNION ALL
-         SELECT source, sessions, completed FROM referrer_sources
-       )
+									all_sources AS (
+											SELECT source, sessions, completed FROM app_sources
+											UNION ALL
+											SELECT source, sessions, completed FROM referrer_sources
+									)
 
-       SELECT
-         source,
-         SUM(sessions) as sessions,
-         SUM(completed) as completed
-       FROM all_sources
-       WHERE source IS NOT NULL
-       GROUP BY source
-       ORDER BY sessions DESC
-       LIMIT 30`,
+									SELECT
+											source,
+											SUM(sessions) as sessions,
+											SUM(completed) as completed
+									FROM all_sources
+									WHERE source IS NOT NULL
+									GROUP BY source
+									ORDER BY sessions DESC
+									LIMIT 30`,
 			[ninetyDaysAgoStr, ninetyDaysAgoStr]
 		);
 
@@ -210,29 +210,31 @@ export class AnalyticsService {
 		const funnelStepNames = ['homepage', 'yourself', 'download', 'email', 'bunker', 'follow'];
 
 		// Get counts for each step
-		const stepCounts = await db.all<{
-			step_name: string;
-			total: number;
-			completed: number;
-			skipped: number;
-		}>(
+		const stepCounts = await db.all<
+			Array<{
+				step_name: string;
+				total: number;
+				completed: number;
+				skipped: number;
+			}>
+		>(
 			`SELECT
-				step_name,
-				COUNT(*) as total,
-				SUM(CASE WHEN completed = 1 THEN 1 ELSE 0 END) as completed,
-				SUM(CASE WHEN skipped = 1 THEN 1 ELSE 0 END) as skipped
-			FROM wizard_steps
-			WHERE step_name IN ('homepage', 'yourself', 'download', 'email', 'bunker', 'follow')
-				AND date(entered_time) >= date(?)
-			GROUP BY step_name`,
+						step_name,
+						COUNT(*) as total,
+						SUM(CASE WHEN completed = 1 THEN 1 ELSE 0 END) as completed,
+						SUM(CASE WHEN skipped = 1 THEN 1 ELSE 0 END) as skipped
+					FROM wizard_steps
+					WHERE step_name IN ('homepage', 'yourself', 'download', 'email', 'bunker', 'follow')
+						AND date(entered_time) >= date(?)
+					GROUP BY step_name`,
 			[ninetyDaysAgoStr]
 		);
 
 		// Get total completed sessions to check for missing steps
-		const totalSessionsWithSteps = await db.all<{ session_id: string; completed: number }>(
+		const totalSessionsWithSteps = await db.all<Array<{ session_id: string; completed: number }>>(
 			`SELECT ws.session_id, ws.completed
-			FROM wizard_sessions ws
-			WHERE date(ws.start_time) >= date(?)`,
+					FROM wizard_sessions ws
+					WHERE date(ws.start_time) >= date(?)`,
 			[ninetyDaysAgoStr]
 		);
 
@@ -240,10 +242,10 @@ export class AnalyticsService {
 		const sessionSteps = new Map<string, Set<string>>();
 
 		// Get all steps for all sessions
-		const allSessionSteps = await db.all<{ session_id: string; step_name: string }>(
+		const allSessionSteps = await db.all<Array<{ session_id: string; step_name: string }>>(
 			`SELECT session_id, step_name
-			FROM wizard_steps
-			WHERE date(entered_time) >= date(?)`,
+					FROM wizard_steps
+					WHERE date(entered_time) >= date(?)`,
 			[ninetyDaysAgoStr]
 		);
 
@@ -269,10 +271,11 @@ export class AnalyticsService {
 		}
 
 		// Make sure the homepage has at least the totalSessions count
-		if (!stepDataMap.has('homepage') || stepDataMap.get('homepage')!.total < totalSessions.count) {
+		const totalSessionsCount = totalSessions?.count || 0;
+		if (!stepDataMap.has('homepage') || stepDataMap.get('homepage')!.total < totalSessionsCount) {
 			stepDataMap.set('homepage', {
-				total: totalSessions.count || 0,
-				completed: totalSessions.count || 0,
+				total: totalSessionsCount,
+				completed: totalSessionsCount,
 				skipped: 0
 			});
 		}
