@@ -11,7 +11,7 @@
 		"text2": "Nostr est une expérience différente dès le début : comme il n'y a pas d'autorité centrale qui s'occupe de qui est qui, chaque utilisateur est identifié par une paire de clés cryptographiques ; ne vous inquiétez pas du jargon technique, c'est juste un mot de passe fort que vous devrez garder en sécurité.",
 		"text3a": "Cet assistant est utilisé par <strong>{$1}</strong> pour vous permettre de créer votre nouveau profil et de le gérer en toute sécurité, en quelques étapes.",
 		"text3b": "Cet assistant est l'une des nombreuses façons de démarrer un profil Nostr que vous pourrez utiliser plus tard dans d'autres applications. Nous vous aidons à créer votre paire de clés et à la gérer en toute sécurité en quelques étapes. Êtes-vous prêt ?",
-		"continue_button": "Commençons",
+		"button_start": "Commençons",
 		"footer1": "Souhaitez-vous en savoir plus sur Nostr d'abord ?",
 		"footer2": "Lisez une brève introduction",
 		"footer3": "Le code source de ce service est <a {$1}>libre et ouvert</a>"

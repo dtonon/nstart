@@ -12,7 +12,7 @@
 		"text2": "Nostr è un'esperienza diversa sin dall'inizio: poiché non c'è un'autorità centrale, ogni utente è identificato da una coppia di chiavi crittografiche; non preoccuparti del gergo tecnico, è solo una password robusta che dovrai tenere al sicuro.",
 		"text3a": "Questa procedura guidata è utilizzata da <strong>{$1}</strong> per consentirti di creare il tuo nuovo profilo e gestirlo in modo sicuro, in pochi passaggi.",
 		"text3b": "Questa procedura guidata è uno dei tanti modi per creare un profilo Nostr che potrai successivamente utilizzare in altre applicazioni. Ti aiutiamo a creare la tua coppia di chiavi e a gestirla in modo sicuro in pochi passaggi. Sei pronto?",
-		"continue_button": "Iniziamo",
+		"button_start": "Iniziamo",
 		"footer1": "Prima di proseguire vorresti saperne di più su Nostr?",
 		"footer2": "Leggi una breve introduzione",
 		"footer3": "Il codice sorgente di questo servizio è <a {$1}>gratuito e aperto</a>"
