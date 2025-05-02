@@ -122,7 +122,7 @@
 </script>
 
 <svelte:head>
-	<title>Create your Nostr account</title>
+	<title>{t("shared.page_title")}</title>
 	<meta
 		name="description"
 		content="Create your Nostr account, back it up, and get a Nostr Connect bunker URL in few easy steps!"
