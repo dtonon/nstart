@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import WizardAnalyticsClient from '$lib/wizard-analytics-client';
 	import { t, currentLanguage } from '$lib/i18n';
 	import { goto } from '$app/navigation';
-	import { accent, sk, name, followerSuggestions, callingAppCode } from '$lib/store';
+	import { sessionId, accent, sk, name, followerSuggestions, callingAppCode } from '$lib/store';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';
@@ -92,14 +93,18 @@
 	let selectedUsers = new Set();
 	let activationProgress = 0;
 
-	onMount(() => {
+	const analytics = new WizardAnalyticsClient();
+
+	onMount(async () => {
 		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
 
-		if ($name.length === 0) {
-			goto('/');
-			return; // Exit early if redirecting
+		if ($sessionId.length === 0) {
+			goto(`/${$currentLanguage}/`);
+			return;
 		}
+
 		buildSuggestionList();
+		await analytics.startStep('follow');
 	});
 
 	async function buildSuggestionList(): string[] {
@@ -179,6 +184,16 @@
 
 		activationProgress = 100;
 		clearInterval(intv);
+
+		await analytics.completeStep(
+			selectedUsers.size > 0
+				? {
+						selected: selectedUsers.size
+					}
+				: undefined,
+			selectedUsers.size == 0,
+			true
+		);
 
 		setTimeout(() => {
 			if ($callingAppCode) {

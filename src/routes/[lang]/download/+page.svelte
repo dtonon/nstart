@@ -1,11 +1,21 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import WizardAnalyticsClient from '$lib/wizard-analytics-client';
 	import { t, currentLanguage } from '$lib/i18n';
 	import * as nip19 from '@nostr/tools/nip19';
 	import * as nip49 from '@nostr/tools/nip49';
 
 	import { goto } from '$app/navigation';
-	import { accent, sk, npub, ncryptsec, backupDownloaded, name, password } from '$lib/store';
+	import {
+		sessionId,
+		accent,
+		sk,
+		npub,
+		ncryptsec,
+		backupDownloaded,
+		name,
+		password
+	} from '$lib/store';
 	import { isMobile } from '$lib/mobile';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
@@ -18,16 +28,21 @@
 	let backupPrivKey = '';
 	let encrypt = false;
 
-	onMount(() => {
+	const analytics = new WizardAnalyticsClient();
+
+	onMount(async () => {
 		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
 
-		if ($name.length === 0) {
-			goto('/');
+		if ($sessionId.length === 0) {
+			goto(`/${$currentLanguage}/`);
+			return;
 		}
 
 		if ($password) {
 			encrypt = true;
 		}
+
+		await analytics.startStep('download');
 	});
 
 	function downloadBackup() {
@@ -45,8 +60,13 @@
 		backupInitialized = true;
 	}
 
-	function navigateContinue() {
+	async function navigateContinue() {
 		$backupDownloaded = true;
+
+		await analytics.completeStep({
+			type: $ncryptsec ? 'ncryptsec' : 'nsec'
+		});
+
 		goto(`/${$currentLanguage}/email`);
 	}
 

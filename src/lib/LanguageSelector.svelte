@@ -1,26 +1,33 @@
-<script>
-	import { onMount } from 'svelte';
+<script lang="ts">
+	// Remove unused import
 
-	export let availableLanguages;
-	export let currentLanguage;
+	// Define interfaces for type safety
+	interface Language {
+		code: string;
+		name: string;
+	}
+
+	export let availableLanguages: Language[];
+	export let currentLanguage: string;
 	export let translationsLoaded = true;
-	export let onChange;
+	export let onChange: (code: string) => void;
 
 	let dropdownOpen = false;
-	let selectedLanguage;
+	let selectedLanguage: Language | undefined;
 
 	$: {
 		selectedLanguage =
-			availableLanguages.find((lang) => lang.code === currentLanguage) || availableLanguages[0];
+			availableLanguages.find((lang: Language) => lang.code === currentLanguage) ||
+			availableLanguages[0];
 	}
 
-	function toggleDropdown() {
+	function toggleDropdown(): void {
 		if (translationsLoaded) {
 			dropdownOpen = !dropdownOpen;
 		}
 	}
 
-	function selectLanguage(language) {
+	function selectLanguage(language: Language): void {
 		if (onChange) {
 			onChange(language.code);
 		}
@@ -28,9 +35,9 @@
 	}
 
 	// Click outside handler
-	function handleClickOutside(node) {
-		const handleClick = (event) => {
-			if (node && !node.contains(event.target) && !event.defaultPrevented) {
+	function handleClickOutside(node: HTMLElement): { destroy: () => void } {
+		const handleClick = (event: MouseEvent): void => {
+			if (node && !node.contains(event.target as Node) && !event.defaultPrevented) {
 				dropdownOpen = false;
 			}
 		};

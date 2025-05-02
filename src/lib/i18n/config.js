@@ -6,6 +6,7 @@ export const availableLanguages = [
 	{ code: 'de', name: 'Deutsch' },
 	{ code: 'nl', name: 'Nederlands' },
 	{ code: 'pt', name: 'Português' },
+	{ code: 'si', name: 'Slovenščina' },
 	{ code: 'ja', name: '日本語' },
 	{ code: 'zh', name: '简体中文' },
 	{ code: 'fa', name: 'پارسی' }
