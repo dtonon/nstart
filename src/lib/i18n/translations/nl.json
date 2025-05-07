@@ -45,7 +45,7 @@
     "side4": "Download nu jouw <em {$1}>nsec</em> (het is een tekstbestand) en bewaar het op een veilige plek, bijvoorbeeld in jouw password manager.",
     "label_yournpub": "Jouw npub is",
     "label_password": "Kies een wachtwoord",
-    "button_save1": "Bewaar mijn privésleutel (jouw nsec)",
+    "button_save1": "Bewaar mijn nsec",
     "button_save2": "Bewaar mijn ncryptsec",
     "label_switch1": "Ik wil de versleutelde versie downloaden",
     "label_switch2": "Ik ben van gedachte veranderd, ik wil toch mijn nsec downloaden",
