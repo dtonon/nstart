@@ -12,7 +12,7 @@
     "text2": "Nostr zal even wennen zijn omdat elk profiel geïdentificeerd wordt met cryptografische sleutels. Maak je geen zorgen over de technische details, je krijgt een privésleutel die je net zoals je wachtwoord veilig moet bewaren.",
     "text3a": "Deze website wordt gebruikt door <strong>{$1}</strong> om je in een paar stappen een nieuw profiel te laten maken en je privé sleutel veilig op te slaan.",
     "text3b": "Deze website is een van de vele manieren om een Nostr-profiel aan te maken. Hierna kun je dit profiel in andere apps gebruiken. We helpen je in een paar stappen op weg om jouw profiel aan te maken met jouw unieke sleutels. Ben je er klaar voor?",
-    "continue_button": "Aan de slag",
+    "button_start": "Aan de slag",
     "footer1": "Wil je eerst meer weten over Nostr?",
     "footer2": "Lees dan hier een Engelstalige introductie",
     "footer3": "De broncode van deze tool is <a {$1}>vrij beschikbaar</a>"
