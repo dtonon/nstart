@@ -12,7 +12,7 @@
 		"text2": "Nostr is a different experience from the beginning: because there is no central authority taking care of who is who, each user is identified by a cryptographic keypair; don't worry about the tech slang, it is just a strong password that you will have to keep safe.",
 		"text3a": "This wizard is used by <strong>{$1}</strong> to let you create your new profile and safely manage it, in a few steps.",
 		"text3b": "This wizard is one of the many ways to bootstrap a Nostr profile that you can later use in other apps. We help you to create your keypair and safely manage it in a few steps. Are you ready?",
-		"continue_button": "Let's Start",
+		"button_start": "Let's Start",
 		"footer1": "Would you like to know more about Nostr first?",
 		"footer2": "Read a quick introduction",
 		"footer3": "The source code for this service is <a {$1}>free and open</a>"

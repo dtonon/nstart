@@ -12,7 +12,7 @@
 		"text2": "Nostr es una experiencia diferente desde el principio: como no hay una autoridad central que controle quién es quién, cada usuario se identifica con un par de claves criptográficas. No te preocupes por la jerga técnica: es como una contraseña fuerte que tendrás que guardar con seguridad.",
 		"text3a": "Este asistente es usado por <strong>{$1}</strong> para ayudarte a crear tu nuevo perfil y gestionarlo de forma segura, en pocos pasos.",
 		"text3b": "Este asistente es una de las muchas formas de crear un perfil Nostr que luego puedes usar en otras apps. Te ayudamos a generar tu par de claves y a gestionarlo con seguridad en pocos pasos. ¿Estás listo?",
-		"continue_button": "Empezar",
+		"button_start": "Empezar",
 		"footer1": "¿Quieres saber más sobre Nostr primero?",
 		"footer2": "Lee una introducción rápida",
 		"footer3": "El código fuente de este servicio es <a {$1}>libre y abierto</a>"
@@ -133,7 +133,7 @@
 	},
 
 	"confirmation_email": {
-	"subject": "Tu cuenta de Nostr",
-	"body": "¡Hola!\n\nEste es tu npub de Nostr:\n{$1}\n\nY esta es tu clave de Nostr cifrada:\n{$2}\n\n¡Recuerda guardar la contraseña elegida en un lugar seguro!\n\nBienvenido a Nostr :)\n\nPD: Esta dirección de correo no acepta respuestas. Para solicitar ayuda, menciona a https://njump.me/dtonon.com o https://njump.me/fiatjaf.com en Nostr"
+		"subject": "Tu cuenta de Nostr",
+		"body": "¡Hola!\n\nEste es tu npub de Nostr:\n{$1}\n\nY esta es tu clave de Nostr cifrada:\n{$2}\n\n¡Recuerda guardar la contraseña elegida en un lugar seguro!\n\nBienvenido a Nostr :)\n\nPD: Esta dirección de correo no acepta respuestas. Para solicitar ayuda, menciona a https://njump.me/dtonon.com o https://njump.me/fiatjaf.com en Nostr"
 	}
 }

@@ -223,11 +223,8 @@
 									class="inline-flex items-center rounded bg-accent px-10 py-4 text-[1.8rem] text-white"
 									on:click={() => goto('/en/yourself')}
 								>
-                  {t('home.continue_button')} <img
-										src="/icons/arrow-right.svg"
-										alt="Icon"
-										class="ml-4 mr-2 h-7 w-7"
-									/>
+									{t('home.button_start')}
+									<img src="/icons/arrow-right.svg" alt="Icon" class="ml-4 mr-2 h-7 w-7" />
 								</button>
 							</div>
 
