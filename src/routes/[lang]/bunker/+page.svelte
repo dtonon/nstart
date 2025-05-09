@@ -11,7 +11,6 @@
 		sessionId,
 		accent,
 		sk,
-		name,
 		pk,
 		inboxes,
 		bunkerURI,
@@ -35,35 +34,37 @@
 	const defaultThreshold = 2;
 	const defaultSelected = 3;
 	const minThreshold = 2;
-	let threshold = defaultThreshold;
+	let threshold = 3;
+	let total = 4;
 
 	const analytics = new WizardAnalyticsClient();
 
 	function toggleAdvancedMode() {
 		advanceSignersSelection = !advanceSignersSelection;
-		if (!advanceSignersSelection) {
-			threshold = defaultThreshold;
-			selectedSigners = new Set(signers.map((s) => s.pubkey));
-		}
 	}
 
 	function toggleSigner(pubkey: string) {
 		if (selectedSigners.has(pubkey)) {
+			// disable signer
 			if (selectedSigners.size > threshold) {
 				selectedSigners.delete(pubkey);
 				selectedSigners = selectedSigners;
-				// If we remove a signer and threshold is now greater than selected signers, adjust it
-				if (threshold > selectedSigners.size) {
-					threshold = selectedSigners.size;
+				// if we remove a signer and total is now greater than selected signers, adjust it
+				if (total > selectedSigners.size) {
+					total = selectedSigners.size;
+					// now if threshold is greater than total adjust it too
+					if (threshold > total) {
+						threshold = total;
+					}
 				}
 			}
 		} else {
+			// enable signer
 			selectedSigners.add(pubkey);
 			selectedSigners = selectedSigners;
 		}
 	}
 
-	// Function to increment threshold
 	function incrementThreshold() {
 		console.log('threshold', threshold);
 		console.log('selectedSigners.size', selectedSigners.size);
@@ -74,18 +75,32 @@
 		}
 	}
 
+	function incrementTotal() {
+		if (total >= selectedSigners.size) {
+			total = threshold;
+		} else {
+			total++;
+		}
+	}
+
 	// Reference to the container element
-	let thresholdButtonContainer: HTMLDivElement;
+	let advancedButtonContainer: HTMLDivElement;
 
 	function updateEventListeners() {
-		if (!thresholdButtonContainer) return;
+		if (!advancedButtonContainer) return;
 
 		// Remove old event listeners first
-		const buttons = thresholdButtonContainer.querySelectorAll('button.threshold-button');
-		buttons.forEach((button) => {
+		advancedButtonContainer.querySelectorAll('button.threshold-button').forEach((button) => {
 			button.removeEventListener('click', incrementThreshold);
 			// Re-add the event listener
 			button.addEventListener('click', incrementThreshold);
+		});
+
+		// Remove old event listeners first
+		advancedButtonContainer.querySelectorAll('button.total-button').forEach((button) => {
+			button.removeEventListener('click', incrementTotal);
+			// Re-add the event listener
+			button.addEventListener('click', incrementTotal);
 		});
 	}
 
@@ -112,16 +127,13 @@
 		}, 3000);
 
 		try {
-			// convert selected signers back to array of pubkeys
-			const selectedSignerPubkeys = Array.from(selectedSigners);
-
 			$bunkerURI = await shardGetBunker(
 				pool,
 				$sk,
 				$pk,
-				threshold,
-				advanceSignersSelection ? selectedSignerPubkeys.length : defaultSelected,
-				selectedSignerPubkeys,
+				advanceSignersSelection ? threshold : defaultThreshold,
+				advanceSignersSelection ? total : defaultSelected,
+				advanceSignersSelection ? Array.from(selectedSigners) : signers.map((s) => s.pubkey),
 				'wss://promenade.fiatjaf.com',
 				20,
 				$inboxes,
@@ -239,7 +251,7 @@
 						{@html t(
 							'bunker.text1',
 							`${advanceSignersSelection ? selectedSigners.size : defaultSelected}`,
-							`${threshold}`
+							`${defaultThreshold}`
 						)}
 					</div>
 					<div class="mt-4">{t('bunker.text2')}</div>
@@ -270,16 +282,16 @@
 							{:else if selectedSigners.size == 2 && minThreshold == 2}
 								{t('bunker.text5')}
 							{:else}
-								<div bind:this={thresholdButtonContainer}>
+								<div bind:this={advancedButtonContainer}>
 									{@html t(
 										'bunker.text6',
 										`<button class=\"threshold-button cursor-pointer text-accent underline hover:no-underline\">${threshold}</button>`,
-										`${selectedSigners.size}`
+										`<button class=\"total-button cursor-pointer text-accent underline hover:no-underline\">${total}</button>`
 									)}
 								</div>
 							{/if}
 						</div>
-						{#if threshold == selectedSigners.size}
+						{#if threshold == total}
 							<div class="mt-2">
 								{@html t('bunker.text7')}
 							</div>

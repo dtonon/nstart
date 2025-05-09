@@ -8,10 +8,6 @@ import HashWorker from './worker?worker';
 
 export const signers = [
 	{
-		pubkey: '0a7c2da051f9f215c4c97f6cdc3dd444e73ea00c10647fa5e552cfc78a506e94',
-		name: 'Pablo'
-	},
-	{
 		pubkey: '4be49a6175734b43c7083ceac11e47bf684ffe65bd021c949bea1702409c119a',
 		name: 'Daniele'
 	},
@@ -30,6 +26,10 @@ export const signers = [
 	{
 		pubkey: '077369139f12ec9de23fe3ce11d3d2619f86e068280d446e94b7d76ff44a8c41',
 		name: 'Artur Brugeman'
+	},
+	{
+		pubkey: 'dea9d5c611f14c00efa3fa19ac2867372b6e585a2ed2c9d29febbb70db110da7',
+		name: 'Alex Gleason'
 	}
 	// {
 	// 	pubkey: '23a3ff76766f5ffc852fa6f2fc5058c1306ee25927632e0f8e213af11a5b8de5',

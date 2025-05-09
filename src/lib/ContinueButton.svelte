@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let onClick: () => void;
+	export let onClick: (event: Event) => Promise<void> | void;
 	export let disabled = false;
 	export let text: string;
 </script>
@@ -9,12 +9,12 @@
 	{disabled}
 	class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] sm:text-[1.3rem] ${
 		disabled
-			? 'cursor-not-allowed bg-neutral-400 dark:bg-neutral-600 text-neutral-300 dark:text-neutral-500'
+			? 'cursor-not-allowed bg-neutral-400 text-neutral-300 dark:bg-neutral-600 dark:text-neutral-500'
 			: 'bg-accent text-white'
 	}`}
 >
 	{text}
-	<div alt="continue" class="ml-4 mr-2">
+	<div class="ml-4 mr-2">
 		<svg class="h-6 w-6" viewBox="0 0 32 29" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path
 				fill="currentColor"
