@@ -189,12 +189,28 @@
 			);
 
 			// Extract data series
-			const completedData = sortedFunnelData.map((step) => step.completed);
+			// Special handling for homepage: completed = users who progressed to next step
+			const completedData = sortedFunnelData.map((step) => {
+				if (step.step_name === 'homepage') {
+					// For homepage, completed = users who started the wizard (progressed to 'yourself' step)
+					const yourselfStep = sortedFunnelData.find(s => s.step_name === 'yourself');
+					return yourselfStep ? yourselfStep.total : 0;
+				}
+				return step.completed;
+			});
 			const skippedData = sortedFunnelData.map((step) => step.skipped);
 			// Calculate abandoned users (total - completed - skipped)
-			const abandonedData = sortedFunnelData.map(
-				(step) => step.total - step.completed - step.skipped
-			);
+			// Special handling for homepage: abandoned = total - users who progressed to next step
+			const abandonedData = sortedFunnelData.map((step, index) => {
+				if (step.step_name === 'homepage') {
+					// For homepage, abandoned = total homepage visits - users who started the wizard
+					// Find the 'yourself' step to get users who progressed from homepage
+					const yourselfStep = sortedFunnelData.find(s => s.step_name === 'yourself');
+					const usersWhoProgressed = yourselfStep ? yourselfStep.total : 0;
+					return step.total - usersWhoProgressed;
+				}
+				return step.total - step.completed - step.skipped;
+			});
 
 			// Detect dark mode
 			const isDarkMode =
