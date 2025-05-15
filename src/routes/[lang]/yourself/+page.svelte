@@ -50,6 +50,18 @@
 		}
 	}
 
+	function deleteImage() {
+		picturePreview = null;
+		$picture = '';
+		// Clear file input
+		const fileInput = document.getElementById('image') as HTMLInputElement;
+		if (fileInput) {
+			fileInput.value = '';
+		}
+	}
+
+	$: hasImage = picturePreview || $picture;
+
 	async function blossomAuth(file: File) {
 		// Calculate the hash of the image
 		let imageHash = await calculateFileHash(file);
@@ -178,25 +190,46 @@
 			<div
 				class="-mr-8 ml-2 mt-2 h-1 w-20 border-t-2 border-neutral-300 dark:border-neutral-600"
 			></div>
-			<button
-				on:click={triggerFileInput}
-				class="input-hover-enabled h-24 w-24 rounded-full border-2 border-neutral-300 bg-neutral-100 dark:border-neutral-600 dark:bg-neutral-800"
-			>
-				<!-- svelte-ignore a11y-img-redundant-alt -->
-				{#if picturePreview || $picture}
-					<img
-						src={picturePreview || $picture}
-						alt="Profile Picture"
-						class="h-full w-full rounded-full object-cover"
-					/>
-				{:else}
-					<img
-						src="/icons/pfp.svg"
-						alt="Default Profile Picture"
-						class="h-full w-full rounded-full object-cover"
-					/>
+			<div class="relative">
+				<button
+					on:click={triggerFileInput}
+					class="input-hover-enabled h-24 w-24 rounded-full border-2 border-neutral-300 bg-neutral-100 dark:border-neutral-600 dark:bg-neutral-800"
+				>
+					<!-- svelte-ignore a11y-img-redundant-alt -->
+					{#if hasImage}
+						<img
+							src={picturePreview || $picture}
+							alt="Profile Picture"
+							class="h-full w-full rounded-full object-cover"
+						/>
+					{:else}
+						<img
+							src="/icons/pfp.svg"
+							alt="Default Profile Picture"
+							class="h-full w-full rounded-full object-cover"
+						/>
+					{/if}
+				</button>
+
+				<!-- Delete button -->
+				{#if hasImage}
+					<button
+						on:click={deleteImage}
+						class="absolute -right-0 -top-0 flex h-6 w-6 items-center justify-center rounded-full bg-neutral-700 text-white hover:bg-accent dark:bg-neutral-700 dark:hover:bg-accent"
+						title="Delete image"
+					>
+						<!-- X icon -->
+						<svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M6 18L18 6M6 6l12 12"
+							/>
+						</svg>
+					</button>
 				{/if}
-			</button>
+			</div>
 		</div>
 		<div>
 			<!-- File input for image upload -->
