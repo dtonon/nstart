@@ -90,7 +90,7 @@
 	];
 
 	let suggestedUsers: any[] = [];
-	let selectedUsers = new Set();
+	let selectedUsers: Set<string> = new Set();
 	let activationProgress = 0;
 
 	const analytics = new WizardAnalyticsClient();
@@ -143,13 +143,7 @@
 	}
 
 	async function getSelectedUsersArray() {
-		const sources: string[] = [];
-
-		for (const user of FOLLOWS) {
-			if (selectedUsers.has(user.pubkey)) {
-				sources.push(user.pubkey);
-			}
-		}
+		const sources: string[] = [...selectedUsers];
 
 		const all = new Set<string>();
 
