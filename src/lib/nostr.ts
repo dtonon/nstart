@@ -127,7 +127,7 @@ function pick<A>(options: A[]): A {
 	return sel;
 }
 
-export async function getProfile(code: string) {
+export async function getProfile(code: string): Promise<NostrEvent | null> {
 	let publicKey: string;
 	if (/^(nprofile|npub)/.test(code)) {
 		try {

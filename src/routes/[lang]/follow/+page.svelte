@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { type NostrEvent } from '@nostr/tools';
 	import WizardAnalyticsClient from '$lib/wizard-analytics-client';
 	import { t, currentLanguage } from '$lib/i18n';
 	import { goto } from '$app/navigation';
@@ -103,14 +104,14 @@
 			return;
 		}
 
-		buildSuggestionList();
+		suggestedUsers = await buildSuggestionList();
 		await analytics.startStep('follow');
 	});
 
-	async function buildSuggestionList(): string[] {
+	async function buildSuggestionList(): Promise<any[]> {
 		const users = [];
 		for (const suggestion of $followerSuggestions) {
-			let profile = await getProfile(suggestion);
+			let profile = (await getProfile(suggestion)) as NostrEvent;
 			if (profile) {
 				const parsedContent = JSON.parse(profile.content);
 				let name = parsedContent.name || null;
@@ -131,10 +132,10 @@
 			}
 		}
 
-		suggestedUsers = users;
+		return users;
 	}
 
-	function toggleUserSelection(user: { pubkey: unknown }) {
+	function toggleUserSelection(user: { pubkey: string }) {
 		if (selectedUsers.has(user.pubkey)) {
 			selectedUsers.delete(user.pubkey);
 		} else {
