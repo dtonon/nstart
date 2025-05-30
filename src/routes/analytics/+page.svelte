@@ -517,6 +517,23 @@
 							borderWidth: 2
 						}]
 					},
+					plugins: [{
+						id: 'barLabels',
+						afterDatasetsDraw: function(chart) {
+							const ctx = chart.ctx;
+							chart.data.datasets.forEach((dataset, i) => {
+								const meta = chart.getDatasetMeta(i);
+								meta.data.forEach((bar, index) => {
+									const data = dataset.data[index];
+									ctx.fillStyle = textColor;
+									ctx.font = 'bold 12px sans-serif';
+									ctx.textAlign = 'center';
+									ctx.textBaseline = 'bottom';
+									ctx.fillText(data, bar.x, bar.y - 5);
+								});
+							});
+						}
+					}],
 					options: {
 						responsive: true,
 						maintainAspectRatio: false,
