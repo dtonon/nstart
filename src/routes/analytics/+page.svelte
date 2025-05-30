@@ -456,10 +456,10 @@
 	// Initialize language pie chart when canvas and data are available
 	afterUpdate(async () => {
 		if (browser && languagePieCanvas && analyticsData && !languagePieChart && analyticsData.languageStats) {
-			const { Chart, PieController, ArcElement, Tooltip, Legend } = await import('chart.js');
+			const { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend } = await import('chart.js');
 
 			// Register required components
-			Chart.register(PieController, ArcElement, Tooltip, Legend);
+			Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 			// Aggregate total sessions by language
 			const languageTotals = new Map<string, number>();
@@ -504,15 +504,16 @@
 
 			const ctx = languagePieCanvas.getContext('2d');
 			if (ctx) {
-				// Create the pie chart
+				// Create the vertical bar chart
 				languagePieChart = new Chart(ctx, {
-					type: 'pie',
+					type: 'bar',
 					data: {
-						labels: languages.map((lang, index) => `${lang.toUpperCase()} (${totals[index]})`),
+						labels: languages.map(lang => lang.toUpperCase()),
 						datasets: [{
+							label: 'Sessions',
 							data: totals,
 							backgroundColor: backgroundColors,
-							borderColor: 'oklch(37.4% 0.01 67.558)', // neutral-700
+							borderColor: backgroundColors,
 							borderWidth: 2
 						}]
 					},
@@ -521,14 +522,7 @@
 						maintainAspectRatio: false,
 						plugins: {
 							legend: {
-								position: 'right',
-								labels: {
-									usePointStyle: true,
-									boxWidth: 12,
-									color: textColor,
-									pointStyle: 'circle',
-									padding: 15
-								}
+								display: false // Hide legend since colors match languages
 							},
 							tooltip: {
 								backgroundColor: 'oklch(43.9% 0 0)',
@@ -538,12 +532,31 @@
 								borderWidth: 1,
 								callbacks: {
 									label: function(context) {
-										const label = context.label || '';
-										const value = context.parsed;
+										const value = context.parsed.y;
 										const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
 										const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : '0';
-										return `${label}: ${value} sessions (${percentage}%)`;
+										return `${value} sessions (${percentage}%)`;
 									}
+								}
+							}
+						},
+						scales: {
+							x: {
+								grid: {
+									display: false
+								},
+								ticks: {
+									color: textColor
+								}
+							},
+							y: {
+								beginAtZero: true,
+								grid: {
+									color: 'oklch(37.4% 0.01 67.558)', // neutral-500
+									drawBorder: false
+								},
+								ticks: {
+									color: textColor
 								}
 							}
 						}
