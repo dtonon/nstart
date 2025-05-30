@@ -336,8 +336,13 @@
 				});
 			}
 
-			// Get unique languages and sort them
-			const allLanguages = [...new Set(analyticsData.languageStats.map(s => s.language_code))].sort();
+			// Get unique languages and sort them (en first, then alphabetically)
+			const uniqueLanguages = [...new Set(analyticsData.languageStats.map(s => s.language_code))];
+			const allLanguages = uniqueLanguages.sort((a, b) => {
+				if (a === 'en') return -1;
+				if (b === 'en') return 1;
+				return a.localeCompare(b);
+			});
 			
 			// Get dates and format them
 			const dates = [...dateMap.keys()].sort();
@@ -464,8 +469,12 @@
 				languageTotals.set(stat.language_code, current + stat.total_sessions);
 			}
 
-			// Convert to arrays and sort by total sessions (descending)
-			const languageEntries = [...languageTotals.entries()].sort((a, b) => b[1] - a[1]);
+			// Convert to arrays and sort by order: en first, then others alphabetically
+			const languageEntries = [...languageTotals.entries()].sort((a, b) => {
+				if (a[0] === 'en') return -1;
+				if (b[0] === 'en') return 1;
+				return a[0].localeCompare(b[0]);
+			});
 			const languages = languageEntries.map(([lang]) => lang);
 			const totals = languageEntries.map(([, total]) => total);
 
