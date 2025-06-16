@@ -42,7 +42,9 @@ export const indexRelays = [
 	'wss://user.kindpag.es',
 	'wss://relay.nostr.band',
 	'wss://relay.nos.social',
-	'wss://relay.damus.io'
+	'wss://relay.damus.io',
+	'wss://relay.primal.net',
+	'wss://indexer.coracle.social'
 ];
 
 export async function minePow(
