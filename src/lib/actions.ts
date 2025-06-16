@@ -59,7 +59,8 @@ export async function publishRelayList(sk: Uint8Array, pk: string) {
 		},
 		sk
 	);
-	pool.publish(indexRelays, signedEvent);
+	const targetRelays = [...new Set([...indexRelays, ...outboxRelays])];
+	pool.publish(targetRelays, signedEvent);
 	console.log('Published ' + JSON.stringify(signedEvent));
 }
 
