@@ -464,9 +464,10 @@
 				languageTotals.set(stat.language_code, current + stat.total_sessions);
 			}
 
-			// Convert to arrays for the chart
-			const languages = [...languageTotals.keys()].sort();
-			const totals = languages.map(lang => languageTotals.get(lang) || 0);
+			// Convert to arrays and sort by total sessions (descending)
+			const languageEntries = [...languageTotals.entries()].sort((a, b) => b[1] - a[1]);
+			const languages = languageEntries.map(([lang]) => lang);
+			const totals = languageEntries.map(([, total]) => total);
 
 			// If no data, don't create chart
 			if (languages.length === 0 || totals.every(t => t === 0)) {
@@ -498,7 +499,7 @@
 				languagePieChart = new Chart(ctx, {
 					type: 'pie',
 					data: {
-						labels: languages.map(lang => lang.toUpperCase()),
+						labels: languages.map((lang, index) => `${lang.toUpperCase()} (${totals[index]})`),
 						datasets: [{
 							data: totals,
 							backgroundColor: backgroundColors,
