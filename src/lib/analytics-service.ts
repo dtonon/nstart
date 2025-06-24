@@ -14,6 +14,13 @@ export interface FunnelStep {
 	skipped: number;
 }
 
+export interface LanguageStats {
+	language_code: string;
+	date: string;
+	total_sessions: number;
+	completed_sessions: number;
+}
+
 export interface AnalyticsSummary {
 	totalSessions: number;
 	completedSessions: number;
@@ -24,6 +31,7 @@ export interface AnalyticsSummary {
 	dailyStats: DailyStats[];
 	topSources: SourceStats[];
 	funnelData: FunnelStep[];
+	languageStats: LanguageStats[];
 }
 
 export interface DailyStats {
@@ -316,6 +324,50 @@ export class AnalyticsService {
 			}
 		}
 
+		// Get language trends by day
+		const languageStats = await db.all<LanguageStats[]>(
+			`WITH dates AS (
+										SELECT date(datetime('now', '-' || n || ' days')) as date
+										FROM (
+												WITH RECURSIVE
+														cnt(n) AS (
+																SELECT 0
+																UNION ALL
+																SELECT n+1 FROM cnt
+																LIMIT 90
+														)
+												SELECT n FROM cnt
+										)
+								),
+								languages AS (
+										SELECT DISTINCT language_code
+										FROM wizard_sessions
+										WHERE date(start_time) >= date(?)
+												AND language_code IS NOT NULL
+								),
+								language_daily_stats AS (
+										SELECT
+												language_code,
+												date(start_time) as date,
+												COUNT(*) as total_sessions,
+												SUM(CASE WHEN completed = 1 THEN 1 ELSE 0 END) as completed_sessions
+										FROM wizard_sessions
+										WHERE date(start_time) >= date(?)
+												AND language_code IS NOT NULL
+										GROUP BY language_code, date(start_time)
+								)
+								SELECT
+										languages.language_code,
+										dates.date,
+										COALESCE(lds.total_sessions, 0) as total_sessions,
+										COALESCE(lds.completed_sessions, 0) as completed_sessions
+								FROM languages
+								CROSS JOIN dates
+								LEFT JOIN language_daily_stats lds ON languages.language_code = lds.language_code AND dates.date = lds.date
+								ORDER BY languages.language_code, dates.date ASC`,
+			[ninetyDaysAgoStr, ninetyDaysAgoStr]
+		);
+
 		await this.wizardAnalytics.close();
 
 		return {
@@ -327,7 +379,8 @@ export class AnalyticsService {
 			followCompletedSessions: followCompletedSessions?.count || 0,
 			dailyStats: dailyStats || [],
 			topSources: topSources || [],
-			funnelData
+			funnelData,
+			languageStats: languageStats || []
 		};
 	}
 }

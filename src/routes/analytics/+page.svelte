@@ -10,8 +10,12 @@
 	let error = !!data.error;
 	let chartCanvas: HTMLCanvasElement;
 	let funnelCanvas: HTMLCanvasElement;
+	let languageCanvas: HTMLCanvasElement;
+	let languagePieCanvas: HTMLCanvasElement;
 	let chart: any = null;
 	let funnelChart: any = null;
+	let languageChart: any = null;
+	let languagePieChart: any = null;
 
 	// Initialize chart when canvas and data are available
 	afterUpdate(async () => {
@@ -310,6 +314,275 @@
 		}
 	});
 
+	// Initialize language trends chart when canvas and data are available
+	afterUpdate(async () => {
+		if (browser && languageCanvas && analyticsData && !languageChart && analyticsData.languageStats) {
+			const { Chart, LineController, LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend } =
+				await import('chart.js');
+
+			// Register required components if not already registered
+			Chart.register(LineController, LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend);
+
+			// Group language stats by date
+			const dateMap = new Map<string, Map<string, { total: number; completed: number }>>();
+			
+			for (const stat of analyticsData.languageStats) {
+				if (!dateMap.has(stat.date)) {
+					dateMap.set(stat.date, new Map());
+				}
+				dateMap.get(stat.date)!.set(stat.language_code, {
+					total: stat.total_sessions,
+					completed: stat.completed_sessions
+				});
+			}
+
+			// Get unique languages and sort them (en first, then alphabetically)
+			const uniqueLanguages = [...new Set(analyticsData.languageStats.map(s => s.language_code))];
+			const allLanguages = uniqueLanguages.sort((a, b) => {
+				if (a === 'en') return -1;
+				if (b === 'en') return 1;
+				return a.localeCompare(b);
+			});
+			
+			// Get dates and format them
+			const dates = [...dateMap.keys()].sort();
+			const labels = dates.map((date) => {
+				const d = new Date(date);
+				return `${d.getMonth() + 1}/${d.getDate()}`;
+			});
+
+			// Generate color palette for languages
+			const colors = [
+				'oklch(69.6% 0.17 162.48)', // emerald-500
+				'oklch(75.8% 0.184 83.122)', // yellow-500
+				'oklch(70.9% 0.196 231.6)', // blue-500
+				'oklch(71.9% 0.22 21.1)', // red-500
+				'oklch(72.2% 0.144 328.36)', // purple-500
+				'oklch(73% 0.152 192.17)', // cyan-500
+				'oklch(71.9% 0.178 29.234)', // orange-500
+				'oklch(69.7% 0.134 154.66)', // teal-500
+				'oklch(74.6% 0.167 292.89)', // pink-500
+				'oklch(63.9% 0.102 285.78)' // indigo-500
+			];
+
+			// Create datasets for each language
+			const datasets = allLanguages.map((lang, index) => {
+				const langData = dates.map(date => {
+					const dayData = dateMap.get(date);
+					return dayData?.get(lang)?.total || 0;
+				});
+
+				return {
+					label: lang.toUpperCase(),
+					data: langData,
+					borderColor: colors[index % colors.length],
+					backgroundColor: colors[index % colors.length],
+					borderWidth: 2,
+					tension: 0.3,
+					pointRadius: 0,
+					pointHitRadius: 10,
+					fill: false
+				};
+			});
+
+			// Detect dark mode
+			const textColor = 'oklch(86.9% 0.005 56.366)'; // neutral-300
+			const gridColor = 'oklch(37.4% 0.01 67.558)'; // neutral-500
+
+			const ctx = languageCanvas.getContext('2d');
+			if (ctx) {
+				// Create the chart
+				languageChart = new Chart(ctx, {
+					type: 'line',
+					data: {
+						labels,
+						datasets
+					},
+					options: {
+						responsive: true,
+						maintainAspectRatio: false,
+						interaction: {
+							mode: 'nearest',
+							intersect: false
+						},
+						plugins: {
+							legend: {
+								position: 'top',
+								labels: {
+									usePointStyle: true,
+									boxWidth: 6,
+									color: textColor,
+									pointStyle: 'circle',
+									pointStyleWidth: 16,
+									padding: 20
+								}
+							},
+							tooltip: {
+								mode: 'index',
+								intersect: false,
+								backgroundColor: 'oklch(43.9% 0 0)',
+								titleColor: textColor,
+								bodyColor: textColor,
+								borderColor: 'oklch(43.9% 0 0)',
+								borderWidth: 1
+							}
+						},
+						scales: {
+							x: {
+								grid: {
+									display: false
+								},
+								ticks: {
+									color: textColor
+								}
+							},
+							y: {
+								beginAtZero: true,
+								grid: {
+									color: gridColor,
+									drawBorder: false
+								},
+								ticks: {
+									color: textColor
+								}
+							}
+						}
+					}
+				});
+			}
+		}
+	});
+
+	// Initialize language pie chart when canvas and data are available
+	afterUpdate(async () => {
+		if (browser && languagePieCanvas && analyticsData && !languagePieChart && analyticsData.languageStats) {
+			const { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend } = await import('chart.js');
+
+			// Register required components
+			Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
+
+			// Aggregate total sessions by language
+			const languageTotals = new Map<string, number>();
+			
+			for (const stat of analyticsData.languageStats) {
+				const current = languageTotals.get(stat.language_code) || 0;
+				languageTotals.set(stat.language_code, current + stat.total_sessions);
+			}
+
+			// Convert to arrays and sort by order: en first, then others alphabetically
+			const languageEntries = [...languageTotals.entries()].sort((a, b) => {
+				if (a[0] === 'en') return -1;
+				if (b[0] === 'en') return 1;
+				return a[0].localeCompare(b[0]);
+			});
+			const languages = languageEntries.map(([lang]) => lang);
+			const totals = languageEntries.map(([, total]) => total);
+
+			// If no data, don't create chart
+			if (languages.length === 0 || totals.every(t => t === 0)) {
+				return;
+			}
+
+			// Generate color palette for languages (same as line chart)
+			const colors = [
+				'oklch(69.6% 0.17 162.48)', // emerald-500
+				'oklch(75.8% 0.184 83.122)', // yellow-500
+				'oklch(70.9% 0.196 231.6)', // blue-500
+				'oklch(71.9% 0.22 21.1)', // red-500
+				'oklch(72.2% 0.144 328.36)', // purple-500
+				'oklch(73% 0.152 192.17)', // cyan-500
+				'oklch(71.9% 0.178 29.234)', // orange-500
+				'oklch(69.7% 0.134 154.66)', // teal-500
+				'oklch(74.6% 0.167 292.89)', // pink-500
+				'oklch(63.9% 0.102 285.78)' // indigo-500
+			];
+
+			const backgroundColors = languages.map((_, index) => colors[index % colors.length]);
+
+			// Dark mode colors
+			const textColor = 'oklch(86.9% 0.005 56.366)'; // neutral-300
+
+			const ctx = languagePieCanvas.getContext('2d');
+			if (ctx) {
+				// Create the vertical bar chart
+				languagePieChart = new Chart(ctx, {
+					type: 'bar',
+					data: {
+						labels: languages.map(lang => lang.toUpperCase()),
+						datasets: [{
+							label: 'Sessions',
+							data: totals,
+							backgroundColor: backgroundColors,
+							borderColor: backgroundColors,
+							borderWidth: 2
+						}]
+					},
+					plugins: [{
+						id: 'barLabels',
+						afterDatasetsDraw: function(chart) {
+							const ctx = chart.ctx;
+							chart.data.datasets.forEach((dataset, i) => {
+								const meta = chart.getDatasetMeta(i);
+								meta.data.forEach((bar, index) => {
+									const data = dataset.data[index];
+									ctx.fillStyle = textColor;
+									ctx.font = 'bold 12px sans-serif';
+									ctx.textAlign = 'center';
+									ctx.textBaseline = 'bottom';
+									ctx.fillText(data, bar.x, bar.y - 5);
+								});
+							});
+						}
+					}],
+					options: {
+						responsive: true,
+						maintainAspectRatio: false,
+						plugins: {
+							legend: {
+								display: false // Hide legend since colors match languages
+							},
+							tooltip: {
+								backgroundColor: 'oklch(43.9% 0 0)',
+								titleColor: textColor,
+								bodyColor: textColor,
+								borderColor: 'oklch(43.9% 0 0)',
+								borderWidth: 1,
+								callbacks: {
+									label: function(context) {
+										const value = context.parsed.y;
+										const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
+										const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : '0';
+										return `${value} sessions (${percentage}%)`;
+									}
+								}
+							}
+						},
+						scales: {
+							x: {
+								grid: {
+									display: false
+								},
+								ticks: {
+									color: textColor
+								}
+							},
+							y: {
+								beginAtZero: true,
+								grid: {
+									color: 'oklch(37.4% 0.01 67.558)', // neutral-500
+									drawBorder: false
+								},
+								ticks: {
+									color: textColor
+								}
+							}
+						}
+					}
+				});
+			}
+		}
+	});
+
 	// Clean up charts on component unmount
 	onMount(() => {
 		return () => {
@@ -318,6 +591,12 @@
 			}
 			if (funnelChart) {
 				funnelChart.destroy();
+			}
+			if (languageChart) {
+				languageChart.destroy();
+			}
+			if (languagePieChart) {
+				languagePieChart.destroy();
 			}
 		};
 	});
@@ -436,6 +715,38 @@
 				<div class="h-96">
 					{#if browser && analyticsData && analyticsData.funnelData}
 						<canvas id="funnelChart" bind:this={funnelCanvas}></canvas>
+					{:else}
+						<div class="flex h-full items-center justify-center">
+							<div
+								class="h-12 w-12 animate-spin rounded-full border-b-2 border-t-2 border-blue-500"
+							></div>
+						</div>
+					{/if}
+				</div>
+			</div>
+
+			<!-- Language Trends Chart -->
+			<div class="mb-8 rounded-lg bg-neutral-800 p-6">
+				<h2 class="mb-4 text-lg font-medium text-white">Language trends by day</h2>
+				<div class="h-96">
+					{#if browser && analyticsData && analyticsData.languageStats}
+						<canvas id="languageChart" bind:this={languageCanvas}></canvas>
+					{:else}
+						<div class="flex h-full items-center justify-center">
+							<div
+								class="h-12 w-12 animate-spin rounded-full border-b-2 border-t-2 border-blue-500"
+							></div>
+						</div>
+					{/if}
+				</div>
+			</div>
+
+			<!-- Language Distribution Pie Chart -->
+			<div class="mb-8 rounded-lg bg-neutral-800 p-6">
+				<h2 class="mb-4 text-lg font-medium text-white">Total sessions by language</h2>
+				<div class="h-96">
+					{#if browser && analyticsData && analyticsData.languageStats}
+						<canvas id="languagePieChart" bind:this={languagePieCanvas}></canvas>
 					{:else}
 						<div class="flex h-full items-center justify-center">
 							<div
