@@ -1,7 +1,8 @@
 {
 	"shared": {
 		"button_continue": "Continue",
-		"text_nowasm": "Sorry your browser doesn't support WASM, so you cannot use this feature"
+		"text_nowasm": "Sorry your browser doesn't support WASM, so you cannot use this feature",
+		"copied": "Copied!"
 	},
 	"home": {
 		"title1": "WELCOME",
