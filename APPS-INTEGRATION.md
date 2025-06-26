@@ -56,7 +56,7 @@ The caller app has the responsibility to correctly manage the returning credenti
 
 ## Mandatory note for web application security
 
-The use of `#nostr-login` hash in the url allows the use of a simple GET request while 	maintaining a good security, since the hash is not passed to the server (and so not logged). Nevertheless, the app MUST remove the credentials from the url as soon as possibile so that they cannot remain saved, for example in browser history.
+The use of `#nostr-login` hash in the url allows the use of a simple GET request while maintaining a good security, since the hash is not passed to the server (and so not logged). Nevertheless, the app MUST remove the credentials from the url as soon as possibile so that they cannot remain saved, for example in browser history.
 The following is a Javascript code that achieves this goal:
 
 ```js
