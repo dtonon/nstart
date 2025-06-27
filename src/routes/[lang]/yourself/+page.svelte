@@ -50,6 +50,18 @@
 		}
 	}
 
+	function deleteImage() {
+		picturePreview = null;
+		$picture = '';
+		// Clear file input
+		const fileInput = document.getElementById('image') as HTMLInputElement;
+		if (fileInput) {
+			fileInput.value = '';
+		}
+	}
+
+	$: hasImage = picturePreview || $picture;
+
 	async function blossomAuth(file: File) {
 		// Calculate the hash of the image
 		let imageHash = await calculateFileHash(file);
@@ -72,8 +84,9 @@
 	}
 
 	async function uploadImage(file: File) {
-		let auth = await blossomAuth(file);
-		const arrayBuffer = await file.arrayBuffer();
+		const resizedFile = await resizeImage(file);
+		let auth = await blossomAuth(resizedFile);
+		const arrayBuffer = await resizedFile.arrayBuffer();
 
 		const response = await fetch('https://cdn.nostrcheck.me/upload', {
 			method: 'PUT',
@@ -91,6 +104,56 @@
 			console.error('Upload failed:', response.statusText);
 			alert(t('yourself.alert_failedupload'));
 		}
+	}
+
+	async function resizeImage(
+		file: File,
+		maxWidth: number = 1000,
+		maxHeight: number = 1000
+	): Promise<File> {
+		return new Promise((resolve) => {
+			const canvas = document.createElement('canvas');
+			const ctx = canvas.getContext('2d')!;
+			const img = new Image();
+
+			img.onload = () => {
+				// Calculate new dimensions while maintaining aspect ratio
+				let { width, height } = img;
+
+				if (width > height) {
+					if (width > maxWidth) {
+						height = (height * maxWidth) / width;
+						width = maxWidth;
+					}
+				} else {
+					if (height > maxHeight) {
+						width = (width * maxHeight) / height;
+						height = maxHeight;
+					}
+				}
+
+				canvas.width = width;
+				canvas.height = height;
+				ctx.drawImage(img, 0, 0, width, height);
+
+				// Convert canvas to blob and create new File
+				canvas.toBlob(
+					(blob) => {
+						if (blob) {
+							const resizedFile = new File([blob], file.name, {
+								type: file.type,
+								lastModified: Date.now()
+							});
+							resolve(resizedFile);
+						}
+					},
+					file.type,
+					0.9
+				); // 0.9 quality for JPEG compression
+			};
+
+			img.src = URL.createObjectURL(file);
+		});
 	}
 
 	async function navigateContinue() {
@@ -178,25 +241,46 @@
 			<div
 				class="-mr-8 ml-2 mt-2 h-1 w-20 border-t-2 border-neutral-300 dark:border-neutral-600"
 			></div>
-			<button
-				on:click={triggerFileInput}
-				class="input-hover-enabled h-24 w-24 rounded-full border-2 border-neutral-300 bg-neutral-100 dark:border-neutral-600 dark:bg-neutral-800"
-			>
-				<!-- svelte-ignore a11y-img-redundant-alt -->
-				{#if picturePreview || $picture}
-					<img
-						src={picturePreview || $picture}
-						alt="Profile Picture"
-						class="h-full w-full rounded-full object-cover"
-					/>
-				{:else}
-					<img
-						src="/icons/pfp.svg"
-						alt="Default Profile Picture"
-						class="h-full w-full rounded-full object-cover"
-					/>
+			<div class="relative">
+				<button
+					on:click={triggerFileInput}
+					class="input-hover-enabled h-24 w-24 rounded-full border-2 border-neutral-300 bg-neutral-100 dark:border-neutral-600 dark:bg-neutral-800"
+				>
+					<!-- svelte-ignore a11y-img-redundant-alt -->
+					{#if hasImage}
+						<img
+							src={picturePreview || $picture}
+							alt="Profile Picture"
+							class="h-full w-full rounded-full object-cover"
+						/>
+					{:else}
+						<img
+							src="/icons/pfp.svg"
+							alt="Default Profile Picture"
+							class="h-full w-full rounded-full object-cover"
+						/>
+					{/if}
+				</button>
+
+				<!-- Delete button -->
+				{#if hasImage}
+					<button
+						on:click={deleteImage}
+						class="absolute -right-0 -top-0 flex h-6 w-6 items-center justify-center rounded-full bg-neutral-700 text-white hover:bg-accent dark:bg-neutral-700 dark:hover:bg-accent"
+						title="Delete image"
+					>
+						<!-- X icon -->
+						<svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M6 18L18 6M6 6l12 12"
+							/>
+						</svg>
+					</button>
 				{/if}
-			</button>
+			</div>
 		</div>
 		<div>
 			<!-- File input for image upload -->
