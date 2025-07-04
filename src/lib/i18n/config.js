@@ -4,6 +4,7 @@ export const availableLanguages = [
 	{ code: 'it', name: 'Italiano' },
 	{ code: 'fr', name: 'Français' },
 	{ code: 'de', name: 'Deutsch' },
+	{ code: 'pl', name: 'Polski' },
 	{ code: 'pt', name: 'Português' },
 	{ code: 'si', name: 'Slovenščina' },
 	{ code: 'ja', name: '日本語' },
