@@ -1,0 +1,138 @@
+{
+	"shared": {
+		"button_continue": "Dalej",
+		"text_nowasm": "Niestety Twoja przeglądarka nie obsługuje WASM, więc nie możesz skorzystać z tej funkcji."
+	},
+	"home": {
+		"title1": "WITAMY",
+		"title2": "W SIECI",
+		"title3": "NOSTR",
+		"text1": "Aby dołączyć do sieci Nostr potrzebujesz profilu, ale nie jest to zwykły profil który generują korporacje i zarządzają za Ciebie. Tworzysz go sam, nie są do tego wymagane żadne uprawnienia.",
+		"text2": "Nostr to odmienne podejście od samego początku użytkowania : ponieważ nie ma centralnego organu dbającego o to, kto jest kim, każdy użytkownik jest identyfikowany za pomocą pary kluczy kryptograficznych; nie przejmuj się slangiem technicznym, to tylko zakodowane prawo dostępu, które będziesz musiał chronić.",
+		"text3a": "Ten kreator jest używany przez <strong>{$1}</strong> aby umożliwić utworzenie nowego profilu i bezpieczne zarządzanie nim w kilku krokach. Jesteś gotowy?",
+		"text3b": "Ten kreator jest jednym z wielu sposobów na stworzenie profilu Nostr, który można później wykorzystać w dowolnych innych aplikacjach. Pomagamy w kilku krokach utworzyć parę kluczy i bezpiecznie nią zarządzać. Jesteś gotowy?",
+		"button_start": "Rozpocznij",
+		"footer1": "Chciałbyś najpierw dowiedzieć się czegoś więcej o Nostr?",
+		"footer2": "Przeczytaj czym jest nostr i jak działa",
+		"footer3": "Kod źródłowy tego serwisu jest <a {$1}>darmowy i otwarty</a>"
+	},
+
+	"yourself": {
+		"title1": "ZAPREZENTUJ",
+		"title2": "SIEBIE",
+		"side1": "W sieci Nostr to Ty decydujesz kim chcesz być.",
+		"side2": "Profil Nostr zazwyczaj zawiera nazwę, zdjęcie i kilka dodatkowych informacji, ale wszystko to jest opcjonalne.",
+		"side3": "Nazwa użytkownika nie jest unikalna, możesz mieć ich tyle, ile zechcesz! Możesz także użyć prawdziwego imienia lub pseudonimu; Pamiętaj, zawsze możesz go później zmienić.<br /> Ale pamiętaj: dbaj o prywatność w sieci i nie udostępniaj wrażliwych danych.",
+		"side4": "I tak, aby dołączyć do Nostr, nie musisz podawać swojego adresu e-mail, numeru telefonu ani niczego podobnego.",
+		"label_image": "Twój avatar",
+		"label_nickname": "Twoje imię (pseudonim)",
+		"label_about": "Coś o Tobie",
+		"label_website": "Twoja strona www",
+		"label_required": "wymagane",
+		"label_optional": "opcjonalnie",
+		"alert_failedupload": "Wgrywanie zdjęcia się nie powiodło. Spróbuj ponownie",
+		"alert_validation": "Wpisz imię, opis i strona internetowa nie są wymagane",
+		"button_uploading": "Wgrywanie..."
+	},
+
+	"download": {
+		"title1": "TWOJE KLUCZE",
+		"title2": "SĄ GOTOWE",
+		"side1": "Świetna robota <strong>{$1}</strong>, Twój profil Nostr jest gotowy! Tak, to było takie proste.",
+		"side2": "W Nostr twoja para kluczy jest identyfikowana przez unikalny ciąg znaków zaczynający się od <em {$1}>npub</em>. Jest to Twój publiczny klucz profilowy, który możesz udostępnić każdemu.",
+		"side3": "Następnie jest klucz prywatny. Zaczyna się odh <em {$1}>nsec</em> i służy do kontrolowania profilu użytkownika i publikowania wpisów. Należy zachować go w absolutnej tajemnicy!",
+		"side4": "Teraz pobierz swój <em {$1}>nsec</em> (jest to plik tekstowy) i zapisz go w bezpiecznym miejscu, na przykład w menedżerze haseł.",
+		"label_yournpub": "Twój npub to",
+		"label_password": "Wybierz hasło",
+		"button_save1": "Zapisz mój nsec",
+		"button_save2": "Zapisz mój ncryptsec",
+		"label_switch1": "Chcę pobrać zaszyfrowaną wersję",
+		"label_switch2": "Nieważne, chcę pobrać zwykły nsec",
+		"text1": "Z Twojego klucza nsec możesz wygenerować Twój npub, więc jest to jedyna informacja, którą naprawdę trzeba chronić.",
+		"text2": "Teraz otwórz plik i sprawdź, czy długi ciąg po twoim npub pasuje do tych znaków początkowych i końcowych:",
+		"text3": "Na koniec skopiuj plik w inne bezpieczne miejsce jako dodatkową kopię zapasową i osobno zapisz wybrane hasło (<strong>{$1}</strong>).",
+		"text4": "Na koniec skopiuj plik w inne bezpieczne miejsce jako dodatkową kopię zapasową.",
+		"text5": "Zapisałem plik i hasło w kilku bezpiecznych miejscach",
+		"text6": "Zapisałem plik w kilku bezpiecznych miejscach",
+		"text7": "Czy chcesz pobrać go ponownie?"
+	},
+
+	"email": {
+		"title1": "KOPIA",
+		"title2": "ZAPASOWA",
+		"side1": "Oferujemy możliwość wysłania zaszyfrowanego pliku  <em {$1}>nsec</em> (a właściwie  <em {$1}>ncryptsec</em>) na adres e-mail, aby mieć inną wygodną lokalizację kopii zapasowej.",
+		"side2": "Wybierz solidne hasło i przechowuj je w bezpiecznym miejscu, zapisz je teraz, upewnij się, że go nie zgubisz.",
+		"side3": "Użyjemy tego samego hasła, które wybrałeś wcześniej. Zapisałeś je, prawda? :)",
+		"side4": "Otrzymasz wiadomość e-mail od {$1}. Jeśli nie widzisz żadnej wiadomości, sprawdź folder spamu.",
+		"label_check1": "Chcę wysłać mój zaszyfrowany nsec {$1} na poniższy adres e-mail:",
+		"label_check1b": "(z tym samym hasłem, które zostało już wpisane wcześniej)",
+		"label_email": "Twój adres e-mail",
+		"label_password": "Wybierz hasło",
+		"button_send": "Wyślij",
+		"button_sending": "Wysyłanie...",
+		"button_skip": "Nie, dzięki, kontynuuj"
+	},
+
+	"bunker": {
+		"title1": "LOGOWANIE",
+		"title2": "Z BUNKREM",
+		"side1": "Teraz masz możliwość podzielenia swojego <em {$1}>nsec</em> na kilka części przy użyciu techniki zwanej <a {$2}>FROST</a> i dystrybucji każdego fragmentu do niezależnego i zaufanego zdalnego weryfikatora.",
+		"side2": "W ten sposób otrzymasz kod <em {$1}>bunkra</em> który możesz użyć do logowania się w wielu aplikacjach internetowych, mobilnych i stacjonarnych bez ujawniania swojego klucza <em {$2}>nsec</em>.",
+		"side3": "Jeśli kiedykolwiek utracisz kod <em {$1}>bunkra</em>, lub jeśli weryfikatorzy znikną z internetu i przestanie on działać lub jeśli zostanie skradziony przez złośliwego wirusa, możesz użyć <em {$1}>nsec</em> aby utworzyć nowy i unieważnić stary.",
+		"label_check1": "Chcę zapisać mój nsec, podzielony na pulę zdalnych weryfikatorów, które będą używane do połączeń typu \"bunker\" ",
+		"label_check1b": "(z tym samym hasłem wpisanym wcześniej)",
+		"text_nowasm": "Niestety Twoja przeglądarka nie obsługuje WASM, więc nie możesz skorzystać z tej funkcji.",
+		"text1": "Klucz zostanie podzielony i udostępniony {$1} niezależnym weryfikatorom, {$2} weryfikatorów jest wymaganych do podpisania zdarzenia.",
+		"text2": "Procedura wymaga trochę czasu, proszę czekać.",
+		"switch1": "Zaawansowany wybór weryfikatorów",
+		"switch2": "Chcę użyć automatycznego wyboru weryfikatorów",
+		"text3": "Wybierz preferowanych weryfikatorów:",
+		"text4": "Wybierz jeszcze co najmniej {$1} {$2}",
+		"text4b": "weryfikatora",
+		"text4c": "weryfikatorów",
+		"text5": "Użyjemy schematu 2 na 2 z wieloma podpisami przy użyciu wybranych weryfikatorów",
+		"text6": "Użyjemy {$1}-na-{$2} schematu wielopodpisowego przy użyciu wybranych weryfikatorów",
+		"text7": "<strong>Uwaga</strong>, ten schemat jest ryzykowny, jeśli jeden z weryfikatorów będzie offline, zdarzenia nie będą mogły zostać podpisane.",
+		"text8": "Gotowe! Twój kod bunkra jest gotowy. Zapisz go na później, aby móc zalogować się do klientów Nostr bez konieczności używania tajnego klucza:",
+		"button_save": "Zapisz kod bunkra",
+		"button_activate": "Aktywuj bunker",
+		"button_activating": "Aktywacja...",
+		"button_skip": "Nie, dzięki, kontynuuj"
+	},
+
+	"follow": {
+		"title1": "ZAOBSERWUJ",
+		"title2": "KOGOŚ",
+		"side1": "Co myślisz teraz o obserwacji ciekawych profili? Oferujemy możliwość skopiowania poniższej listy wybranych użytkowników Nostr, dzięki czemu możesz rozpocząć swoją podróż Nostr z kanałem pełnym postów od już wyselekcjonowanych osób.",
+		"side2": "Możesz później obserwować więcej osób lub przestać obserwować niektórych; dzięki Nostr kontrolujesz to, co chcesz zobaczyć, bez niejasnych i zwodniczych algorytmów, bez narzucania.",
+		"text1": "Zobacz te same rzeczy, które użytkownicy Nostr widzą na swoich kanałach:",
+		"button_finish": "Zrobione",
+		"button_finishing": "Finalizacja..."
+	},
+
+	"finish": {
+		"title1": "POZNAJ",
+		"title2": "NOSTR",
+		"text1": "Zeskanuj kod QR aby szybko zalogować się przy użyciu smartfona!",
+		"text2": "Skończyliśmy, <strong>{$1}</strong>! Teraz możesz rozpocząć eksplorację sieci Nostr, korzystając z aplikacji webowy lub pobierając aplikację. Oto kilka sugestii, jak zacząć od razu:",
+		"text3": "To krótki wybór z ponad 80 aplikacji, które zostały już zbudowane dla Nostr, <a {$1}}>Zobacz je wszystkie</a>!",
+		"text4": "To jest Twój profil internetowy, możesz go teraz udostępniać wszędzie i każdemu:<br /><a {$1}>njump.me/{$2}</a>",
+		"label1": "Mikroblog",
+		"label2": "Czat grupowy",
+		"label3": "Zdjęcia i wideo"
+	},
+
+	"back": {
+		"title1": "JESTEŚ GOTOWY",
+		"title2": "DO STARTU!",
+		"text1": "To wszystko, <strong>{$1}</strong>! Możesz rozpocząć swoją przygodę z Nostr — kliknij poniżej, aby wrócić do <strong>{$2}</strong>:",
+		"button_back": "Wróć do {$1}",
+		"text2": "{$1} To tylko krótki wybór z ponad 80 aplikacji które zostały już zbudowane dla Nostr, <a>poznaj je wszystkie</a>!",
+		"text3": "To jest Twój profil internetowy, możesz go udostępnić wszędzie i każdemu:<br /><a {$1}>njump.me/{$2}</a>"
+	},
+
+	"confirmation_email": {
+		"subject": "Twoje konto Nostr",
+		"body": "Witaj!\n\nTo jest twój Nostr npub:\n{$1}\n\nA to jest twój zaszyfrowany klucz Nostr:\n{$2}\n\nPamiętaj, aby zapisać wybrane przez Ciebie hasło w bezpiecznym miejscu!\n\nWitamy w Nostr :)\n\nPS: ten adres e-mail nie akceptuje odpowiedzi, aby poprosić o wsparcie, proszę zaznaczyć tag https://njump.me/dtonon.com lub https://njump.me/fiatjaf.com w Nostr"
+	}
+}
