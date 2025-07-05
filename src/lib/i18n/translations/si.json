@@ -1,5 +1,6 @@
 {
 	"shared": {
+    "page_title": "Create your Nostr account",
 		"button_continue": "Nadaljuj",
 		"text_nowasm": "Tvoj brskalnik ne podpira WebAssembly (WASM), zato ta funkcija ni na voljo."
 	},
