@@ -177,6 +177,19 @@
 										>
 											{t('home.title3')}
 										</div>
+									{:else if $currentLanguage === 'tr'}
+										<div
+											class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[6rem]"
+											id="tw"
+										>
+											<span class="text-accent">{t('home.title3')}</span>
+											<span class="text-neutral-500 dark:text-neutral-400">{t('home.title2')}</span>
+										</div>
+										<div
+											class="text-[3rem] leading-[1em] text-black dark:text-white sm:text-[5rem]"
+										>
+											{t('home.title1')}
+										</div>
 									{:else}
 										<div
 											class="text-[3rem] leading-[1em] text-black dark:text-white sm:text-[5rem]"
@@ -221,7 +234,7 @@
 							>
 								<button
 									class="inline-flex items-center rounded bg-accent px-10 py-4 text-[1.8rem] text-white"
-									on:click={() => goto('/en/yourself')}
+									on:click={() => goto(`/${$currentLanguage}/yourself`)}
 								>
 									{t('home.button_start')}
 									<img src="/icons/arrow-right.svg" alt="Icon" class="ml-4 mr-2 h-7 w-7" />
