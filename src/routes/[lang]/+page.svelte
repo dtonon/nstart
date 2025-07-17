@@ -118,11 +118,13 @@
 			customReadRelays: $readRelays,
 			customWriteRelays: $writeRelays
 		});
+
+		console.log('$callingAppName', $callingAppName);
 	});
 </script>
 
 <svelte:head>
-	<title>{t("shared.page_title")}</title>
+	<title>{t('shared.page_title')}</title>
 	<meta
 		name="description"
 		content="Create your Nostr account, back it up, and get a Nostr Connect bunker URL in few easy steps!"
@@ -228,7 +230,7 @@
 								</button>
 							</div>
 
-							{#if !isModal}
+							{#if !isModal && $callingAppName == ''}
 								<!-- Footer -->
 								<div
 									class="animate-fade1 leading-6 text-neutral-500 opacity-0 dark:text-neutral-300"
