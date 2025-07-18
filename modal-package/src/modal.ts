@@ -72,6 +72,7 @@ export class NstartModal {
 		if (this.config.aac) url.searchParams.set('aac', 'yes');
 		if (this.config.awr?.length) url.searchParams.set('awr', this.config.awr.join(','));
 		if (this.config.arr?.length) url.searchParams.set('arr', this.config.arr.join(','));
+		if (this.config.aac) url.searchParams.set('asf', 'yes');
 
 		if (!this.config.ahc) this.config.ahc = false;
 
