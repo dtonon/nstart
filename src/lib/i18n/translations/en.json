@@ -87,7 +87,7 @@
 		"text2": "The procedure could require some time, please hold on.",
 		"switch1": "Advanced signers selection",
 		"switch2": "I want to use the automatic signers selection",
-		"text3": "Select the desidered signers:",
+		"text3": "Select the desired signers:",
 		"text4": "Select at least {$1} {$2}",
 		"text4b": "more signer",
 		"text4c": "more signers",
