@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount, afterUpdate } from 'svelte';
+	import { base32 } from '@scure/base';
 	import WizardAnalyticsClient from '$lib/wizard-analytics-client';
 	import { t, currentLanguage } from '$lib/i18n';
 	import { shardGetBunker } from '@fiatjaf/promenade-trusted-dealer';
@@ -8,6 +9,7 @@
 	import { goto } from '$app/navigation';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import {
+		coordinator,
 		sessionId,
 		accent,
 		sk,
@@ -127,14 +129,14 @@
 		}, 3000);
 
 		try {
-			$bunkerURI = await shardGetBunker(
+			const accountEvt = await shardGetBunker(
 				pool,
 				$sk,
 				$pk,
 				advanceSignersSelection ? threshold : defaultThreshold,
 				advanceSignersSelection ? total : defaultSelected,
 				advanceSignersSelection ? Array.from(selectedSigners) : signers.map((s) => s.pubkey),
-				'wss://promenade.fiatjaf.com',
+				$coordinator,
 				20,
 				$inboxes,
 				$inboxes[$pk] || selectReadRelays(),
@@ -143,6 +145,14 @@
 					activationProgress = p;
 				}
 			);
+
+			// automatically create the first profile, with full access
+			const secretRand = new Uint8Array(10);
+			window.crypto.getRandomValues(secretRand);
+			const secret = base32.encode(secretRand);
+			accountEvt.tags.push(['profile', 'MAIN', secret, '']);
+			$bunkerURI = `bunker://${accountEvt.pubkey}?relay=${encodeURIComponent($coordinator)}&secret=${secret}`;
+
 			bunkerActivating = false;
 		} catch (err) {
 			console.error(err);
