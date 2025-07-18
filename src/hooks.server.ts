@@ -14,20 +14,20 @@ function checkBasicAuth(authHeader: string | null): boolean {
 	}
 }
 
-export const handle: Handle = async ({ event, resolve }) => {
-	// Check if this is an analytics route
-	if (event.url.pathname.startsWith('/analytics') || event.url.pathname === '/a/analytics') {
-		const authHeader = event.request.headers.get('Authorization');
+// export const handle: Handle = async ({ event, resolve }) => {
+// 	// Check if this is an analytics route
+// 	if (event.url.pathname.startsWith('/analytics') || event.url.pathname === '/a/analytics') {
+// 		const authHeader = event.request.headers.get('Authorization');
 
-		if (!checkBasicAuth(authHeader)) {
-			return new Response('Unauthorized', {
-				status: 401,
-				headers: {
-					'WWW-Authenticate': 'Basic realm="Nstart Analytics"'
-				}
-			});
-		}
-	}
+// 		if (!checkBasicAuth(authHeader)) {
+// 			return new Response('Unauthorized', {
+// 				status: 401,
+// 				headers: {
+// 					'WWW-Authenticate': 'Basic realm="Nstart Analytics"'
+// 				}
+// 			});
+// 		}
+// 	}
 
-	return await resolve(event);
-};
+// 	return await resolve(event);
+// };
