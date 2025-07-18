@@ -5,7 +5,7 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-	
+
 	let analyticsData: AnalyticsSummary | null = data.analyticsData || null;
 	let error = !!data.error;
 	let chartCanvas: HTMLCanvasElement;
@@ -193,7 +193,7 @@
 			const completedData = sortedFunnelData.map((step) => {
 				if (step.step_name === 'homepage') {
 					// For homepage, completed = users who started the wizard (progressed to 'yourself' step)
-					const yourselfStep = sortedFunnelData.find(s => s.step_name === 'yourself');
+					const yourselfStep = sortedFunnelData.find((s) => s.step_name === 'yourself');
 					return yourselfStep ? yourselfStep.total : 0;
 				}
 				return step.completed;
@@ -205,7 +205,7 @@
 				if (step.step_name === 'homepage') {
 					// For homepage, abandoned = total homepage visits - users who started the wizard
 					// Find the 'yourself' step to get users who progressed from homepage
-					const yourselfStep = sortedFunnelData.find(s => s.step_name === 'yourself');
+					const yourselfStep = sortedFunnelData.find((s) => s.step_name === 'yourself');
 					const usersWhoProgressed = yourselfStep ? yourselfStep.total : 0;
 					return step.total - usersWhoProgressed;
 				}
@@ -332,16 +332,38 @@
 
 	// Initialize language trends chart when canvas and data are available
 	afterUpdate(async () => {
-		if (browser && languageCanvas && analyticsData && !languageChart && analyticsData.languageStats) {
-			const { Chart, LineController, LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend } =
-				await import('chart.js');
+		if (
+			browser &&
+			languageCanvas &&
+			analyticsData &&
+			!languageChart &&
+			analyticsData.languageStats
+		) {
+			const {
+				Chart,
+				LineController,
+				LineElement,
+				PointElement,
+				CategoryScale,
+				LinearScale,
+				Tooltip,
+				Legend
+			} = await import('chart.js');
 
 			// Register required components if not already registered
-			Chart.register(LineController, LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend);
+			Chart.register(
+				LineController,
+				LineElement,
+				PointElement,
+				CategoryScale,
+				LinearScale,
+				Tooltip,
+				Legend
+			);
 
 			// Group language stats by date
 			const dateMap = new Map<string, Map<string, { total: number; completed: number }>>();
-			
+
 			for (const stat of analyticsData.languageStats) {
 				if (!dateMap.has(stat.date)) {
 					dateMap.set(stat.date, new Map());
@@ -353,13 +375,13 @@
 			}
 
 			// Get unique languages and sort them (en first, then alphabetically)
-			const uniqueLanguages = [...new Set(analyticsData.languageStats.map(s => s.language_code))];
+			const uniqueLanguages = [...new Set(analyticsData.languageStats.map((s) => s.language_code))];
 			const allLanguages = uniqueLanguages.sort((a, b) => {
 				if (a === 'en') return -1;
 				if (b === 'en') return 1;
 				return a.localeCompare(b);
 			});
-			
+
 			// Get dates and format them
 			const dates = [...dateMap.keys()].sort();
 			const labels = dates.map((date) => {
@@ -383,7 +405,7 @@
 
 			// Create datasets for each language
 			const datasets = allLanguages.map((lang, index) => {
-				const langData = dates.map(date => {
+				const langData = dates.map((date) => {
 					const dayData = dateMap.get(date);
 					return dayData?.get(lang)?.total || 0;
 				});
@@ -471,15 +493,22 @@
 
 	// Initialize language pie chart when canvas and data are available
 	afterUpdate(async () => {
-		if (browser && languagePieCanvas && analyticsData && !languagePieChart && analyticsData.languageStats) {
-			const { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend } = await import('chart.js');
+		if (
+			browser &&
+			languagePieCanvas &&
+			analyticsData &&
+			!languagePieChart &&
+			analyticsData.languageStats
+		) {
+			const { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend } =
+				await import('chart.js');
 
 			// Register required components
 			Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 			// Aggregate total sessions by language
 			const languageTotals = new Map<string, number>();
-			
+
 			for (const stat of analyticsData.languageStats) {
 				const current = languageTotals.get(stat.language_code) || 0;
 				languageTotals.set(stat.language_code, current + stat.total_sessions);
@@ -495,7 +524,7 @@
 			const totals = languageEntries.map(([, total]) => total);
 
 			// If no data, don't create chart
-			if (languages.length === 0 || totals.every(t => t === 0)) {
+			if (languages.length === 0 || totals.every((t) => t === 0)) {
 				return;
 			}
 
@@ -524,32 +553,36 @@
 				languagePieChart = new Chart(ctx, {
 					type: 'bar',
 					data: {
-						labels: languages.map(lang => lang.toUpperCase()),
-						datasets: [{
-							label: 'Sessions',
-							data: totals,
-							backgroundColor: backgroundColors,
-							borderColor: backgroundColors,
-							borderWidth: 2
-						}]
+						labels: languages.map((lang) => lang.toUpperCase()),
+						datasets: [
+							{
+								label: 'Sessions',
+								data: totals,
+								backgroundColor: backgroundColors,
+								borderColor: backgroundColors,
+								borderWidth: 2
+							}
+						]
 					},
-					plugins: [{
-						id: 'barLabels',
-						afterDatasetsDraw: function(chart) {
-							const ctx = chart.ctx;
-							chart.data.datasets.forEach((dataset, i) => {
-								const meta = chart.getDatasetMeta(i);
-								meta.data.forEach((bar, index) => {
-									const data = dataset.data[index];
-									ctx.fillStyle = textColor;
-									ctx.font = 'bold 12px sans-serif';
-									ctx.textAlign = 'center';
-									ctx.textBaseline = 'bottom';
-									ctx.fillText(data, bar.x, bar.y - 5);
+					plugins: [
+						{
+							id: 'barLabels',
+							afterDatasetsDraw: function (chart) {
+								const ctx = chart.ctx;
+								chart.data.datasets.forEach((dataset, i) => {
+									const meta = chart.getDatasetMeta(i);
+									meta.data.forEach((bar, index) => {
+										const data = dataset.data[index];
+										ctx.fillStyle = textColor;
+										ctx.font = 'bold 12px sans-serif';
+										ctx.textAlign = 'center';
+										ctx.textBaseline = 'bottom';
+										ctx.fillText(data, bar.x, bar.y - 5);
+									});
 								});
-							});
+							}
 						}
-					}],
+					],
 					options: {
 						responsive: true,
 						maintainAspectRatio: false,
@@ -564,7 +597,7 @@
 								borderColor: 'oklch(43.9% 0 0)',
 								borderWidth: 1,
 								callbacks: {
-									label: function(context) {
+									label: function (context) {
 										const value = context.parsed.y;
 										const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
 										const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : '0';

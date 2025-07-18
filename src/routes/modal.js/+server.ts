@@ -15,10 +15,10 @@ if (typeof window !== 'undefined') {
 `;
 
 export const GET: RequestHandler = async () => {
-  return new Response(modalCode, {
-    headers: {
-      'Content-Type': 'application/javascript',
-      'Cache-Control': 'public, max-age=31536000'
-    }
-  });
+	return new Response(modalCode, {
+		headers: {
+			'Content-Type': 'application/javascript',
+			'Cache-Control': 'public, max-age=31536000'
+		}
+	});
 };

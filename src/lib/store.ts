@@ -5,6 +5,8 @@ import * as nip49 from '@nostr/tools/nip49';
 import { signers } from './nostr';
 import { loadRelayList } from '@nostr/gadgets/lists';
 
+export const coordinator = writable<string>('wss://promenade.fiatjaf.com');
+
 // Utility function to handle sessionStorage
 function createSessionWritable<T>(label: string, initialValue: T): Writable<T> {
 	const isBrowser = typeof window !== 'undefined';

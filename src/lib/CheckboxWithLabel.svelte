@@ -19,10 +19,10 @@
 				checked && !disabled
 					? 'border-accent bg-accent'
 					: checked && disabled
-					? 'border-neutral-600 bg-neutral-500'
-					: disabled
-					? 'border-neutral-300 dark:border-neutral-600 bg-neutral-100 dark:bg-neutral-800'
-					: 'enabled:input-hover-enabled border-neutral-300 dark:border-neutral-600'
+						? 'border-neutral-600 bg-neutral-500'
+						: disabled
+							? 'border-neutral-300 bg-neutral-100 dark:border-neutral-600 dark:bg-neutral-800'
+							: 'enabled:input-hover-enabled border-neutral-300 dark:border-neutral-600'
 			}`}
 		>
 			<input

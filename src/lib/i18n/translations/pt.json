@@ -1,6 +1,6 @@
 {
 	"shared": {
-    "page_title": "Create your Nostr account",
+		"page_title": "Create your Nostr account",
 		"button_continue": "Continuar",
 		"text_nowasm": "Desculpe, seu navegador não suporta WASM, então você não pode usar este recurso"
 	},
