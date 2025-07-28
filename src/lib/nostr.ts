@@ -8,33 +8,31 @@ import HashWorker from './worker?worker';
 
 export const signers = [
 	{
-		pubkey: '4be49a6175734b43c7083ceac11e47bf684ffe65bd021c949bea1702409c119a',
-		name: 'Daniele'
-	},
-	{
-		pubkey: 'aa4f53d8041b88adee44cefb62fb49fdeb85d151d1a346e655850c213508ed2e',
-		name: 'hodlbod'
-	},
-	{
-		pubkey: '17da048b868a247beef98160907b2127030dbc718fea9eb5225913576586cb8c',
-		name: 'fiatjaf'
-	},
-	{
-		pubkey: 'ad1c6fa1daca939685d34ab541fc9e7b450ef6295aa273addafee74a579d57fb',
-		name: 'Sebastix'
-	},
-	{
-		pubkey: '077369139f12ec9de23fe3ce11d3d2619f86e068280d446e94b7d76ff44a8c41',
+		pubkey: '4440e4f93c9dcb0a5521f0bf949a1222698b72a1b1e3534b10537100fc94f97f',
 		name: 'Artur Brugeman'
 	},
 	{
-		pubkey: 'dea9d5c611f14c00efa3fa19ac2867372b6e585a2ed2c9d29febbb70db110da7',
-		name: 'Alex Gleason'
-	}
+		pubkey: '23a3ff76766f5ffc852fa6f2fc5058c1306ee25927632e0f8e213af11a5b8de5',
+		name: 'fiatjaf'
+	},
+    {
+        pubkey: 'aa4f53d8041b88adee44cefb62fb49fdeb85d151d1a346e655850c213508ed2e',
+        name: 'hodlbod'
+    }
+
+	// ~~~
 	// {
-	// 	pubkey: '23a3ff76766f5ffc852fa6f2fc5058c1306ee25927632e0f8e213af11a5b8de5',
-	// 	name: 'fiatjaf 2'
+	// 	pubkey: '4be49a6175734b43c7083ceac11e47bf684ffe65bd021c949bea1702409c119a',
+	// 	name: 'Daniele'
 	// },
+	// {
+	// 	pubkey: 'ad1c6fa1daca939685d34ab541fc9e7b450ef6295aa273addafee74a579d57fb',
+	// 	name: 'Sebastix'
+	// },
+	// {
+	// 	pubkey: 'dea9d5c611f14c00efa3fa19ac2867372b6e585a2ed2c9d29febbb70db110da7',
+	// 	name: 'Alex Gleason'
+	// }
 ];
 
 export const indexRelays = [
