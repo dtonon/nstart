@@ -2,10 +2,7 @@
 	import { onMount } from 'svelte';
 	import WizardAnalyticsClient from '$lib/wizard-analytics-client';
 	import { t, currentLanguage } from '$lib/i18n';
-	import { finalizeEvent, type EventTemplate } from '@nostr/tools/pure';
-	import { calculateFileHash } from '@nostr/tools/nip96';
-	import { utf8Encoder } from '@nostr/tools/utils';
-	import { base64 } from '@scure/base';
+	import { BlossomClient } from '@nostr/tools/nipb7';
 
 	import { goto } from '$app/navigation';
 	import { sessionId, accent, sk, pk, name, picture, about, website } from '$lib/store';
@@ -15,6 +12,7 @@
 	import ContinueButton from '$lib/ContinueButton.svelte';
 	import { mineEmail, publishRelayList, publishProfile } from '$lib/actions';
 	import { isWasmSupported } from '$lib/wasm';
+	import { PlainKeySigner } from '@nostr/tools/signer';
 
 	let picturePreview: string | null = null;
 	let activationProgress = 0;
@@ -62,48 +60,19 @@
 
 	$: hasImage = picturePreview || $picture;
 
-	async function blossomAuth(file: File) {
-		// Calculate the hash of the image
-		let imageHash = await calculateFileHash(file);
-
-		// Create the event and sign it
-		let eventTemplate: EventTemplate = {
-			kind: 24242,
-			created_at: Math.floor(Date.now() / 1000),
-			tags: [
-				['t', 'upload'],
-				['x', imageHash],
-				['expiration', String(Math.floor(Date.now() / 1000) + 86400)]
-			],
-			content: 'Upload profile pic'
-		};
-		let signedEvent = finalizeEvent(eventTemplate, $sk);
-
-		// Return a base64 of the json event
-		return base64.encode(utf8Encoder.encode(JSON.stringify(signedEvent)));
-	}
-
-	async function uploadImage(file: File) {
+	async function uploadImage(file: File): Promise<string> {
 		const resizedFile = await resizeImage(file);
-		let auth = await blossomAuth(resizedFile);
-		const arrayBuffer = await resizedFile.arrayBuffer();
+		const signer = new PlainKeySigner($sk);
 
-		const response = await fetch('https://cdn.nostrcheck.me/upload', {
-			method: 'PUT',
-			headers: {
-				Authorization: `Nostr ${auth}`
-			},
-			body: arrayBuffer
-		});
+		const clients = [
+			new BlossomClient('https://24242.io', signer),
+			new BlossomClient('https://cdn.nostrcheck.me', signer),
+			new BlossomClient('https://blossom.primal.net', signer)
+		];
 
-		if (response.ok) {
-			const data = await response.json();
-			activationProgress = 100;
-			return data;
-		} else {
-			console.error('Upload failed:', response.statusText);
-			alert(t('yourself.alert_failedupload'));
-		}
+		const bd = await Promise.race(clients.map((c) => c.uploadBlob(resizedFile, resizedFile.type)));
+		activationProgress = 100;
+		return bd.url;
 	}
 
 	async function resizeImage(
@@ -170,10 +139,10 @@
 			}, 500);
 
 			try {
-				let data = await uploadImage(file); // Wait for the upload to complete
-				$picture = data.url;
+				$picture = await uploadImage(file); // Wait for the upload to complete
 			} catch (error) {
 				console.error('Error during upload:', error);
+				alert(t('yourself.alert_failedupload'));
 			}
 			clearInterval(intv);
 		}
@@ -285,7 +254,6 @@
 		<div>
 			<!-- File input for image upload -->
 			<input type="file" id="image" accept="image/*" on:change={previewImage} class="hidden" />
-			<!-- svelte-ignore a11y-autofocus -->
 			<div class="mb-1 flex items-end justify-between">
 				{#if $name != ''}<label
 						for="name"
