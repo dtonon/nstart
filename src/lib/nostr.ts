@@ -7,6 +7,19 @@ import { readRelays, writeRelays } from '$lib/store';
 import HashWorker from './worker?worker';
 
 export const signers = [
+	// {
+	// 	name: 'fiatjafhome1',
+	// 	pubkey: '77ff8d1f2b88ea5a468036d393beef09dc01b4d770c7d4f0c4198f404aa1ffe2'
+	// },
+	// {
+	// 	name: 'fiatjafhome2',
+	// 	pubkey: '19c048b360209beb47344b45bf581f57c30e603946febf10e03534d81ab8a507'
+	// },
+	// {
+	// 	name: 'fiatjafhome3',
+	// 	pubkey: '97a7491f73155d04f209374b144646e3cb89db25f03146b58c572cd1e2d93567'
+	// }
+
 	{
 		pubkey: '4440e4f93c9dcb0a5521f0bf949a1222698b72a1b1e3534b10537100fc94f97f',
 		name: 'Artur Brugeman'
@@ -15,10 +28,10 @@ export const signers = [
 		pubkey: '23a3ff76766f5ffc852fa6f2fc5058c1306ee25927632e0f8e213af11a5b8de5',
 		name: 'fiatjaf'
 	},
-    {
-        pubkey: 'aa4f53d8041b88adee44cefb62fb49fdeb85d151d1a346e655850c213508ed2e',
-        name: 'hodlbod'
-    }
+	{
+		pubkey: 'aa4f53d8041b88adee44cefb62fb49fdeb85d151d1a346e655850c213508ed2e',
+		name: 'hodlbod'
+	}
 
 	// ~~~
 	// {

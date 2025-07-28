@@ -4,6 +4,7 @@
 	import WizardAnalyticsClient from '$lib/wizard-analytics-client';
 	import { t, currentLanguage } from '$lib/i18n';
 	import { shardGetBunker } from '@fiatjaf/promenade-trusted-dealer';
+	import { finalizeEvent } from '@nostr/tools/pure';
 	import { pool } from '@nostr/gadgets/global';
 
 	import { goto } from '$app/navigation';
@@ -37,7 +38,7 @@
 	const defaultSelected = 3;
 	const minThreshold = 2;
 	let threshold = 3;
-	let total = 4;
+	let total = Math.min(4, signers.length);
 
 	const analytics = new WizardAnalyticsClient();
 
@@ -129,7 +130,7 @@
 		}, 3000);
 
 		try {
-			const accountEvt = await shardGetBunker(
+			let accountEvt = await shardGetBunker(
 				pool,
 				$sk,
 				$pk,
@@ -143,19 +144,27 @@
 				minePow,
 				(p: number) => {
 					activationProgress = p;
+				},
+				(signer) => {
+					console.log('signer ok:', signer);
 				}
 			);
 
-			// automatically create the first profile, with full access
+			// automatically create the first profile, with full access (republish the updated event)
 			const secretRand = new Uint8Array(10);
 			window.crypto.getRandomValues(secretRand);
 			const secret = base32.encode(secretRand);
+			accountEvt.created_at++;
 			accountEvt.tags.push(['profile', 'MAIN', secret, '']);
-			$bunkerURI = `bunker://${accountEvt.pubkey}?relay=${encodeURIComponent($coordinator)}&secret=${secret}`;
+			accountEvt = finalizeEvent(accountEvt, $sk);
+			const [pub] = pool.publish([$coordinator], accountEvt);
+			await pub;
 
+			$bunkerURI = `bunker://${accountEvt.tags.find((t) => t[0] === 'h')![1]}?relay=${encodeURIComponent($coordinator)}&secret=${secret}`;
 			bunkerActivating = false;
 		} catch (err) {
 			console.error(err);
+			alert(err);
 			bunkerActivating = false;
 		}
 
@@ -295,8 +304,8 @@
 								<div bind:this={advancedButtonContainer}>
 									{@html t(
 										'bunker.text6',
-										`<button class=\"threshold-button cursor-pointer text-accent underline hover:no-underline\">${threshold}</button>`,
-										`<button class=\"total-button cursor-pointer text-accent underline hover:no-underline\">${total}</button>`
+										`<button class="threshold-button cursor-pointer text-accent underline hover:no-underline">${threshold}</button>`,
+										`<button class="total-button cursor-pointer text-accent underline hover:no-underline">${total}</button>`
 									)}
 								</div>
 							{/if}
