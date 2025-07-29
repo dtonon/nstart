@@ -70,7 +70,7 @@
 			new BlossomClient('https://blossom.primal.net', signer)
 		];
 
-		const bd = await Promise.race(clients.map((c) => c.uploadBlob(resizedFile, resizedFile.type)));
+		const bd = await Promise.any(clients.map((c) => c.uploadBlob(resizedFile, resizedFile.type)));
 		activationProgress = 100;
 		return bd.url;
 	}

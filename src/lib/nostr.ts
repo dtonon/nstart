@@ -18,7 +18,7 @@ export const signers = [
 	// {
 	// 	name: 'fiatjafhome3',
 	// 	pubkey: '97a7491f73155d04f209374b144646e3cb89db25f03146b58c572cd1e2d93567'
-	// }
+	// },
 
 	{
 		pubkey: '4440e4f93c9dcb0a5521f0bf949a1222698b72a1b1e3534b10537100fc94f97f',
@@ -31,21 +31,19 @@ export const signers = [
 	{
 		pubkey: 'aa4f53d8041b88adee44cefb62fb49fdeb85d151d1a346e655850c213508ed2e',
 		name: 'hodlbod'
+	},
+	{
+		pubkey: 'ad1c6fa1daca939685d34ab541fc9e7b450ef6295aa273addafee74a579d57fb',
+		name: 'Sebastix'
+	},
+	{
+		pubkey: '3fcd012e970d9dfba4bc638ae9b6420e2ceca76f3b8e31d0ee3f408023a7c5fd',
+		name: 'Pablo'
+	},
+	{
+		pubkey: '4be49a6175734b43c7083ceac11e47bf684ffe65bd021c949bea1702409c119a',
+		name: 'Daniele'
 	}
-
-	// ~~~
-	// {
-	// 	pubkey: '4be49a6175734b43c7083ceac11e47bf684ffe65bd021c949bea1702409c119a',
-	// 	name: 'Daniele'
-	// },
-	// {
-	// 	pubkey: 'ad1c6fa1daca939685d34ab541fc9e7b450ef6295aa273addafee74a579d57fb',
-	// 	name: 'Sebastix'
-	// },
-	// {
-	// 	pubkey: 'dea9d5c611f14c00efa3fa19ac2867372b6e585a2ed2c9d29febbb70db110da7',
-	// 	name: 'Alex Gleason'
-	// }
 ];
 
 export const indexRelays = [
@@ -99,7 +97,6 @@ export function selectWriteRelays(): string[] {
 		'wss://offchain.pub',
 		'wss://nostr.mom',
 		'wss://nos.lol',
-		'wss://relay.mostr.pub',
 		'wss://relay.primal.net'
 	];
 
@@ -127,6 +124,7 @@ export function selectReadRelays(): string[] {
 
 	const urls = [];
 	urls.push('wss://nostr.mom');
+	urls.push('wss://relay.damus.io');
 	urls.push(pick(wotRelaysSelection));
 	urls.push(pick(wotRelaysSelection));
 	urls.push(pick(safeRelays));

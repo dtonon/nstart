@@ -145,8 +145,12 @@
 				(p: number) => {
 					activationProgress = p;
 				},
-				(signer) => {
-					console.log('signer ok:', signer);
+				(signer, err) => {
+					if (err) {
+						console.log('signer not ok:', signer, err);
+					} else {
+						console.log('signer ok:', signer);
+					}
 				}
 			);
 
