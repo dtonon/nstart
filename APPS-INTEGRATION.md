@@ -86,7 +86,7 @@ To do that you have to import a JS from nstart.me and initialize a NstartModal o
         an: 'Great Nostr App', // App name
 
         // Optional parameters
-        aa: '689600' // Hex accent color
+        aa: '689600', // Hex accent color
         al: 'it', // Language (en, es, it, fr, de, ja)
         am: 'dark' // Force dark mode
         afb: true, // Force bunker (default False)
@@ -144,7 +144,7 @@ http://nstart.me/?an=Coracle&aa=fc560e
 
 ## Custom relays
 
-While Nstart creates a 10002 event with random picked relays from a selected pool by default , apps can overwrite these read and write relays using the `arr` (read relays) and `awr` (write relays) params. More relays can be passed, separated by commas. For example:
+While Nstart creates a 10002 event with random picked relays from a selected pool by default, apps can overwrite these read and write relays using the `arr` (read relays) and `awr` (write relays) params. More relays can be passed, separated by commas. For example:
 
 ```
 http://nstart.me/?an=Coracle&at=web&ac=https://coracle.social&arr=wss://relay.damus.io&awr=wss://nos.lol,wss://wss://offchain.pub
