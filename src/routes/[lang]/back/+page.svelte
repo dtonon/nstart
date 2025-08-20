@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { t, currentLanguage } from '$lib/i18n';
 	import { browser } from '$app/environment';
 	import * as nip19 from '@nostr/tools/nip19';
 	import { goto } from '$app/navigation';
 	import {
+		sessionId,
 		accent,
 		sk,
 		bunkerURI,
@@ -23,8 +25,9 @@
 	onMount(() => {
 		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
 
-		if ($name.length === 0) {
-			goto('/');
+		if ($sessionId.length === 0) {
+			goto(`/${$currentLanguage}/`);
+			return;
 		}
 
 		if ($bunkerURI.length > 0) {
@@ -39,17 +42,15 @@
 
 		switch ($callingAppType) {
 			case 'modal':
-				if (browser && window.self !== window.top) {
-					window.parent.postMessage(
-						{
-							type: 'WIZARD_COMPLETE',
-							result: {
-								nostrLogin: loginToken
-							}
-						},
-						'*'
-					);
-				}
+				window.parent.postMessage(
+					{
+						type: 'WIZARD_COMPLETE',
+						result: {
+							nostrLogin: loginToken
+						}
+					},
+					'*'
+				);
 				break;
 			case 'web':
 			case 'popup':
@@ -61,6 +62,9 @@
 			case 'ios':
 				actionURL = `${$callingAppCode}://${loginToken}`;
 				break;
+			default:
+				alert('Error: Unsupported calling app type, check the baseURL config');
+				return;
 		}
 	});
 
@@ -80,18 +84,24 @@
 		<!-- Welcome title -->
 		<div class="relative mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
 			<h1 class="font-bold">
-				<div class="text-[3rem] leading-[1em] text-neutral-500 sm:text-[6rem]">YOU ARE</div>
-				<div class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[7rem]" id="tw">
-					READY TO GO!
+				<div
+					class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[6rem]"
+				>
+					{t('back.title1')}
+				</div>
+				<div
+					class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[7rem]"
+					id="tw"
+				>
+					{t('back.title2')}
 				</div>
 			</h1>
 		</div>
 
 		<!-- Intro text -->
-		<div class="text-neutral-700 sm:w-[90%]">
+		<div class="text-neutral-700 dark:text-neutral-200 sm:w-[90%]">
 			<p class="text-xl sm:w-[80%]">
-				We're done, <strong>{$name}</strong>! Now you can start exploring Nostr — just click below
-				to go back to <strong>{$callingAppName}</strong>:
+				{@html t('back.text1', $name, $callingAppName)}
 			</p>
 			<div class="mt-8">
 				<button
@@ -99,21 +109,25 @@
 					type="submit"
 					class="inline-flex items-center rounded bg-accent px-6 py-4 text-[1.8rem] text-white sm:px-10"
 				>
-					Go back to {$callingAppName}
+					{@html t('back.button_back', $callingAppName)}
 					<img src="/icons/arrow-right.svg" alt="Icon" class="ml-4 mr-2 h-7 w-7" />
 				</button>
 			</div>
 			{#if $callingAppType != 'popup'}
-				<p class="mt-8 text-neutral-500 sm:w-[80%]">
-					{$callingAppName} is only one of the 80+ applications that have already been built on Nostr,
-					<a href="https://nostrapps.com" target="_blank" class="underline">discover them all</a>!
+				<p class="mt-8 text-neutral-500 dark:text-neutral-400 sm:w-[80%]">
+					{@html t(
+						'back.text2',
+						$callingAppName,
+						'href="https://nostrapps.com" target="_blank" class="underline"'
+					)}
 				</p>
 			{/if}
 			<p class="mt-6 sm:w-[80%]">
-				This is your web profile, you can share it anywhere and with anyone:<br />
-				<a href="https://njump.me/{$npub}" target="_blank" class="break-all underline"
-					>njump.me/{$npub}</a
-				>
+				{@html t(
+					'back.text3',
+					`href="https://njump.me/${$npub}" target="_blank" class="break-all underline"`,
+					$npub
+				)}
 			</p>
 		</div>
 	</div>

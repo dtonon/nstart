@@ -9,7 +9,7 @@ self.onmessage = async function (ev: MessageEvent) {
 	const { evt, difficulty, start, step } = ev.data;
 
 	let count = start;
-    let i = 0
+	let i = 0;
 
 	const tag = ['nonce', count.toString(), difficulty.toString()];
 
@@ -19,7 +19,7 @@ self.onmessage = async function (ev: MessageEvent) {
 	let prev = 0;
 
 	while (true) {
-        i++
+		i++;
 		count += step;
 		tag[1] = count.toString();
 

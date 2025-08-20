@@ -1,30 +1,48 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import WizardAnalyticsClient from '$lib/wizard-analytics-client';
+	import { t, currentLanguage } from '$lib/i18n';
 	import * as nip19 from '@nostr/tools/nip19';
 	import * as nip49 from '@nostr/tools/nip49';
 
 	import { goto } from '$app/navigation';
-	import { accent, sk, npub, ncryptsec, backupDownloaded, name, password } from '$lib/store';
+	import {
+		sessionId,
+		accent,
+		sk,
+		npub,
+		ncryptsec,
+		backupDownloaded,
+		name,
+		password
+	} from '$lib/store';
 	import { isMobile } from '$lib/mobile';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
+	import ContinueButton from '$lib/ContinueButton.svelte';
+	import DoneIcon from '$lib/DoneIcon.svelte';
 
 	let backupInitialized = false;
 	let backupDone = false;
 	let backupPrivKey = '';
 	let encrypt = false;
 
-	onMount(() => {
+	const analytics = new WizardAnalyticsClient();
+
+	onMount(async () => {
 		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
 
-		if ($name.length === 0) {
-			goto('/');
+		if ($sessionId.length === 0) {
+			goto(`/${$currentLanguage}/`);
+			return;
 		}
 
 		if ($password) {
 			encrypt = true;
 		}
+
+		await analytics.startStep('download');
 	});
 
 	function downloadBackup() {
@@ -42,9 +60,14 @@
 		backupInitialized = true;
 	}
 
-	function navigateContinue() {
+	async function navigateContinue() {
 		$backupDownloaded = true;
-		goto('/email');
+
+		await analytics.completeStep({
+			type: $ncryptsec ? 'ncryptsec' : 'nsec'
+		});
+
+		goto(`/${$currentLanguage}/email`);
 	}
 
 	function previewDownloadKey(str: string): string {
@@ -63,29 +86,32 @@
 		<div class="w-full sm:mr-10 sm:max-w-[350px]">
 			<div class="mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
 				<h1 class="font-bold">
-					<div class="text-[3rem] leading-[1em] text-neutral-500 sm:text-[3rem]">YOUR KEYS</div>
-					<div class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[3.5rem]" id="tw">
-						ARE READY
+					<div
+						class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[3rem]"
+					>
+						{t('download.title1')}
+					</div>
+					<div
+						class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[3.5rem]"
+						id="tw"
+					>
+						{t('download.title2')}
 					</div>
 				</h1>
 			</div>
 
-			<div class="leading-5 text-neutral-700 sm:w-[90%]">
+			<div class="leading-5 text-neutral-700 dark:text-neutral-300 sm:w-[90%]">
 				<p class="">
-					Well done <strong>{$name}</strong>, your Nostr profile is ready! Yes, it was that easy.
+					{@html t('download.side1', $name)}
 				</p>
 				<p class="mt-6">
-					On Nostr your keypair is identified by a unique string that starts with <em class="italic"
-						>npub</em
-					>. this is your public profile code you can share with anyone.
+					{@html t('download.side2', 'class="italic"')}
 				</p>
 				<p class="mt-6">
-					Then there is the private key. It starts with <em class="italic">nsec</em>, and is used to
-					control your profile and to publish notes. This must be kept absolutely secret.
+					{@html t('download.side3', 'class="italic"')}
 				</p>
 				<p class="mt-6">
-					Now please download your <em class="italic">nsec</em> (it's a text file) and save it in a safe
-					place, for example your password manager.
+					{@html t('download.side4', 'class="italic"')}
 				</p>
 			</div>
 		</div>
@@ -94,7 +120,7 @@
 	<div slot="interactive">
 		{#if !backupInitialized}
 			<div class="text-xl">
-				<div class=" text-neutral-400">Your npub is</div>
+				<div class="text-neutral-400 dark:text-neutral-400">{t('download.label_yournpub')}</div>
 				<div class="break-words">
 					<ClipToCopy textToCopy={$npub} confirmMessage="Copied!" />
 				</div>
@@ -108,19 +134,16 @@
 						on:click={downloadBackup}
 						class="inline-flex w-full items-center justify-center rounded bg-accent px-8 py-3 text-[1.3rem] text-white"
 					>
-						Save my nsec <img
-							src="/icons/arrow-right.svg"
-							alt="continue"
-							class="ml-4 mr-2 h-5 w-5 rotate-90"
-						/>
+						{t('download.button_save1')}
+						<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-5 w-5 rotate-90" />
 					</button>
 
 					<button
 						on:click={() => {
 							encrypt = true;
 						}}
-						class="mt-2 text-center text-sm text-neutral-400 hover:underline"
-						>I want to download the encrypted version</button
+						class="mt-2 text-center text-sm text-neutral-400 hover:underline dark:text-neutral-400"
+						>{t('download.label_switch1')}</button
 					>
 				{/if}
 
@@ -129,22 +152,19 @@
 					<input
 						type="text"
 						bind:value={$password}
-						placeholder="Pick a password"
+						placeholder={t('download.label_password')}
 						required
 						autofocus={!$isMobile}
 						autocapitalize="off"
-						class="input-hover-enabled w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+						class="input-hover-enabled w-full rounded border-2 border-neutral-300 bg-white px-4 py-2 text-xl text-black focus:border-neutral-700 focus:outline-none dark:border-neutral-600 dark:bg-neutral-800 dark:text-white dark:focus:border-neutral-400"
 					/>
 					<button
 						class="mt-6 inline-flex w-full items-center justify-center rounded bg-accent px-8 py-3 text-[1.3rem] text-white"
 						disabled={$ncryptsec === ''}
 						on:click={downloadBackup}
 					>
-						Save my ncryptsec <img
-							src="/icons/arrow-right.svg"
-							alt="continue"
-							class="ml-4 mr-2 h-5 w-5 rotate-90"
-						/>
+						{t('download.button_save2')}
+						<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-5 w-5 rotate-90" />
 					</button>
 
 					<button
@@ -152,37 +172,36 @@
 							encrypt = false;
 							$password = '';
 						}}
-						class="mt-2 text-center text-sm text-neutral-400 hover:underline"
-						>Nevermind, I want do download the plain nsec</button
+						class="mt-2 text-center text-sm text-neutral-400 hover:underline dark:text-neutral-500"
+						>{t('download.label_switch2')}</button
 					>
 				{/if}
-				<div class="mt-8 text-neutral-600">
-					From your nsec you can generate your npub, so it is the only information you really need
-					to keep safe.
+				<div class="mt-8 text-neutral-600 dark:text-neutral-300">
+					{t('download.text1')}
 				</div>
 			{:else}
-				<div class="flex justify-center">
-					<img src="/icons/done.svg" alt="Done" class="w-24" />
+				<div class="flex h-24 justify-center text-neutral-700 dark:text-neutral-300">
+					<DoneIcon />
 				</div>
-				<div class="mt-10 text-neutral-600">
-					Now please open the file and check that the long string after your npub matches these
-					starting and finishing characters:
-					<div class="my-4 rounded bg-yellow-100 px-6 py-4">
+				<div class="mt-10 text-neutral-600 dark:text-neutral-300">
+					{t('download.text2')}
+					<div
+						class="my-4 rounded bg-yellow-100 px-6 py-4 dark:bg-yellow-500 dark:text-neutral-950"
+					>
 						{previewDownloadKey(backupPrivKey)}
 					</div>
 					{#if encrypt}
-						Finally, copy the file in another safe place as additional backup and separately save
-						the chosen password (<strong>{$password}</strong>).
+						{@html t('download.text3', $password)}
 					{:else}
-						Finally, copy the file in another safe place as additional backup.
+						{t('download.text4')}
 					{/if}
 				</div>
 				<div class="mt-8">
 					<CheckboxWithLabel bind:checked={backupDone}>
 						{#if encrypt}
-							I saved the file and the password in a couple of safe places
+							{t('download.text5')}
 						{:else}
-							I saved the file in a couple of safe places
+							{t('download.text6')}
 						{/if}
 					</CheckboxWithLabel>
 				</div>
@@ -191,20 +210,18 @@
 						backupInitialized = false;
 						backupDone = false;
 					}}
-					class="mt-6 text-left text-sm text-neutral-400 hover:underline"
-					>Do you need to download it again?</button
+					class="mt-6 text-left text-sm text-neutral-400 hover:underline dark:text-neutral-400"
+					>{t('download.text7')}</button
 				>
 			{/if}
 		</div>
 
 		<div class="mt-16 flex justify-center sm:justify-end">
-			<button
-				on:click={navigateContinue}
+			<ContinueButton
+				onClick={navigateContinue}
 				disabled={!backupDone && !$backupDownloaded}
-				class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] sm:text-[1.3rem] ${backupDone || $backupDownloaded ? 'bg-accent text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
-			>
-				Continue <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
-			</button>
+				text={t('shared.button_continue')}
+			/>
 		</div>
 	</div>
 </TwoColumnLayout>

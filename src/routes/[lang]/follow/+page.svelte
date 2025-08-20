@@ -1,13 +1,17 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { type NostrEvent } from '@nostr/tools';
+	import WizardAnalyticsClient from '$lib/wizard-analytics-client';
+	import { t, currentLanguage } from '$lib/i18n';
 	import { goto } from '$app/navigation';
-	import { accent, sk, name, followerSuggestions, callingAppCode } from '$lib/store';
+	import { sessionId, accent, sk, name, followerSuggestions, callingAppCode } from '$lib/store';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';
 	import { indexRelays, getProfile } from '$lib/nostr';
 	import { publishFollows } from '$lib/actions';
 	import { pool } from '@nostr/gadgets/global';
+	import ContinueButton from '$lib/ContinueButton.svelte';
 
 	const FOLLOWS = [
 		{
@@ -87,23 +91,27 @@
 	];
 
 	let suggestedUsers: any[] = [];
-	let selectedUsers = new Set();
+	let selectedUsers: Set<string> = new Set();
 	let activationProgress = 0;
 
-	onMount(() => {
+	const analytics = new WizardAnalyticsClient();
+
+	onMount(async () => {
 		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
 
-		if ($name.length === 0) {
-			goto('/');
-			return; // Exit early if redirecting
+		if ($sessionId.length === 0) {
+			goto(`/${$currentLanguage}/`);
+			return;
 		}
-		buildSuggestionList();
+
+		suggestedUsers = await buildSuggestionList();
+		await analytics.startStep('follow');
 	});
 
-	async function buildSuggestionList(): string[] {
+	async function buildSuggestionList(): Promise<any[]> {
 		const users = [];
 		for (const suggestion of $followerSuggestions) {
-			let profile = await getProfile(suggestion);
+			let profile = (await getProfile(suggestion)) as NostrEvent;
 			if (profile) {
 				const parsedContent = JSON.parse(profile.content);
 				let name = parsedContent.name || null;
@@ -124,10 +132,10 @@
 			}
 		}
 
-		suggestedUsers = users;
+		return users;
 	}
 
-	function toggleUserSelection(user: { pubkey: unknown }) {
+	function toggleUserSelection(user: { pubkey: string }) {
 		if (selectedUsers.has(user.pubkey)) {
 			selectedUsers.delete(user.pubkey);
 		} else {
@@ -136,13 +144,7 @@
 	}
 
 	async function getSelectedUsersArray() {
-		const sources: string[] = [];
-
-		for (const user of FOLLOWS) {
-			if (selectedUsers.has(user.pubkey)) {
-				sources.push(user.pubkey);
-			}
-		}
+		const sources: string[] = [...selectedUsers];
 
 		const all = new Set<string>();
 
@@ -178,11 +180,21 @@
 		activationProgress = 100;
 		clearInterval(intv);
 
+		await analytics.completeStep(
+			selectedUsers.size > 0
+				? {
+						selected: selectedUsers.size
+					}
+				: undefined,
+			selectedUsers.size == 0,
+			true
+		);
+
 		setTimeout(() => {
 			if ($callingAppCode) {
-				goto('/back');
+				goto(`/${$currentLanguage}/back`);
 			} else {
-				goto('/finish');
+				goto(`/${$currentLanguage}/finish`);
 			}
 		}, 1000);
 	}
@@ -193,22 +205,26 @@
 		<div class="w-full sm:mr-10 sm:max-w-[350px]">
 			<div class="mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
 				<h1 class="font-bold">
-					<div class="text-[3rem] leading-[1em] text-neutral-500 sm:text-[3rem]">FOLLOW</div>
-					<div class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[3.5rem]" id="tw">
-						SOMEONE
+					<div
+						class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[3rem]"
+					>
+						{t('follow.title1')}
+					</div>
+					<div
+						class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[3.5rem]"
+						id="tw"
+					>
+						{t('follow.title2')}
 					</div>
 				</h1>
 			</div>
 
-			<div class="leading-5 text-neutral-700 sm:w-[90%]">
+			<div class="leading-5 text-neutral-700 dark:text-neutral-300 sm:w-[90%]">
 				<p class="">
-					What do you think now of following some interesting profiles? We offer you the possibility
-					to copy the full following list of some Nostr users, so you can start your Nostr journey
-					with a feed full of posts from already curated individuals.
+					{@html t('follow.side1')}
 				</p>
 				<p class="mt-6">
-					You can later follow more people, or unfollow some as well; with Nostr you control what
-					you want to see, no obscure and deceptive algorithms, no impositions.
+					{t('follow.side2')}
 				</p>
 			</div>
 		</div>
@@ -217,7 +233,9 @@
 	<div slot="interactive">
 		<div class="sm:mt-20">
 			<!-- list of follows -->
-			<div>See the same things these Nostr users are seeing in their feed:</div>
+			<div class="text-neutral-700 dark:text-neutral-300">
+				{t('follow.text1')}
+			</div>
 			<div class="mt-4">
 				{#each suggestedUsers as user}
 					<CheckboxWithLabel
@@ -226,12 +244,14 @@
 						position="right"
 						alignment="center"
 					>
-						<div class="flex items-center border-b-4 border-neutral-200 pb-4 pt-4">
+						<div
+							class="flex items-center border-b-4 border-neutral-200 pb-4 pt-4 dark:border-neutral-700"
+						>
 							<div
 								class="inline-block h-8 w-8 rounded-full bg-cover bg-center"
 								style="background-image: url('{user.image}');"
 							></div>
-							<div class="ml-2 text-xl">{user.name}</div>
+							<div class="ml-2 text-xl text-neutral-700 dark:text-neutral-300">{user.name}</div>
 						</div>
 					</CheckboxWithLabel>
 				{/each}
@@ -245,14 +265,11 @@
 		{/if}
 
 		<div class="mt-16 flex justify-center sm:justify-end">
-			<button
-				on:click={navigateContinue}
+			<ContinueButton
+				onClick={navigateContinue}
 				disabled={activationProgress > 0}
-				class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem] ${activationProgress == 0 ? 'bg-accent text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
-			>
-				{activationProgress > 0 ? 'Finishing...' : 'Finish'}
-				<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
-			</button>
+				text={activationProgress > 0 ? t('follow.button_finishing') : t('follow.button_finish')}
+			/>
 		</div>
 	</div>
 </TwoColumnLayout>

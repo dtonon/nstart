@@ -5,6 +5,8 @@ import * as nip49 from '@nostr/tools/nip49';
 import { signers } from './nostr';
 import { loadRelayList } from '@nostr/gadgets/lists';
 
+export const coordinator = writable<string>('wss://promenade.fiatjaf.com');
+
 // Utility function to handle sessionStorage
 function createSessionWritable<T>(label: string, initialValue: T): Writable<T> {
 	const isBrowser = typeof window !== 'undefined';
@@ -67,6 +69,30 @@ function base64ToUint8Array(base64: string): Uint8Array {
 	return bytes;
 }
 
+// Utility function to persist values in localStorage
+function createLocalWritable<T>(label: string, initialValue: T): Writable<T> {
+	const isBrowser = typeof window !== 'undefined';
+	let data = initialValue;
+	if (isBrowser) {
+		const storedValue = localStorage.getItem(label);
+		if (storedValue) {
+			try {
+				const parsed = JSON.parse(storedValue);
+				data = parsed.value;
+			} catch (e) {
+				data = initialValue;
+			}
+		}
+	}
+	const store = writable<T>(data);
+	if (isBrowser) {
+		store.subscribe((value) => {
+			localStorage.setItem(label, JSON.stringify({ type: typeof value, value }));
+		});
+	}
+	return store;
+}
+
 // Stores with session persistence
 export const sk = createSessionWritable<Uint8Array>('sk', generateSecretKey());
 export const name = createSessionWritable('name', '');
@@ -89,6 +115,8 @@ export const readRelays = createSessionWritable('readRelays', []);
 export const writeRelays = createSessionWritable('writeRelays', []);
 export const skipFollow = createSessionWritable('skipFollow', false);
 export const accent = createSessionWritable('accent', 'e32a6d');
+export const theme = createLocalWritable('theme', ''); // Empty = system
+export const sessionId = createSessionWritable('sessionId', ''); // Empty = system
 
 // Runtime stores
 export const inboxes = readable<{ [pubkey: string]: string[] }>({}, (set) => {
@@ -96,8 +124,8 @@ export const inboxes = readable<{ [pubkey: string]: string[] }>({}, (set) => {
 	Promise.all(
 		signers.map(async (pk) => {
 			try {
-				const rl = await loadRelayList(pk);
-				inboxes[pk] = rl.items.filter((r) => r.read).map((r) => r.url);
+				const rl = await loadRelayList(pk.pubkey);
+				inboxes[pk.pubkey] = rl.items.filter((r) => r.read).map((r) => r.url);
 			} catch (err) {
 				console.error('failed to load inbox relays for', pk, err);
 			}
