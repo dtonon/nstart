@@ -42,6 +42,7 @@
 		"@fiatjaf/promenade-trusted-dealer": "npm:@jsr/fiatjaf__promenade-trusted-dealer@0.3.3",
 		"@nostr/gadgets": "npm:@jsr/nostr__gadgets@0.0.37",
 		"@nostr/tools": "npm:@jsr/nostr__tools@2.15.2",
+    "@scure/base": "^1.2.1",
 		"chart.js": "^4.4.9",
 		"hash-wasm": "4.11.0",
 		"leveldown": "6.1.1",
