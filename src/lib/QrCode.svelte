@@ -1,11 +1,11 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import QRCodeStyling from 'qr-code-styling';
 
 	export let className = '';
 	export let data = '';
 
-	let qrCodeContainer;
+	let qrCodeContainer: HTMLElement;
 
 	onMount(() => {
 		const qrCode = new QRCodeStyling({

@@ -1,6 +1,6 @@
 {
 	"name": "nstart",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev --port 4647",
@@ -9,7 +9,8 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"start": "node server.js"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",
@@ -19,6 +20,7 @@
 		"@types/eslint": "^9.6.0",
 		"@types/leveldown": "^4.0.6",
 		"@types/nodemailer": "^6.4.16",
+		"@types/uuid": "^10.0.0",
 		"autoprefixer": "^10.4.20",
 		"eslint": "^9.0.0",
 		"eslint-config-prettier": "^9.1.0",
@@ -37,14 +39,18 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@fiatjaf/promenade-trusted-dealer": "npm:@jsr/fiatjaf__promenade-trusted-dealer@^0.2.0",
-		"@nostr/gadgets": "npm:@jsr/nostr__gadgets@^0.0.4",
-		"@nostr/tools": "npm:@jsr/nostr__tools@^2.10.1",
-		"@scure/base": "^1.2.1",
+		"@fiatjaf/promenade-trusted-dealer": "npm:@jsr/fiatjaf__promenade-trusted-dealer@0.3.3",
+		"@nostr/gadgets": "npm:@jsr/nostr__gadgets@0.0.37",
+		"@nostr/tools": "npm:@jsr/nostr__tools@2.15.2",
+    "@scure/base": "^1.2.1",
+		"chart.js": "^4.4.9",
 		"hash-wasm": "4.11.0",
 		"leveldown": "6.1.1",
 		"nodemailer": "6.9.16",
 		"nostr-tools": "2.9.4",
-		"qr-code-styling": "^1.8.4"
+		"qr-code-styling": "^1.8.4",
+		"sqlite": "^5.1.1",
+		"sqlite3": "^5.1.7",
+		"uuid": "^11.1.0"
 	}
 }

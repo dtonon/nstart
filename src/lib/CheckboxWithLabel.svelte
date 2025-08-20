@@ -10,12 +10,20 @@
 <div>
 	<label
 		for={id}
-		class="flex w-full cursor-pointer justify-between items-{alignment} {position === 'right'
-			? 'flex-row-reverse'
-			: 'flex-row'}"
+		class="flex w-full cursor-pointer {position === 'right'
+			? 'justify-between'
+			: ''} items-{alignment} {position === 'right' ? 'flex-row-reverse' : 'flex-row'}"
 	>
 		<span
-			class={`custom-focus mr-2 inline-block h-6 w-6 flex-none rounded border-2 focus-within:ring-1 ${checked ? 'border-strongpink bg-strongpink' : 'enabled:input-hover-enabled border-neutral-300'}`}
+			class={`custom-focus mr-2 inline-block h-6 w-6 flex-none rounded border-2 focus-within:ring-1 ${
+				checked && !disabled
+					? 'border-accent bg-accent'
+					: checked && disabled
+						? 'border-neutral-600 bg-neutral-500'
+						: disabled
+							? 'border-neutral-300 bg-neutral-100 dark:border-neutral-600 dark:bg-neutral-800'
+							: 'enabled:input-hover-enabled border-neutral-300 dark:border-neutral-600'
+			}`}
 		>
 			<input
 				type="checkbox"
@@ -44,9 +52,8 @@
 				</svg>
 			{/if}
 		</span>
-		<div>
+		<div class="text-neutral-700 dark:text-neutral-300">
 			<slot></slot>
-			<!-- Slot for the text -->
 		</div>
 	</label>
 </div>

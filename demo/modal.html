@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Nstart: modal integration example</title>
+	</head>
+	<style>
+		body {
+			font-size: 1.2em;
+			font-family: sans-serif;
+			width: 80%;
+			margin: 0 auto;
+		}
+
+		button {
+			font-size: 1.2em;
+			background-color: blanchedalmond;
+			border-radius: 8px;
+			cursor: pointer;
+		}
+
+		.token {
+			display: none;
+			font-weight: bold;
+			background-color: blanchedalmond;
+			padding: 8px;
+			border-radius: 8px;
+		}
+	</style>
+	<body>
+		<h1>Nstart: modal integration example</h1>
+
+		<button id="openBtn">Create a Nostr account</button>
+		<div id="tokenWrapper" class="token"></div>
+
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus convallis ante magna, et
+			ornare enim commodo et. Quisque dictum nunc quis neque eleifend ullamcorper. Curabitur magna
+			nisl, egestas luctus eros eget, tincidunt efficitur lacus. Nam consequat pellentesque eros,
+			nec faucibus erat tristique non. Curabitur et nulla ac nibh pharetra fermentum. Nullam ornare,
+			purus ut imperdiet scelerisque, mi metus vestibulum tortor, eget porttitor turpis magna ut
+			elit. Phasellus finibus nisi sed tincidunt sagittis. Suspendisse facilisis sagittis pulvinar.
+			Fusce eu metus tempor, viverra lorem eu, maximus libero. Proin euismod sapien quis diam
+			consectetur gravida.
+		</p>
+		<p>
+			Vivamus blandit arcu lectus, vitae vulputate arcu tempus id. Mauris commodo nulla erat. Donec
+			non nulla nisl. Cras a justo vel eros efficitur mattis et sit amet felis. Suspendisse
+			venenatis gravida diam, vitae ullamcorper nibh aliquam ac. Proin eu justo quis ligula placerat
+			rutrum. Curabitur sed urna iaculis, congue augue at, vehicula turpis. Suspendisse sed dui sit
+			amet dui molestie sollicitudin. Nulla vitae condimentum eros. Integer et finibus elit. Nullam
+			ipsum ipsum, volutpat eget faucibus vel, accumsan quis nisl. Pellentesque faucibus enim
+			vehicula elementum porta.
+		</p>
+		<p>
+			Integer condimentum dolor sit amet massa pharetra commodo. Morbi venenatis tortor ut nibh
+			consequat faucibus. Vivamus nec mauris blandit, placerat mi et, cursus justo. Ut gravida nibh
+			non orci luctus aliquam. Sed tempus a elit ut pellentesque. Quisque diam enim, consectetur ut
+			diam non, accumsan porta quam. Integer efficitur, nulla in suscipit sollicitudin, risus nulla
+			maximus eros, vitae tristique massa tortor vulputate dolor. Sed sed nulla in metus blandit
+			pretium nec non nibh. Sed sit amet tristique erat. Orci varius natoque penatibus et magnis dis
+			parturient montes, nascetur ridiculus mus. Pellentesque egestas odio ut ligula feugiat, eu
+			malesuada lacus condimentum. Phasellus vehicula pretium dictum. Donec ex dui, iaculis sed arcu
+			in, vulputate malesuada nulla. Vestibulum at velit quis eros rhoncus tincidunt. Fusce a tortor
+			convallis, rhoncus lectus eget, tempus purus. Sed sit amet tincidunt mauris.
+		</p>
+
+		<script src="http://localhost:4647/modal.js"></script>
+		<script>
+			// Create the modal instance with required parameters
+			const wizard = new NstartModal({
+				baseUrl: 'http://localhost:4647',
+				// Required parameters
+				an: 'My Nostr App',
+				// Optional parameters
+				aa: '689600',
+				// am: 'dark',
+				s: ['npub10000003zmk89narqpczy4ff6rnuht2wu05na7kpnh3mak7z2tqzsv8vwqk'],
+				asb: true,
+				aan: false,
+				arr: ['wss://relay.example.com'],
+				awr: ['wss://relay.example.com'],
+				// Callbacks
+				onComplete: (result) => {
+					document.getElementById('tokenWrapper').innerText =
+						'Your login token is: ' + result.nostrLogin;
+					document.getElementById('tokenWrapper').style.display = 'block';
+					document.getElementById('openBtn').style.display = 'none';
+				},
+				onCancel: () => {
+					document.getElementById('openBtn').innerText = 'Continue Nostr account creation';
+				}
+			});
+
+			document.getElementById('openBtn').onclick = () => wizard.open();
+		</script>
+	</body>
+</html>

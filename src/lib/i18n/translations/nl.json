@@ -1,0 +1,139 @@
+{
+	"shared": {
+		"page_title": "Maak jouw Nostr-profiel",
+		"button_continue": "Volgende stap",
+		"text_nowasm": "Je browser ondersteunt geen WASM, dus deze functie is niet beschikbaar"
+	},
+	"home": {
+		"title1": "WELKOM",
+		"title2": "BIJ",
+		"title3": "NOSTR",
+		"text1": "Om met Nostr te beginnen heb je een profiel nodig. Dit profiel wordt niet door een centrale partij zoals een bedrijf aangemaakt. Dit profiel maak je zelf aan, zonder dat je hier toestemming voor nodig hebt of een vinkje moet zetten bij algemene voorwaarden.",
+		"text2": "Nostr zal even wennen zijn omdat elk profiel geïdentificeerd wordt met cryptografische sleutels. Maak je geen zorgen over de technische details, je krijgt een privésleutel die je net zoals je wachtwoord veilig moet bewaren.",
+		"text3a": "Deze website wordt gebruikt door <strong>{$1}</strong> om je in een paar stappen een nieuw profiel te laten maken en je privé sleutel veilig op te slaan.",
+		"text3b": "Deze website is een van de vele manieren om een Nostr-profiel aan te maken. Hierna kun je dit profiel in andere apps gebruiken. We helpen je in een paar stappen op weg om jouw profiel aan te maken met jouw unieke sleutels. Ben je er klaar voor?",
+		"button_start": "Aan de slag",
+		"footer1": "Wil je eerst meer weten over Nostr?",
+		"footer2": "Lees dan hier een Engelstalige introductie",
+		"footer3": "De broncode van deze tool is <a {$1}>vrij beschikbaar</a>"
+	},
+
+	"yourself": {
+		"title1": "STEL",
+		"title2": "JEZELF VOOR",
+		"side1": "Met Nostr bepaal je zelf wie je wilt zijn.",
+		"side2": "Een Nostr-profiel bevat meestal een naam, een foto en wat aanvullende informatie, maar dit is allemaal optioneel.",
+		"side3": "Deze naam is geen unieke gebruikersnaam, we kunnen zoveel Jacks hebben als we willen! Je mag gerust je echte naam of een bijnaam te gebruiken; deze kan je later altijd wijzigen.<br /> Maar vergeet niet: online privacy is belangrijk, deel dus geen gevoelige gegevens.",
+		"side4": "En inderdaad, om lid te worden van Nostr hoef je geen e-mailadres, telefoonnummer of andere identificatie doorgeven.",
+		"label_image": "Jouw afbeelding",
+		"label_nickname": "Jouw (bij)naam",
+		"label_about": "Iets over jou",
+		"label_website": "Jouw website",
+		"label_required": "vereist",
+		"label_optional": "optioneel",
+		"alert_failedupload": "Uploaden van afbeelding mislukt. Probeer het opnieuw",
+		"alert_validation": "Voer een naam in, een biografie en website zijn optioneel",
+		"button_uploading": "Uploaden..."
+	},
+
+	"download": {
+		"title1": "JOUW PROFIEL",
+		"title2": "IS KLAAR",
+		"side1": "Goed gedaan <strong>{$1}</strong>, je Nostr-profiel is aangemaakt! <br /> Dat was makkelijk, nietwaar?",
+		"side2": "Jouw publieke sleutel wordt geïdentificeerd met een unieke tekst die begint met <em {$1}>npub</em>. Dit is jouw openbare, unieke sleutel die je met iedereen kunt delen.",
+		"side3": "Dan is er de privésleutel. Deze begint met <em {$1}>nsec</em> en wordt gebruikt om je profiel en berichten te signeren met een handtekening. Deze sleutel moet absoluut geheim blijven.",
+		"side4": "Download nu jouw <em {$1}>nsec</em> (het is een tekstbestand) en bewaar het op een veilige plek, bijvoorbeeld in jouw password manager.",
+		"label_yournpub": "Jouw npub is",
+		"label_password": "Kies een wachtwoord",
+		"button_save1": "Bewaar mijn nsec",
+		"button_save2": "Bewaar mijn ncryptsec",
+		"label_switch1": "Ik wil de versleutelde versie downloaden",
+		"label_switch2": "Ik ben van gedachte veranderd, ik wil toch mijn nsec downloaden",
+		"text1": "Met jouw nsec kun je jouw npub genereren, dus dit is de enige informatie die je echt veilig moet bewaren.",
+		"text2": "Open nu het bestand en controleer of de lange tekst na jouw npub overeenkomt met deze begin- en eindtekens:",
+		"text3": "Kopieer ten slotte het bestand naar een andere veilige plaats als extra back-up en sla het gekozen wachtwoord apart op (<strong>{$1}</strong>).",
+		"text4": "Kopieer ten slotte het bestand naar een andere veilige plek als extra back-up.",
+		"text5": "Ik heb het bestand en het wachtwoord op een veilige plek opgeslagen",
+		"text6": "Ik heb het bestand op een veilige plek opgeslagen",
+		"text7": "Wil je het bestand opnieuw downloaden?"
+	},
+
+	"email": {
+		"title1": "E-MAIL",
+		"title2": "BACKUP",
+		"side1": "We bieden je de mogelijkheid om jouw privésleutel (<em {$1}>nsec</em>) versleuteld (als een <em {$1}>ncryptsec</em>) naar een e-mailadres te sturen, zodat je de backup ook op andere locaties kunt bewaren.",
+		"side2": "Kies voor de versleuteling een sterk wachtwoord en bewaar het op een veilige plek. Schrijf het op of onthoudt deze goed, zorg ervoor dat je het niet kwijtraakt.",
+		"side3": "We gebruiken hetzelfde wachtwoord dat je eerder hebt gekozen. Je hebt het toch opgeschreven hè? :)",
+		"side4": "Je ontvangt een e-mail van {$1}. Geen mail in je inbox? Controleer dan je spamfolder.",
+		"label_check1": "Ik wil mijn versleutelde privésleutel (nsec) per mail versturen naar het volgende mailadres:",
+		"label_check1b": "(met hetzelfde wachtwoord dat al eerder is ingevoerd)",
+		"label_email": "Je e-mailadres",
+		"label_password": "Kies een wachtwoord",
+		"button_send": "Nu versturen",
+		"button_sending": "Wordt verstuurd...",
+		"button_skip": "Nee bedankt, ga verder"
+	},
+
+	"bunker": {
+		"title1": "MULTI SIGNER",
+		"title2": "BUNKER",
+		"side1": "Je hebt nu de mogelijkheid om je <em {$1}>nsec</em> te splitsen met behulp van een techniek genaamd <a {$2}>FROST</a> en elk deel (een shard) te versturen naar een onafhankelijke, vertrouwde, externe signer.",
+		"side2": "Hiermee krijg je een <em {$1}>bunker</em>code waarmee je kan inloggen bij veel web-, mobiele en desktop-apps zonder dat je jouw <em {$2}>nsec</em> hoeft te delen.",
+		"side3": "Als je ooit deze <em {$1}>bunker</em>code kwijtraakt, of een signer niet meer beschikbaar is, of het niet meer werkt, of als deze wordt gestolen, dan kan je jouw <em {$1}>nsec</em> gebruiken om een nieuwe code aan te maken. De oude code zal dan niet meer werken.",
+		"label_check1": "Ik wil mijn privésleutel opslaan en opsplitsen in een pool van externe signers die gebruikt kunnen worden voor een \"bunker\" login code.",
+		"label_check1b": "(met hetzelfde wachtwoord dat al eerder is ingevoerd)",
+		"text_nowasm": "Helaas ondersteunt jouw browser WASM niet, dus kan je deze functie niet gebruiken",
+		"text1": "De sleutel wordt gesplitst en gedeeld met {$1} onafhankelijke signers. Er zijn {$2} signers nodig om event te ondertekenen.",
+		"text2": "Het kan enige tijd duren voordat de procedure is voltooid. Even geduld a.u.b..",
+		"switch1": "Selectie geavanceerde signers",
+		"switch2": "Ik wil de automatische signerselectie gebruiken",
+		"text3": "Selecteer de gewenste signers:",
+		"text4": "Selecteer minimaal {$1} {$2}",
+		"text4b": "meer signer",
+		"text4c": "meer signers",
+		"text5": "We gebruiken een 2-van-2 multi-sign schema met de geselecteerde signers",
+		"text6": "We gebruiken een {$1}-van-{$2} multi-sign schema met de geselecteerde signers",
+		"text7": "<strong>OPGEPAST</strong>, Dit schema is riskant, want als een van de signers offline is, kunnen de events niet worden ondertekend.",
+		"text8": "Zo! Je bunkercode is klaar. Bewaar hem voor later, zodat je kunt inloggen op Nostr-apps zonder je geheime sleutel te gebruiken:",
+		"button_save": "Bewaar mijn bunker",
+		"button_activate": "Activeer de bunker",
+		"button_activating": "Activeren...",
+		"button_skip": "Nee bedankt, verder gaan"
+	},
+
+	"follow": {
+		"title1": "VOLG",
+		"title2": "IEMAND",
+		"side1": "Wil je beginnen om een aantal interessante profielen te volgen? We bieden je de mogelijkheid om de volledige lijst met volgers van enkele Nostr-profielen te kopiëren, zodat je jouw Nostr-avontuur kunt beginnen met een gevulde content feed.",
+		"side2": "Je kunt later meer mensen volgen, of juist ontvolgen. Met Nostr bepaal je zelf wat je wilt zien. Er zijn geen obscure, ongezonde en misleidende algoritmes en er wordt geen censuur toegepast.",
+		"text1": "Vul jouw feed met dezelfde content die deze Nostr-profielen zien in hun feed:",
+		"button_finish": "Rond af",
+		"button_finishing": "Afronden..."
+	},
+
+	"finish": {
+		"title1": "VERKEN",
+		"title2": "NOSTR",
+		"text1": "Scan de QR-code om snel in te loggen op je telefoon!",
+		"text2": "We zijn klaar, <strong>{$1}</strong>! Nu kun je Nostr gaan verkennen met een webapplicatie of door een app te downloaden. Hier zijn enkele suggesties om direct aan de slag te gaan:",
+		"text3": "Dit is slechts een kleine selectie van de meer dan 80 applicaties die al met Nostr zijn gebouwd. <a {$1}}>Ontdek ze allemaal</a>!",
+		"text4": "Dit is je webprofiel, deze link kan  je overal en met iedereen delen:<br /><br /><a {$1}>https://njump.me/{$2}</a>",
+		"label1": "Sociaal & microbloggen",
+		"label2": "Chat",
+		"label3": "Foto- en video sharing"
+	},
+
+	"back": {
+		"title1": "JE BENT",
+		"title2": "ER KLAAR VOOR!",
+		"text1": "We zijn klaar, <strong>{$1}</strong>! Nu kun je Nostr gaan verkennen — klik hieronder om terug te gaan naar <strong>{$2}</strong>:",
+		"button_back": "Ga terug naar {$1}",
+		"text2": "{$1} is slechts één van de 80+ applicaties die al op Nostr zijn gebouwd. <a>Ontdek ze allemaal</a>!",
+		"text3": "Dit is je webprofiel, je kan het overal en met iedereen delen:<br /><a {$1}>njump.me/{$2}</a>"
+	},
+
+	"confirmation_email": {
+		"subject": "Jouw Nostr-account",
+		"body": "Hallo!\n\nDit is je Nostr npub:\n{$1}\n\nEn dit is je privésleutel:\n{$2}\n\nVergeet niet het gekozen wachtwoord op een veilige plek te bewaren!\n\nWelkom bij Nostr :)\n\nPS: Dit e-mailadres accepteert geen reacties. Om ondersteuning aan te vragen, tag https://njump.me/dtonon.com of https://njump.me/fiatjaf.com op Nostr"
+	}
+}

@@ -27,9 +27,7 @@ export async function sendEmail(
 		});
 
 		const result = await response.json();
-		if (response.ok) {
-			console.log('email sent', result.message);
-		} else {
+		if (!response.ok) {
 			throw result.error;
 		}
 	} catch (err) {
@@ -40,7 +38,7 @@ export async function sendEmail(
 
 export async function publishRelayList(sk: Uint8Array, pk: string) {
 	const outboxRelays: string[] = selectWriteRelays();
-	const inboxRelays: string[] = (get(inboxes))[pk] || selectReadRelays();
+	const inboxRelays: string[] = get(inboxes)[pk] || selectReadRelays();
 
 	const tags: string[][] = [];
 	for (let i = 0; i < outboxRelays.length; i++) {
@@ -61,7 +59,8 @@ export async function publishRelayList(sk: Uint8Array, pk: string) {
 		},
 		sk
 	);
-	pool.publish(indexRelays, signedEvent);
+	const targetRelays = [...new Set([...indexRelays, ...outboxRelays])];
+	pool.publish(targetRelays, signedEvent);
 	console.log('Published ' + JSON.stringify(signedEvent));
 }
 
