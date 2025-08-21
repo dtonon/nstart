@@ -122,7 +122,7 @@
 			<div class="text-xl">
 				<div class="text-neutral-400 dark:text-neutral-400">{t('download.label_yournpub')}</div>
 				<div class="break-words">
-					<ClipToCopy textToCopy={$npub} confirmMessage="Copied!" />
+					<ClipToCopy textToCopy={$npub} confirmMessage={t('shared.copied')} />
 				</div>
 			</div>
 		{/if}
