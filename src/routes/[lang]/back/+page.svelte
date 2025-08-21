@@ -84,17 +84,31 @@
 		<!-- Welcome title -->
 		<div class="relative mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
 			<h1 class="font-bold">
-				<div
-					class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[6rem]"
-				>
-					{t('back.title1')}
-				</div>
-				<div
-					class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[7rem]"
-					id="tw"
-				>
-					{t('back.title2')}
-				</div>
+				{#if $currentLanguage === 'tr'}
+					<div
+						class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[6rem]"
+					>
+						{t('back.title2')}
+					</div>
+					<div
+						class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[7rem]"
+						id="tw"
+					>
+						{t('back.title1')}
+					</div>
+				{:else}
+					<div
+						class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[6rem]"
+					>
+						{t('back.title1')}
+					</div>
+					<div
+						class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[7rem]"
+						id="tw"
+					>
+						{t('back.title2')}
+					</div>
+				{/if}
 			</h1>
 		</div>
 
