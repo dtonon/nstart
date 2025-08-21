@@ -345,7 +345,7 @@
 			</div>
 			<div class="mt-6 text-xl">
 				<div class="break-words">
-					<ClipToCopy textToCopy={$bunkerURI} confirmMessage="Copied!" />
+					<ClipToCopy textToCopy={$bunkerURI} confirmMessage={t('shared.copied')} />
 				</div>
 			</div>
 			<button
