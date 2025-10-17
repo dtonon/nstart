@@ -8,6 +8,7 @@ export const availableLanguages = [
 	{ code: 'pl', name: 'Polski' },
 	{ code: 'pt', name: 'Português' },
 	{ code: 'si', name: 'Slovenščina' },
+	{ code: 'tr', name: 'Türkçe' },
 	{ code: 'ja', name: '日本語' },
 	{ code: 'zh', name: '简体中文' },
 	{ code: 'fa', name: 'پارسی' }

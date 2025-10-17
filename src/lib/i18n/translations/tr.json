@@ -1,0 +1,139 @@
+{
+	"shared": {
+		"button_continue": "Devam et",
+		"text_nowasm": "Üzgünüz, tarayıcınız WASM desteklemiyor, bu yüzden bu özelliği kullanamazsınız",
+		"copied": "Kopyalandı!"
+	},
+	"home": {
+		"title1": "HOŞGELDİNİZ",
+		"title2": "'A",
+		"title3": "NOSTR",
+		"text1": "Nostr'a katılmak için bir profile ihtiyacınız var, ancak bu alışık olduğunuz gibi bir şirketin sizin için oluşturup yönettiği bir profil değil. Profilinizi kendiniz oluşturuyorsunuz, herhangi bir izne gerek yok.",
+		"text2": "Nostr en başından itibaren farklı bir deneyimdir: kim kimdir diye ilgilenen merkezi bir otorite olmadığı için, her kullanıcı kriptografik bir anahtar çiftiyle tanımlanır; teknik terimler gözünüzü korkutmasın, bu sadece güvende tutmanız gereken güçlü bir şifredir.",
+		"text3a": "Bu sihirbaz, <strong>{$1}</strong> tarafından yeni profilinizi oluşturmanız ve güvenli bir şekilde yönetmeniz için size adım adım yardımcı olur.",
+		"text3b": "Bu sihirbaz, daha sonra diğer uygulamalarda kullanabileceğiniz bir Nostr profili oluşturmanın birkaç yolundan biridir. Anahtar çiftinizi oluşturmanıza ve onu güvenli bir şekilde yönetmenize birkaç adımda yardımcı oluyoruz. Hazır mısınız?",
+		"button_start": "Başlayalım",
+		"footer1": "Önce Nostr hakkında daha fazla bilgi almak ister misiniz?",
+		"footer2": "Kısa bir tanıtım okuyun",
+		"footer3": "Bu servisin kaynak kodu <a {$1}>özgür ve açık kaynaktır</a>"
+	},
+
+	"yourself": {
+		"title1": "KENDİNİZİ",
+		"title2": "TANITIN",
+		"side1": "Nostr'da kim olmak istediğine sen karar verirsin.",
+		"side2": "Bir Nostr profili genellikle bir isim, bir resim ve bazı ek bilgiler içerir, ancak bunların hepsi isteğe bağlıdır.",
+		"side3": "İsim benzersiz bir kullanıcı adı değildir, istediğimiz kadar Mehmet olabilir! Gerçek adınızı veya bir takma ad kullanmaktan çekinmeyin; bunu daha sonra her zaman değiştirebilirsiniz.<br /> Ama unutmayın: çevrimiçi gizlilik önemlidir, hassas verilerinizi paylaşmayın.",
+		"side4": "Ve evet, Nostr'a katılmak için e-posta adresinizi, telefon numaranızı veya başka herhangi bir kimlik bilgisi vermeniz gerekmez.",
+		"label_image": "Resminiz",
+		"label_nickname": "İsminiz (takma adınız)",
+		"label_about": "Hakkınızda",
+		"label_website": "Web sitesiniz",
+		"label_required": "gerekli",
+		"label_optional": "isteğe bağlı",
+		"alert_failedupload": "Resim yüklenemedi. Lütfen tekrar deneyin",
+		"alert_validation": "Lütfen bir isim, bio ve web sitesi girin, bu isteğe bağlıdır",
+		"button_uploading": "Yükleniyor..."
+	},
+
+	"download": {
+		"title1": "ANAHTARLARIN",
+		"title2": "HAZIR",
+		"side1": "Tebrikler <strong>{$1}</strong>, Nostr profilin hazır! Evet, bu kadar kolaydı.",
+		"side2": "Nostr'da anahtar çiftiniz, <em {$1}>npub</em> ile başlayan benzersiz bir dizeyle tanımlanır. Bu anahtar, başkalarıyla paylaşabileceğiniz herkese açık profil kodunuzdur.",
+		"side3": "Bir de özel anahtar vardır. <em {$1}>nsec</em> ile başlar ve profilinizi kontrol etmek ve not yayınlamak için kullanılır. Bu anahtar kesinlikle gizli tutulmalıdır.",
+		"side4": "Şimdi lütfen <em {$1}>nsec</em> dosyasını indirin (bu bir metin dosyasıdır) ve güvenli bir yerde kaydedin, örneğin parola yöneticinizde.",
+		"label_yournpub": "npub anahtarınız",
+		"label_password": "Parola seçin",
+		"button_save1": "nsec dosyasını kaydet",
+		"button_save2": "ncryptsec dosyamı kaydet",
+		"label_switch1": "Şifrelenmiş sürümü indirmek istiyorum",
+		"label_switch2": "Vazgeçtim, şifrelenmemiş nsec indirmek istiyorum",
+		"text1": "nsec anahtarınızdan npub anahtarınızı oluşturabilirsiniz, bu yüzden gerçekten güvende tutmanız gereken tek bilgi budur.",
+		"text2": "Şimdi lütfen dosyayı açın ve npub anahtarınızdan sonraki uzun dizenin aşağıdaki başlangıç ve bitiş karakterleriyle eşleşip eşleşmediğini kontrol edin:",
+		"text3": "Son olarak, dosyayı ek bir yedek olarak başka güvenli bir yere kopyalayın ve seçtiğiniz parolayı (<strong>{$1}</strong>) ayrıca saklayın.",
+		"text4": "Son olarak, dosyayı ek bir yedek olarak başka güvenli bir yere kopyalayın.",
+		"text5": "Dosyayı ve parolayı birkaç güvenli yere kaydettim",
+		"text6": "Dosyayı birkaç güvenli yere kaydettim",
+		"text7": "Tekrar indirmeye ihtiyacınız var mı?"
+	},
+
+	"email": {
+		"title1": "E-POSTA",
+		"title2": "YEDEKLEME",
+		"side1": "Şifrelenmiş <em {$1}>nsec</em> anahtarınızı (yani aslında bir <em {$1}>ncryptsec</em>) e-posta adresinize gönderme imkanı sunuyoruz, böylece başka bir pratik yedekleme konumunuz olur.",
+		"side2": "Sadece güçlü bir parola seçin ve onu güvende tutun, şimdi not alın, kaybetmediğinizden emin olun.",
+		"side3": "Daha önce belirlediğiniz aynı parolayı kullanacağız. Bir yere yazdınız, değil mi? :)",
+		"side4": "{$1} adresinden bir e-posta alacaksınız. Hiçbir şey görmüyorsanız, spam klasörünüzü kontrol edin.",
+		"label_check1": "Şifrelenmiş nsec {$1} anahtarımı aşağıdaki e-posta adresine göndermek istiyorum:",
+		"label_check1b": "(daha önce girilen aynı parola ile)",
+		"label_email": "E-posta adresiniz",
+		"label_password": "Bir parola seçin",
+		"button_send": "Şimdi gönder",
+		"button_sending": "Gönderiliyor...",
+		"button_skip": "Hayır, teşekkürler, devam et"
+	},
+
+	"bunker": {
+		"title1": "ÇOKLU İMZALAYICI",
+		"title2": "BUNKER",
+		"side1": "Artık <em {$1}>nsec</em> anahtarınızı <a {$2}>FROST</a> adı verilen bir teknikle bölebilir ve her bir parçayı bağımsız ve güvenilir uzaktaki imzalayıcılara dağıtabilirsiniz.",
+		"side2": "Bu size bir <em {$1}>bunker</em> kodu verecek ve <em {$2}>nsec</em> anahtarınızı ifşa etmeden birçok web, mobil ve masaüstü uygulamasında giriş yapmak için kullanabileceksiniz.",
+		"side3": "Eğer <em {$1}>bunker</em> kodunuzu kaybederseniz, imzacılar ortadan kaybolursa, sistem çalışmazsa ya da bir kötü amaçlı yazılım tarafından çalınırsa, <em {$1}>nsec</em> anahtarınızı kullanarak yeni bunker kodu oluşturabilir ve eskisini geçersiz kılabilirsiniz.",
+		"label_check1": "nsec anahtarımı, uzaktaki imzalayıcılardan oluşan bir havuzda bölerek \"bunker\" bağlantılarında kullanılmak üzere kaydetmek istiyorum",
+		"label_check1b": "(daha önce girilen aynı parola ile)",
+		"text_nowasm": "Üzgünüz, tarayıcınız WASM desteklemiyor, bu yüzden bu özelliği kullanamazsınız",
+		"text1": "Anahtar {$1} bağımsız imzalayıcılara bölünecek ve paylaşılacak, bir etkinliği imzalamak için {$2} imzalayıcı gereklidir.",
+		"text2": "Bu işlem biraz zaman alabilir, lütfen bekleyin.",
+		"switch1": "Gelişmiş imzalayıcı seçimi",
+		"switch2": "Otomatik imzalayıcı seçimini kullanmak istiyorum",
+		"text3": "İstediğiniz imzalayıcıları seçin:",
+		"text4": "En az {$1} {$2} seçin",
+		"text4b": "daha fazla imzalayıcı",
+		"text4c": "daha fazla imzalayıcılar",
+		"text5": "Seçilen imzalayıcılardan 2'de 2 çoklu imza şeması kullanacağız",
+		"text6": "Seçilen imzalayıcılardan {$1}'de {$2} çoklu imza şeması kullanacağız",
+		"text7": "<strong>Uyarı</strong>, bu şema risklidir, imzalayıcılardan biri çevrimdışı olursa, olaylar imzalanamaz.",
+		"text8": "Hepsi tamam! Bunker kodunuz hazır. Daha sonra kullanmak üzere saklayın, böylece gizli anahtarınızı kullanmadan Nostr uygulamalarına giriş yapabilirsiniz:",
+		"button_save": "Bunker kodumu kaydet",
+		"button_activate": "Bunker'ı etkinleştir",
+		"button_activating": "Etkinleştiriliyor...",
+		"button_skip": "Hayır, teşekkürler, devam et"
+	},
+
+	"follow": {
+		"title1": "TAKİP ET",
+		"title2": "BİRİNİ",
+		"side1": "Şimdi ilginç bazı profilleri takip etmeye ne dersiniz? Size bazı Nostr kullanıcılarının takip listesinin tamamını kopyalama imkanı sunuyoruz, böylece Nostr yolculuğunuza, özenle seçilmiş kişilerin gönderileriyle dolu bir akışla başlayabilirsiniz.",
+		"side2": "Daha sonra daha fazla kişiyi takip edebilir veya bazılarını takipten çıkarabilirsiniz; Nostr'da ne görmek istediğinize siz karar verirsiniz, gizli ve yanıltıcı algoritmalar yok, dayatma yok.",
+		"text1": "Bu Nostr kullanıcılarının akışlarında gördüklerini siz de görün:",
+		"button_finish": "Bitir",
+		"button_finishing": "Bitiriliyor..."
+	},
+
+	"finish": {
+		"title1": "KEŞFET",
+		"title2": "NOSTR'I",
+		"text1": "Hızlıca mobilde giriş yapmak için QR Kodunu tarayın!",
+		"text2": "Hepsi bu kadar, <strong>{$1}</strong>! Artık bir web uygulaması kullanarak veya bir uygulama indirerek Nostr'ı keşfetmeye başlayabilirsin. Hemen başlamak için bazı öneriler:",
+		"text3": "Bunlar Nostr üzerinde halihazırda oluşturulmuş 80+ uygulamadan sadece hızlı bir seçki, <a {$1}}>hepsini keşfet</a>!",
+		"text4": "Bu senin web profilin, istediğin yerde ve istediğin kişiyle paylaşabilirsin:<br /><a {$1}>njump.me/{$2}</a>",
+		"label1": "Sosyal & Mikro blog",
+		"label2": "Grup sohbetleri",
+		"label3": "Fotoğraf & video sosyal"
+	},
+
+	"back": {
+		"title1": "HAZIRSIN",
+		"title2": "BAŞLAMAYA!",
+		"text1": "Hepsi tamam, <strong>{$1}</strong>! Artık Nostr'ı keşfetmeye başlayabilirsin — <strong>{$2}</strong>'ya geri dönmek için aşağıya tıkla:",
+		"button_back": "{$1}'e geri dön",
+		"text2": "{$1}, Nostr üzerinde halihazırda oluşturulmuş 80+ uygulamadan sadece biri, <a>hepsini keşfet</a>!",
+		"text3": "Bu senin web profilin, istediğin her yerde ve istediğin her kişiyle paylaşabilirsin:<br /><a {$1}>njump.me/{$2}</a>"
+	},
+
+	"confirmation_email": {
+		"subject": "Nostr hesabınız",
+		"body": "Merhaba!\n\nBu sizin Nostr npub'unuz:\n{$1}\n\nVe bu da şifrelenmiş Nostr anahtarınız:\n{$2}\n\nLütfen seçtiğiniz şifreyi güvenli bir yerde saklamayı unutmayın!\n\nNostr'a hoş geldiniz :)\n\nNot: Bu e-posta adresi yanıt kabul etmez, destek talebi için lütfen Nostr üzerinde https://njump.me/dtonon.com veya https://njump.me/fiatjaf.com adreslerini etiketleyin"
+	}
+}
