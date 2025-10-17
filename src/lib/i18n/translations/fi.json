@@ -1,0 +1,160 @@
+{
+	"shared": {
+		"page_title": "Luo Nostr-tilisi",
+		"button_continue": "Jatka",
+		"text_nowasm": "Valitettavasti selaimesi ei tue WASM:ia, joten et voi käyttää tätä ominaisuutta"
+	},
+	"home": {
+		"title1": "TERVETULOA",
+		"title2": "",
+		"title3": "NOSTRIIN",
+		"text1": "Nostriin liittyäksesi tarvitset profiilin, mutta se ei ole tavallinen yrityksen sinulle luoma ja hallitsema profiili. Luot sen itse, lupaa ei tarvita.",
+		"text2": "Nostr on alusta alkaen erilainen kokemus: koska keskitettyä viranomaista ei ole huolehtimassa siitä, kuka on kuka, jokainen käyttäjä tunnistetaan kryptografisella avainparilla; älä välitä teknisestä ammattislangista, se on vain vahva salasana, joka sinun täytyy pitää turvassa.",
+		"text3a": "<strong>{$1}</strong> käyttää tätä ohjattua toimintoa, jotta voit luoda uuden profiilin ja hallita sitä turvallisesti muutamassa vaiheessa.",
+		"text3b": "Tämä ohjattu toiminto on yksi monista tavoista luoda Nostr-profiili, jota voit myöhemmin käyttää muissa sovelluksissa. Autamme sinua luomaan avainparin ja hallitsemaan sitä turvallisesti muutamassa vaiheessa. Oletko valmis?",
+		"button_start": "Aloitetaan",
+		"footer1": "Haluaisitko tietää lisää Nostrista ensin?",
+		"footer2": "Lue nopea johdanto",
+		"footer3": "Tämän palvelun lähdekoodi on <a {$1}>vapaa ja avoin</a>",
+		"footer4": "Haluatko kutsua ystäviäsi? Luo <a {$1}>henkilökohtainen Nstart-osoitteesi</a>"
+	},
+
+	"yourself": {
+		"title1": "ESITTELE",
+		"title2": "ITSESI",
+		"side1": "Nostrissa päätät itse, kuka haluat olla.",
+		"side2": "Nostr-profiili sisältää yleensä nimen, kuvan ja joitain lisätietoja, mutta kaikki on valinnaista.",
+		"side3": "Nimi ei ole yksilöllinen käyttäjänimi, meillä voi olla niin monta Jackkia kuin haluamme! Käytä vapaasti oikeaa nimeäsi tai nimimerkkiä; voit aina vaihtaa sen myöhemmin.<br /> Mutta muista: verkkoyksityisyys on tärkeää, älä jaa arkaluontoisia tietoja.",
+		"side4": "Ja kyllä, Nostriin liittyäksesi sinun ei tarvitse antaa sähköpostiosoitetta, puhelinnumeroa tai muita tunnistetietoja.",
+		"label_image": "Kuvasi",
+		"label_nickname": "Nimesi (tai nimimerkkisi)",
+		"label_about": "Jotain sinusta",
+		"label_website": "Verkkosivustosi",
+		"label_required": "pakollinen",
+		"label_optional": "valinnainen",
+		"alert_failedupload": "Kuvan lataus epäonnistui. Yritä uudelleen",
+		"alert_validation": "Anna nimi, kuvaus ja verkkosivusto ovat valinnaisia",
+		"button_uploading": "Ladataan..."
+	},
+
+	"download": {
+		"title1": "AVAIMESI",
+		"title2": "OVAT VALMIIT",
+		"side1": "Hienoa <strong>{$1}</strong>, Nostr-profiilisi on valmis! Kyllä, se oli noin helppoa.",
+		"side2": "Nostrissa avainpariasi tunnistetaan yksilöllisellä merkkijonolla, joka alkaa <em {$1}>npub</em>. Tämä on julkinen profiilikoodi, jonka voit jakaa kenelle tahansa.",
+		"side3": "Sitten on yksityinen avain. Se alkaa <em {$1}>nsec</em>, ja sitä käytetään profiilisi hallintaan ja viestien julkaisemiseen. Tämä on pidettävä ehdottoman salaisena.",
+		"side4": "Lataa nyt <em {$1}>nsec</em> (se on tekstitiedosto) ja tallenna se turvalliseen paikkaan, esimerkiksi salasananhallintaohjelmaasi.",
+		"label_yournpub": "Npub-tunnisteesi on",
+		"label_password": "Valitse salasana",
+		"button_save1": "Tallenna nsec",
+		"button_save2": "Tallenna ncryptsec",
+		"label_switch1": "Haluan ladata salatun version",
+		"label_switch2": "Ei haittaa, haluan ladata tavallisen nsec:n",
+		"text1": "Nsec-avaimestasi voit luoda npub-tunnisteesi, joten se on ainoa tieto, joka sinun todella täytyy pitää turvassa.",
+		"text2": "Avaa nyt tiedosto ja tarkista, että pitkä merkkijono npub-tunnisteesi jälkeen vastaa näitä alku- ja loppumerkkejä:",
+		"text3": "Kopioi lopuksi tiedosto toiseen turvalliseen paikkaan lisävarmuuskopioksi ja tallenna valitsemasi salasana (<strong>{$1}</strong>) erikseen.",
+		"text4": "Kopioi lopuksi tiedosto toiseen turvalliseen paikkaan lisävarmuuskopioksi.",
+		"text5": "Tallensin tiedoston ja salasanan pariin turvalliseen paikkaan",
+		"text6": "Tallensin tiedoston pariin turvalliseen paikkaan",
+		"text7": "Tarvitsetko ladata sen uudelleen?"
+	},
+
+	"email": {
+		"title1": "SÄHKÖPOSTI-",
+		"title2": "VARMUUSKOPIO",
+		"side1": "Tarjoamme sinulle mahdollisuuden lähettää salattu <em {$1}>nsec</em> (eli oikeastaan <em {$1}>ncryptsec</em>) sähköpostiosoitteeseesi käteväksi lisävarmuuskopioksi.",
+		"side2": "Valitse vain vahva salasana ja pidä se turvassa, kirjoita se ylös nyt, varmista ettet menetä sitä.",
+		"side3": "Käytämme samaa salasanaa, jonka valitsit aiemmin. Kirjoitit sen ylös, eikö niin? :)",
+		"side4": "Saat sähköpostin osoitteesta {$1}. Jos et näe mitään, tarkista roskapostikansiosi.",
+		"label_check1": "Haluan lähettää salatun nsec-avaimeni {$1} seuraavaan sähköpostiosoitteeseen:",
+		"label_check1b": "(samalla aiemmin annetulla salasanalla)",
+		"label_email": "Sähköpostiosoitteesi",
+		"label_password": "Valitse salasana",
+		"button_send": "Lähetä nyt",
+		"button_sending": "Lähetetään...",
+		"button_skip": "Ei kiitos, jatka"
+	},
+
+	"bunker": {
+		"title1": "MONEN ALLEKIRJOITTAJAN",
+		"title2": "BUNKER",
+		"side1": "Nyt sinulla on mahdollisuus jakaa <em {$1}>nsec</em>-avaimesi <a {$2}>FROST</a>-tekniikalla ja jakaa jokainen osa itsenäiselle luotetulle etäallekirjoittajalle.",
+		"side2": "Tämä antaa sinulle <em {$1}>bunker</em>-koodin, jota voit käyttää kirjautuaksesi moniin verkko-, mobiili- ja työpöytäsovelluksiin paljastamatta <em {$2}>nsec</em>-avaintasi.",
+		"side3": "Jos koskaan menetät <em {$1}>bunker</em>-koodisi, jos allekirjoittajat katoavat maan päältä ja se lakkaa toimimasta tai jos haittaohjelma varastaa sen, voit käyttää <em {$1}>nsec</em>-avaintasi luodaksesi uuden ja mitätöidäksesi vanhan.",
+		"label_check1": "Haluan tallentaa nsec-avaimeni jaettuna etäallekirjoittajien joukkoon käytettäväksi \"bunker\"-yhteyksiin",
+		"label_check1b": "(samalla aiemmin annetulla salasanalla)",
+		"text_nowasm": "Valitettavasti selaimesi ei tue WASM:ia, joten et voi käyttää tätä ominaisuutta",
+		"text1": "Avain jaetaan ja jaetaan {$1} itsenäisen allekirjoittajan kanssa, {$2} allekirjoittajaa tarvitaan tapahtuman allekirjoittamiseen.",
+		"text2": "Menettely voi vaatia jonkin aikaa, ole kärsivällinen.",
+		"switch1": "Edistynyt allekirjoittajien valinta",
+		"switch2": "Haluan käyttää automaattista allekirjoittajien valintaa",
+		"text3": "Valitse haluamasi allekirjoittajat:",
+		"text4": "Valitse vähintään {$1} {$2}",
+		"text4b": "allekirjoittaja lisää",
+		"text4c": "allekirjoittajaa lisää",
+		"text5": "Käytämme 2/2-moniallekirjoitusmallia valittujen allekirjoittajien kanssa",
+		"text6": "Käytämme {$1}/{$2}-moniallekirjoitusmallia valittujen allekirjoittajien kanssa",
+		"text7": "<strong>Varoitus</strong>, tämä malli on riskialtis, jos yksi allekirjoittajista on offline-tilassa, tapahtumia ei voida allekirjoittaa.",
+		"text8": "Kaikki valmista! bunker-koodisi on valmis. Tallenna se myöhempää käyttöä varten, jotta voit kirjautua Nostr-sovelluksiin käyttämättä salaista avaintasi:",
+		"button_save": "Tallenna bunker",
+		"button_activate": "Aktivoi bunker",
+		"button_activating": "Aktivoidaan...",
+		"button_skip": "Ei kiitos, jatka"
+	},
+
+	"follow": {
+		"title1": "SEURAA",
+		"title2": "JOTAKUTA",
+		"side1": "Mitä ajattelet siitä, että seuraisit joitain mielenkiintoisia profiileja? Tarjoamme sinulle mahdollisuuden kopioida jonkin Nostr-käyttäjän koko seurattavien listan, jotta voit aloittaa Nostr-matkasi syötteellä, joka on täynnä jo kuratoitujen henkilöiden viestejä.",
+		"side2": "Voit myöhemmin seurata lisää ihmisiä tai lopettaa joidenkin seuraamisen; Nostrissa sinä hallitset mitä haluat nähdä, ei hämäriä ja petollisia algoritmeja, ei pakoitteita.",
+		"text1": "Näe samat asiat, joita nämä Nostr-käyttäjät näkevät syötteessään:",
+		"button_finish": "Valmis",
+		"button_finishing": "Viimeistellään..."
+	},
+
+	"finish": {
+		"title1": "TUTKI",
+		"title2": "NOSTRIA",
+		"text1": "Skannaa QR-koodi nopeaa mobiilikirjautumista varten!",
+		"text2": "Olemme valmiit, <strong>{$1}</strong>! Nyt voit alkaa tutkia Nostria, käyttämällä verkkosovellusta tai lataamalla sovelluksen. Tässä on joitain ehdotuksia välittömään aloittamiseen:",
+		"text3": "Tämä on vain nopea valikoima yli 80 sovelluksesta, jotka on jo rakennettu Nostriin, <a {$1}}>tutustu niihin kaikkiin</a>!",
+		"text4": "Tämä on verkko-profiilisi, voit jakaa sen missä tahansa ja kenelle tahansa:<br /><a {$1}>njump.me/{$2}</a>",
+		"label1": "Sosiaalinen media ja mikrobloggaus",
+		"label2": "Ryhmäkeskustelut",
+		"label3": "Kuva- ja videososiaalinen"
+	},
+
+	"back": {
+		"title1": "OLET",
+		"title2": "VALMIS LÄHTEMÄÄN!",
+		"text1": "Olemme valmiit, <strong>{$1}</strong>! Nyt voit alkaa tutkia Nostria — napsauta alla palataksesi takaisin <strong>{$2}</strong>:",
+		"button_back": "Palaa takaisin {$1}",
+		"text2": "{$1} on vain yksi yli 80 sovelluksesta, jotka on jo rakennettu Nostriin, <a>tutustu niihin kaikkiin</a>!",
+		"text3": "Tämä on verkko-profiilisi, voit jakaa sen missä tahansa ja kenelle tahansa:<br /><a {$1}>njump.me/{$2}</a>"
+	},
+
+	"confirmation_email": {
+		"subject": "Nostr-tilisi",
+		"body": "Hei!\n\nTämä on Nostr npub-tunnisteesi:\n{$1}\n\nJa tämä on salattu Nostr-avaimesi:\n{$2}\n\nMuista tallentaa valitsemasi salasana turvalliseen paikkaan!\n\nTervetuloa Nostriin :)\n\nPS: Tämä sähköpostiosoite ei hyväksy vastauksia, tuen pyytämiseksi tägää https://njump.me/dtonon.com tai https://njump.me/fiatjaf.com Nostrissa"
+	},
+
+	"wizard": {
+		"title": "Luo Nstart-osoitteesi",
+		"intro": "Tämä sivu antaa sinulle mahdollisuuden saada henkilökohtainen Nstart-linkki, jonka avulla muut käyttäjät voivat luoda tilin esivalitulla kielellä ja henkilökohtaisella seurattavien listalla",
+		"label_lang": "Ohjatun toiminnon kieli",
+		"label_nickname": "Nimesi (tai nimimerkkisi) - Valinnainen",
+		"label_contact": "Yhteystieto lisättäväksi seurattavien listaan",
+		"button_contact": "Lisää yhteystieto",
+		"button_working": "Etsitään...",
+		"label_list": "Mukautettu seurattavien lista",
+		"button_link": "Luo linkki",
+		"link_intro": "Henkilökohtainen Nstart-osoitteesi",
+		"button_copy": "Kopioi osoite",
+		"button_copied": "Kopioitu!",
+		"error1": "Tämä profiili on jo lisätty",
+		"error2": "Profiilin tietojen haku epäonnistui",
+		"error3": "NIP-05-osoitetta ei voitu selvittää",
+		"error4": "Anna kelvollinen npub tai NIP-05-osoite",
+		"error5": "Virheellinen npub tai NIP-05-osoite"
+	}
+}
