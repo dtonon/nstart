@@ -117,7 +117,7 @@
 		"title2": "NOSTR",
 		"text1": "Scan the QrCode for quick login from mobile!",
 		"text2": "We're done, <strong>{$1}</strong>! Now you can start exploring Nostr, using a web application or by downloading an app. These are some suggestions for getting started immediately:",
-		"text3": "This is only a quick selection of the 80+ applications that have already been built on Nostr, <a {$1}}>discover them all</a>!",
+		"text3": "Come see what else you can do at <a {$1}}>nostrapps.com</a>!",
 		"text4": "This is your web profile, you can share it anywhere and with anyone:<br /><a {$1}>njump.me/{$2}</a>",
 		"label1": "Social & Micro blogging",
 		"label2": "Group conversations",
